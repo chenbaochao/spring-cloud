@@ -64,4 +64,9 @@ public class User {
     public void setUpdateTime(String updateTime) {
         this.updateTime = updateTime;
     }
+
+    @Override
+    public String toString() {
+        return "username="+username+", password="+password+"\r\n";
+    }
 }
