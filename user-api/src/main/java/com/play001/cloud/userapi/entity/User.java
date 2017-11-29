@@ -1,4 +1,4 @@
-package com.play001.cloud.webapi.entity;
+package com.play001.cloud.userapi.entity;
 
 public class User {
     private Integer id;

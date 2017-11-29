@@ -1,4 +1,4 @@
-package com.play001.cloud.webapi.response;
+package com.play001.cloud.userapi.response;
 
 
 /**
@@ -7,6 +7,7 @@ package com.play001.cloud.webapi.response;
  */
 public class LoginResponse extends Response{
 
+    private Integer userId;
     private String token;
 
     public String getToken() {
@@ -15,5 +16,13 @@ public class LoginResponse extends Response{
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 }

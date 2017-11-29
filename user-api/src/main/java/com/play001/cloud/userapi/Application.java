@@ -1,4 +1,4 @@
-package com.play001.cloud.webapi;
+package com.play001.cloud.userapi;
 
 
 import org.springframework.boot.SpringApplication;

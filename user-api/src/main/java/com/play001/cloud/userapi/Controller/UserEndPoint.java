@@ -1,15 +1,14 @@
-package com.play001.cloud.webapi.Controller;
+package com.play001.cloud.userapi.Controller;
 
-import com.play001.cloud.webapi.service.UserService;
-import com.play001.cloud.webapi.response.LoginResponse;
-import com.play001.cloud.webapi.response.Response;
+import com.play001.cloud.userapi.service.UserService;
+import com.play001.cloud.userapi.response.LoginResponse;
+import com.play001.cloud.userapi.response.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(value = "/user")
 public class UserEndPoint {
 
     @Autowired
@@ -29,6 +28,13 @@ public class UserEndPoint {
             response.setStatus(Response.ERROR);
             response.setErrMsg(e.getMessage());
         }
+        return response;
+    }
+    @RequestMapping(value = "/test", method = RequestMethod.GET)
+    public Response test(){
+        LoginResponse response = new LoginResponse();
+        response.setStatus(Response.SUCCESS);
+        response.setErrMsg("1111");
         return response;
     }
 }
