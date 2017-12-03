@@ -1,13 +1,15 @@
 package com.play001.cloud.userapi.entity;
 
+import com.google.gson.Gson;
+
 public class User {
     private Integer id;
     private String username;
     private String password;
     private String phone;
     private String email;
-    private String createTime;
-    private String updateTime;
+    private String createdTime;
+    private String updatedTime;
 
     public Integer getId() {
         return id;
@@ -49,24 +51,24 @@ public class User {
         this.email = email;
     }
 
-    public String getCreateTime() {
-        return createTime;
+    public String getCreatedTime() {
+        return createdTime;
     }
 
-    public void setCreateTime(String createTime) {
-        this.createTime = createTime;
+    public void setCreatedTime(String createdTime) {
+        this.createdTime = createdTime;
     }
 
-    public String getUpdateTime() {
-        return updateTime;
+    public String getUpdatedTime() {
+        return updatedTime;
     }
 
-    public void setUpdateTime(String updateTime) {
-        this.updateTime = updateTime;
+    public void setUpdatedTime(String updatedTime) {
+        this.updatedTime = updatedTime;
     }
 
     @Override
     public String toString() {
-        return "username="+username+", password="+password+"\r\n";
+        return new Gson().toJson(this);
     }
 }
