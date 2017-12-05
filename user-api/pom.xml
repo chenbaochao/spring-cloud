@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.pla001.cloud</groupId>
-    <artifactId>userapi</artifactId>
+    <artifactId>user-api</artifactId>
     <version>1.0</version>
 
     <parent>
@@ -47,11 +47,11 @@
             <artifactId>gson</artifactId>
             <version>2.8.2</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/com.octo.captcha/jcaptcha -->
+        <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-redis -->
         <dependency>
-            <groupId>com.octo.captcha</groupId>
-            <artifactId>jcaptcha</artifactId>
-            <version>1.0</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-redis</artifactId>
+            <version>1.4.7.RELEASE</version>
         </dependency>
 
     </dependencies>

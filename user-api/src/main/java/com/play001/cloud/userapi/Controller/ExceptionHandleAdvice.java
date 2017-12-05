@@ -1,6 +1,6 @@
 package com.play001.cloud.userapi.Controller;
 
-import com.play001.cloud.userapi.response.Response;
+import com.play001.cloud.userapi.entity.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -19,6 +19,8 @@ public class ExceptionHandleAdvice {
 
     @ExceptionHandler
     public Response handler(HttpServletRequest request, HttpServletResponse response, Exception e){
+        e.printStackTrace();;
+        logger.info("拦截到异常:"+e.getMessage());
         return new Response(Response.ERROR, e.getMessage());
     }
 }

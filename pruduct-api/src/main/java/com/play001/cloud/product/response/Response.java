@@ -1,4 +1,4 @@
-package com.play001.cloud.userapi.response;
+package com.play001.cloud.product.response;
 
 /**
  * 用于ajax返回各种信息

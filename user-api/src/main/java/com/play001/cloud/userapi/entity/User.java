@@ -1,12 +1,18 @@
 package com.play001.cloud.userapi.entity;
 
 import com.google.gson.Gson;
+import org.hibernate.validator.constraints.NotBlank;
 
 public class User {
     private Integer id;
+
+    @NotBlank(message = "用户名不能为空")
     private String username;
+    @NotBlank(message = "密码不能为空")
     private String password;
-    private String phone;
+    @NotBlank(message = "电话号码不能为空")
+    private String telephone;
+    @NotBlank(message = "邮箱不能为空")
     private String email;
     private String createdTime;
     private String updatedTime;
@@ -35,12 +41,12 @@ public class User {
         this.password = password;
     }
 
-    public String getPhone() {
-        return phone;
+    public String getTelephone() {
+        return telephone;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
+    public void setTelephone(String telephone) {
+        this.telephone = telephone;
     }
 
     public String getEmail() {
