@@ -13,6 +13,9 @@ public class Response {
     public Response() {
     }
 
+    public Response(String status) {
+        this.status = status;
+    }
     public Response(String status, String errMsg) {
         this.status = status;
         this.errMsg = errMsg;
