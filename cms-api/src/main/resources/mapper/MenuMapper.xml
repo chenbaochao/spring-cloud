@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.play001.cloud.cmsapi.mapper">
+    <resultMap id="menuResult" type="com.play001.cloud.cmsapi.entity.Menu">
+        <id property="id" column="p_id"/>
+        <result property="href" column="p_href"/>
+        <result property="name" column="p_name"/>
+        <result property="icon" column="p_icon"/>
+        <!-- 子菜单 -->
+        <collection property="childMenus"  ofType="com.play001.cloud.cmsapi.entity.Menu">
+            <id property="id" column="c_id"/>
+            <result property="href" column="c_href"/>
+            <result property="name" column="c_name"/>
+            <result property="icon" column="c_icon"/>
+        </collection>
+    </resultMap>
+</mapper>

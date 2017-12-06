@@ -4,8 +4,6 @@ import java.util.List;
 
 public class Menu {
     private Integer id;
-    private Integer parentId;
-    private Integer menuType;
     private String href;
     private String name;
     private String icon;
@@ -19,21 +17,6 @@ public class Menu {
         this.id = id;
     }
 
-    public Integer getParentId() {
-        return parentId;
-    }
-
-    public void setParentId(Integer parentId) {
-        this.parentId = parentId;
-    }
-
-    public Integer getMenuType() {
-        return menuType;
-    }
-
-    public void setMenuType(Integer menuType) {
-        this.menuType = menuType;
-    }
 
     public String getHref() {
         return href;

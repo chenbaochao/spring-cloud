@@ -13,6 +13,11 @@ public class Response<T> {
     public Response() {
     }
 
+    public Response(T message) {
+        this.message = message;
+        this.status = SUCCESS;
+    }
+
     public Response(String status) {
         this.status = status;
     }
