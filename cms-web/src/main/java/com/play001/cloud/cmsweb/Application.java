@@ -1,4 +1,4 @@
-package com.play001.cloud.admin;
+package com.play001.cloud.cmsweb;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
