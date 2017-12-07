@@ -1087,7 +1087,8 @@
 	border-top: 1px solid #e0e0e0;
 	border-bottom: 1px solid #e0e0e0;
 	color: #ff6700;
-	font-size: 30px
+	font-size: 30px;
+	clear:both
 }
 
 .goods-detail .goods-info-head .goods-info-head-price i {
@@ -1142,7 +1143,8 @@
 }
 
 .goods-detail .goods-info-head .goods-info-head-tip li.others i {
-	background-color: #ffd600
+	background-color: #ffd600;
+	float:left;
 }
 
 .goods-detail .goods-info-head .goods-info-head-tip li.phone i {

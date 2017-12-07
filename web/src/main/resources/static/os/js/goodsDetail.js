@@ -201,7 +201,7 @@ function question_help() {
 	$.ajax({
 		type : 'get',
 		dataType : 'text',
-		url : baselocation + '/question/askList?productId=' + productId + '&sort=1&page=1',
+		url :  '/question/askList?productId=' + productId + '&sort=1&page=1',
 		success : function(result) {
 			$("#J_goodsQuestionBlock").html(result);
 		}
@@ -216,7 +216,7 @@ function question_new() {
 	$.ajax({
 		type : 'get',
 		dataType : 'text',
-		url : baselocation + '/question/askList?productId=' + productId + '&sort=0&page=1',
+		url :  '/question/askList?productId=' + productId + '&sort=0&page=1',
 		success : function(result) {
 			$("#J_goodsQuestionBlock").html(result);
 		}
@@ -231,7 +231,7 @@ function comment_sup() {
 	$.ajax({
 		type : 'get',
 		dataType : 'text',
-		url : baselocation + '/comment/supList?productId=' + productId + '&sort=1&page=1',
+		url :  '/comment/supList?productId=' + productId + '&sort=1&page=1',
 		success : function(result) {
 			$("#J_supComment").html(result);
 		}
@@ -245,7 +245,7 @@ function comment_time_line() {
 	$.ajax({
 		type : 'get',
 		dataType : 'text',
-		url : baselocation + '/comment/tileLineList?productId=' + productId + '&sort=0&page=1',
+		url :  '/comment/tileLineList?productId=' + productId + '&sort=0&page=1',
 		success : function(result) {
 			$("#J_timelineComment").html(result);
 		}
@@ -300,7 +300,7 @@ function add_question(obj) {
 						time : 1000
 					});
 				} else if (result.code == 401) {
-					window.location.href = baselocation + '/pass/login';
+					window.location.href =  '/pass/login';
 				} else {
 					layer.alert(result.message, {
 						icon : 2
