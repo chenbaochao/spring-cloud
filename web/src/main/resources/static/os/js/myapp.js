@@ -272,14 +272,14 @@ $(function() {
 
 	$('#J_recommend .pagination li').click(function() {
 
-		$('.recommend-product').css({
+		$('.recommend-productapi').css({
 			marginLeft : '-1233px'
 		});
 		$('#J_recommend .pagination li').eq(1).addClass('pager-active').siblings().removeClass('pager-active');
 
 	});
 	$('#J_recommend .pagination li').eq(0).click(function() {
-		$('.recommend-product').css({
+		$('.recommend-productapi').css({
 			marginLeft : '0'
 		});
 		$('#J_recommend .pagination li').eq(0).addClass('pager-active').siblings().removeClass('pager-active');
@@ -288,13 +288,13 @@ $(function() {
 	var timer = setInterval(active, 5000);
 
 	function active() {
-		$('.recommend-product').css({
+		$('.recommend-productapi').css({
 			marginLeft : '-1233px'
 		});
 		$('#J_recommend .pagination li').eq(1).addClass('pager-active').siblings().removeClass('pager-active');
 		var num = parseInt($('.goods-list').css('marginLeft'));
 		if (num == -1233) {
-			$('.recommend-product').css({
+			$('.recommend-productapi').css({
 				marginLeft : '0'
 			});
 			$('#J_recommend .pagination li').eq(1).addClass('pager-active').siblings().removeClass('pager-active');
@@ -302,7 +302,7 @@ $(function() {
 	}
 
 	//鼠标事件
-	$('.recommend-product').hover(function() {
+	$('.recommend-productapi').hover(function() {
 		clearInterval(timer);
 	}, function() {
 		timer = setInterval(active, 5000);

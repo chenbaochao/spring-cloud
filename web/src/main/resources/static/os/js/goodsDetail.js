@@ -166,8 +166,8 @@ $(function() {
 		//输出价格
 		$(_resp.score).text(_score); //其中的math.round为截取小数点位数
 		$(_resp.price).text(_price);
-		$("#goodsDetailAddCartBtn").attr("data-product-spec-number", _productSpecNumber);
-		$("#goodsSubBarAddCartBtn").attr("data-product-spec-number", _productSpecNumber);
+		$("#goodsDetailAddCartBtn").attr("data-productapi-spec-number", _productSpecNumber);
+		$("#goodsSubBarAddCartBtn").attr("data-productapi-spec-number", _productSpecNumber);
 	}
 })
 
@@ -189,8 +189,8 @@ $(function() {
 
 		$(_resp.score).text(_score); // 其中的math.round为截取小数点位数
 		$(_resp.price).text(_price);
-		$("#goodsDetailAddCartBtn").attr("data-product-spec-number", _productSpecNumber);
-		$("#goodsSubBarAddCartBtn").attr("data-product-spec-number", _productSpecNumber);
+		$("#goodsDetailAddCartBtn").attr("data-productapi-spec-number", _productSpecNumber);
+		$("#goodsSubBarAddCartBtn").attr("data-productapi-spec-number", _productSpecNumber);
 	}
 })
 
@@ -256,7 +256,7 @@ function comment_time_line() {
  * 加入购物车
  */
 function add_cart(obj) {
-	var productSpecNumber = $(obj).attr("data-product-spec-number");
+	var productSpecNumber = $(obj).attr("data-productapi-spec-number");
 	$.ajax({
 		type : 'post',
 		dataType : 'json',

@@ -1,5 +1,6 @@
 package com.play001.cloud.web.service.serviceImpl;
 
+import com.play001.cloud.web.entity.IException;
 import com.play001.cloud.web.entity.User;
 import com.play001.cloud.web.response.LoginResponse;
 import com.play001.cloud.web.response.Response;
@@ -24,9 +25,14 @@ public class UserServiceImpl {
     }
 
 
-    public void setCaptcha(HttpServletResponse response) throws IOException {
-        byte []data  = userService.captcha();
+    public void setCaptcha(HttpServletResponse response) throws Exception {
+        Response<byte[]> responseMsg = userService.getCaptcha();
+        if(!Response.SUCCESS.equals(responseMsg.getStatus())){
+            throw new IException(responseMsg.getErrMsg());
+        }
+        byte[] data = responseMsg.getMessage();
         byte byteCookie[] = new byte[36];
+        //获得输出流,将图片输出并设置cookie
         OutputStream os = response.getOutputStream();
         for(int i=0; i< data.length-36;i++){//除开后36位,前面为验证码图片
             os.write(data[i]);
@@ -37,7 +43,8 @@ public class UserServiceImpl {
         }
         String value = new String(byteCookie);
         response.addCookie(new Cookie("registerCookie", value));
-        System.out.println(value);
+       os.flush();
+       os.close();
     }
 
     public Response register(User user, String code, HttpServletRequest request){

@@ -36,7 +36,7 @@ public class UserController {
         return "user/register";
     }
     @RequestMapping(value = "/captcha", method = RequestMethod.GET)
-    public void captcha(HttpServletResponse response) throws IOException{
+    public void captcha(HttpServletResponse response) throws Exception{
         userService.setCaptcha(response);
     }
 

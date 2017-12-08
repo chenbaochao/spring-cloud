@@ -105,7 +105,7 @@
 </div>
 <!-- 轮播top菜单导航引入 -->
 
-<!--<c:if test="${not empty product}">  -->
+<!--<c:if test="${not empty productapi}">  -->
 <!--     分类导航栏 begin       -->
 <div class="breadcrumbs">
     <div class="container-fluid"><a href='${ctx}/index'>首页</a>
@@ -149,7 +149,7 @@
                                 </dd>
                                 <dd class="goods-info-head-tip">
                                     <ul>
-                                        <!--<c:if test="${not empty product.labelName}">-->
+                                        <!--<c:if test="${not empty productapi.labelName}">-->
                                         <li class="others" ><i>手机</i> </li>
                                         <li class="others" ><i>拍照</i> </li>
                                         <li class="others" ><i>发烧友</i> </li>
@@ -383,7 +383,7 @@
 </div>
 <!-- 跟随 导航 end -->
 <!--商品不存在
-<c:if test="${empty product}">
+<c:if test="${empty productapi}">
   <div class="container-fluid">
     <div class="xm-box ">
       <div class="bd">
@@ -405,10 +405,10 @@
     //价格json
     /*
     var sys_item=${productSpecifications};
-    var default_price=${product.showPrice};
-    var default_score=${product.showScore};
-    var productNumber=${product.productNumber};
-    var productId=${product.productId};
+    var default_price=${productapi.showPrice};
+    var default_score=${productapi.showScore};
+    var productNumber=${productapi.productNumber};
+    var productId=${productapi.productId};
     */
     var _score=123;
     var sys_item ={};

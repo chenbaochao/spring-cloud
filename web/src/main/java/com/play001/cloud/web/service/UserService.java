@@ -17,7 +17,7 @@ public interface UserService {
                                 @RequestParam("expiryDate") Long expiryDate);
 
     @RequestMapping(value = "/user/captcha", method = RequestMethod.GET)
-    byte[] captcha();
+    Response<byte[]> getCaptcha();
 
     @RequestMapping(value = "/user/register", method = RequestMethod.POST)
     Response register(@RequestBody User user,
