@@ -1,15 +1,15 @@
-package com.play001.cloud.product.response;
+package com.play001.cloud.productapi.entity;
 
 /**
  * 用于ajax返回各种信息
  * 通用类型
  */
-public class Response {
+public class Response<T> {
     public static  final String  SUCCESS = "SUCCESS";
     public static  final String  ERROR = "ERROR";
     protected String status;
     protected String errMsg;
-
+    T message;
     public Response() {
     }
 
@@ -20,6 +20,14 @@ public class Response {
     public Response(String status, String errMsg) {
         this.status = status;
         this.errMsg = errMsg;
+    }
+
+    public T getMessage() {
+        return message;
+    }
+
+    public void setMessage(T message) {
+        this.message = message;
     }
 
     public String getStatus() {
