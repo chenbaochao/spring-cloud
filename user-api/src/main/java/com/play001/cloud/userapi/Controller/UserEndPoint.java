@@ -1,5 +1,6 @@
 package com.play001.cloud.userapi.Controller;
 
+import com.play001.cloud.userapi.entity.IException;
 import com.play001.cloud.userapi.entity.User;
 import com.play001.cloud.userapi.service.UserService;
 import com.play001.cloud.userapi.entity.Response;
@@ -29,8 +30,12 @@ public class UserEndPoint {
      * 输出流中后36位为验证码的cookie,前面为验证码图片流
      */
     @RequestMapping(value = "/captcha", method = RequestMethod.GET)
-    public void register(HttpServletResponse response) throws IOException {
-        userService.createCaptcha(response);
+    public Response<byte[]> register(HttpServletResponse response) throws IOException {
+        return userService.createCaptcha();
     }
 
+    @RequestMapping(value = "/test", method = RequestMethod.GET)
+    public void test() throws Exception {
+        throw new IException("出错啦");
+    }
 }

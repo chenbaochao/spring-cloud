@@ -1,5 +1,6 @@
 package com.play001.cloud.userapi.Controller;
 
+import com.play001.cloud.userapi.entity.IException;
 import com.play001.cloud.userapi.entity.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,8 +20,14 @@ public class ExceptionHandleAdvice {
 
     @ExceptionHandler
     public Response handler(HttpServletRequest request, HttpServletResponse response, Exception e){
-        e.printStackTrace();;
+        e.printStackTrace();
         logger.info("拦截到异常:"+e.getMessage());
-        return new Response(Response.ERROR, e.getMessage());
+        if(e instanceof IException){
+            return new Response(Response.ERROR, e.getMessage());
+        }else{
+            return new Response(Response.ERROR, "未知异常");
+        }
+
+
     }
 }
