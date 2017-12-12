@@ -28,7 +28,7 @@ public class CredentialService {
         expiryDate = expiryDate==null?1000*60*60*24:expiryDate;//默认身份令牌有效期为一天
         User user = userMapper.findByUsername(username);
             if(user != null && user.getPassword().equals(password)){
-                String jwt = jwtUtil.createJwt(user.getId(), System.currentTimeMillis()+expiryDate);
+                String jwt = jwtUtil.createJwt(user.getId(), username, System.currentTimeMillis()+expiryDate);
                 logger.info("用户:"+user.getUsername()+"获取令牌成功, Jwt=" + jwt);
                 return jwt;
             }else{

@@ -16,8 +16,8 @@ public class JwtUtil {
     private String secret;
     private final String header = "{ \"alg\": \"HS256\",\"typ\": \"JWT\"}";
 
-    public String createJwt(Integer userId, Long expiryDate) throws UnsupportedEncodingException {
-        Credential credential = new Credential(userId, expiryDate);
+    public String createJwt(Integer userId, String username, Long expiryDate) throws UnsupportedEncodingException {
+        Credential credential = new Credential(userId, username, expiryDate);
         Algorithm algorithm = Algorithm.HMAC256(secret);
         return JWT.create()
                 .withIssuer(header+"."+credential.toJson())
