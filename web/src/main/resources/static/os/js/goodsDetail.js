@@ -115,7 +115,10 @@ $(function() {
 		p.click(function() {
 			$(this).addClass("current").siblings("li").removeClass("current");
 			i.attr("data-attrval", $(this).attr("data-aid"))
-			getattrprice() //输出价格
+			var price = $(this).data('price');
+			console.log(this)
+            $('#show_price').text(price);
+            console.log(price);
 		})
 	})
 
@@ -124,51 +127,6 @@ $(function() {
 		var $this = $(this);
 		$this.children('ul').children('li:first').click(); //第一种规格
 	})
-
-	//获取对应属性的价格
-	function getattrprice() {
-		var defaultstats = true;
-		var _val = '';
-		var _resp = {
-			score : ".sys_item_score",
-			price : ".sys_item_price",
-		} //输出对应的class
-		$(".goods-info-head .sys_item_specpara").each(function() {
-			var i = $(this);
-			var v = i.attr("data-attrval");
-			if (!v) {
-				defaultstats = false;
-				$('#goodsDetailBtnBox').css('display', 'block');
-				$('#goodsDetailBtnBoxForInform').css('display', 'none');
-			} else {
-				_val += _val != "" ? "," : "";
-				_val += v;
-			}
-		})
-		if (!!defaultstats) {
-			if (typeof (sys_item[_val]) == "undefined") {
-				$('#goodsDetailBtnBox').css('display', 'none');
-				$('#goodsDetailBtnBoxForInform').css('display', 'block');
-			} else {
-				_score = sys_item[_val]['score'];
-				_price = sys_item[_val]['price'];
-				_productSpecNumber = sys_item[_val]['productSpecNumber'];
-				$('#goodsDetailBtnBox').css('display', 'block');
-				$('#goodsDetailBtnBoxForInform').css('display', 'none');
-			}
-
-		} else {
-			// 默认商品规格
-			_score = default_score;
-			_price = default_price;
-			_productSpecNumber = sys_item['productSpecNumber'];
-		}
-		//输出价格
-		$(_resp.score).text(_score); //其中的math.round为截取小数点位数
-		$(_resp.price).text(_price);
-		$("#goodsDetailAddCartBtn").attr("data-productapi-spec-number", _productSpecNumber);
-		$("#goodsSubBarAddCartBtn").attr("data-productapi-spec-number", _productSpecNumber);
-	}
 })
 
 /**

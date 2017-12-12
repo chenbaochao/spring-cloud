@@ -1,6 +1,7 @@
 package com.play001.cloud.web.controller;
 
 
+import com.play001.cloud.web.entity.IException;
 import com.play001.cloud.web.entity.User;
 import com.play001.cloud.web.response.LoginResponse;
 import com.play001.cloud.web.response.Response;
@@ -42,17 +43,14 @@ public class UserController {
 
     @RequestMapping(value = "/doLogin", method = RequestMethod.POST)
     @ResponseBody
-    public Response doLogin(String key, String password, HttpServletResponse response){
+    public Response doLogin(String key, String password, HttpServletResponse response) throws Exception {
         if(key == null || password == null){
             return new Response(Response.ERROR, "用户名或密码为空");
         }
-        LoginResponse loginResponse = userService.getCredential(key, password, expiryDate);
+        Response<String> responseMsg  = userService.getCredential(key, password, expiryDate);
         //成功登陆后,要设置cookie,这样浏览器每次请求都会带上口令cookie
-        if(loginResponse.getStatus().equals(Response.SUCCESS)){
-            Cookie cookie = new Cookie("credential", loginResponse.getCredential());
-            response.addCookie(cookie);
-        }
-        return loginResponse;
+        response.addCookie(new Cookie("credential", responseMsg.getMessage()));
+        return responseMsg;
     }
     @RequestMapping(value = "/doRegister", method = RequestMethod.POST)
     @ResponseBody

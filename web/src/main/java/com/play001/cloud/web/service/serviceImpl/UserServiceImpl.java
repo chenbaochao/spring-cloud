@@ -20,8 +20,10 @@ public class UserServiceImpl {
     @Autowired
     private UserService userService;
 
-    public LoginResponse getCredential(String username, String password, Long expiryDate){
-        return userService.getCredential(username, password, expiryDate);
+    public Response<String> getCredential(String username, String password, Long expiryDate) throws IException {
+        Response<String> response = userService.getCredential(username, password, expiryDate);
+        if(response.getStatus().equals(Response.ERROR)) throw new IException(response.getErrMsg());
+        return response;
     }
 
 
@@ -43,8 +45,8 @@ public class UserServiceImpl {
         }
         String value = new String(byteCookie);
         response.addCookie(new Cookie("registerCookie", value));
-       os.flush();
-       os.close();
+        os.flush();
+        os.close();
     }
 
     public Response register(User user, String code, HttpServletRequest request){

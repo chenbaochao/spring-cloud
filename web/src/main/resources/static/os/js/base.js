@@ -45,7 +45,7 @@ $(function() {
 		"height" : "35",
 		"parentClass" : "pageTitle",
 		"callback" : function(keyword) {
-			window.location.href = baselocation + '/search?search=' + keyword;
+			window.location.href = '/search?search=' + keyword;
 		}
 	});
 })
@@ -110,12 +110,7 @@ $(function() {
 });
 
 
-/**
- * 页面打开时间耗时计时器
- */
-window.onload = function() {
-	document.getElementById("TimeShow").innerHTML = "本次耗时：" + (new Date().getTime() - t1) / 1000 + " 秒";
-}
+
 
 /**
  * 展示用户登陆下拉菜单
@@ -135,12 +130,12 @@ $(function() {
 /**
  * 导航栏购物车
  */
-var lodingHtml = '<div style="text-align: center" class="tac"><img src="' + baselocation + '/static/os/images/loading.gif"></div>';
+var lodingHtml = '<div style="text-align: center" class="tac"><img src="/static/os/images/loading.gif"></div>';
 $(function() {
 	$('.topbar-cart').hover(function() {
 		$('.site-topbar .cart-menu').css('display', 'block');
 		$.ajax({
-			url : baselocation + "/cart/topbar",
+			url : "/cart/topbar",
 			type : 'get',
 			dataType : 'text',
 			beforeSend : function() {
@@ -179,7 +174,7 @@ function cart_delete(obj, data) {
 	$.ajax({
 		type : 'delete',
 		dataType : 'json',
-		url : baselocation + '/cart/' + data,
+		url : '/cart/' + data,
 		success : function(result) {
 			if (result.code == 1) {
 				$(obj).parent().parent().parent("li").remove();
@@ -198,7 +193,7 @@ function cart_delete(obj, data) {
  */
 function show_cart_umber() {
 	$.ajax({
-		url : baselocation + "/cart/cartNumber",
+		url : "/cart/cartNumber",
 		type : 'get',
 		dataType : 'json',
 		success : function(result) {

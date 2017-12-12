@@ -1,6 +1,7 @@
 package com.play001.cloud.web.service;
 
 
+import com.play001.cloud.web.entity.Product;
 import com.play001.cloud.web.entity.User;
 import com.play001.cloud.web.response.LoginResponse;
 import com.play001.cloud.web.response.Response;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 public interface UserService {
 
     @RequestMapping(value = "/credential/getCredential", method = RequestMethod.GET)
-    LoginResponse getCredential(@RequestParam("username") String username,
+    Response<String> getCredential(@RequestParam("username") String username,
                                 @RequestParam("password") String password,
                                 @RequestParam("expiryDate") Long expiryDate);
 
@@ -20,8 +21,9 @@ public interface UserService {
     Response<byte[]> getCaptcha();
 
     @RequestMapping(value = "/user/register", method = RequestMethod.POST)
-    Response register(@RequestBody User user,
+    Response<String> register(@RequestBody User user,
                       @RequestParam("code") String code,
                       @RequestHeader("registerCookie") String cookie);
+
 
 }

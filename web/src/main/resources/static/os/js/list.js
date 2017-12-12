@@ -31,7 +31,7 @@ $(function() {
  */
 function show_new_product() {
 	$.ajax({
-		url : baselocation + "/recommend/new",
+		url : "/recommend/new",
 		type : 'get',
 		dataType : 'text',
 		success : function(result) {
