@@ -11,24 +11,42 @@
         <result property="createdTime" column="created_time"/>
         <collection property="parameters" select="findParameters" column="id" ofType="com.play001.cloud.productapi.entity.Parameter"/>
         <collection property="labels" select="findLabels" column="id" ofType="String" />
+        <collection property="pics" select="findPics" column="id" ofType="String" />
+        <collection property="specs" select="findSpecs" column="id" ofType="com.play001.cloud.productapi.entity.Specification"/>
     </resultMap>
     <select id="findById" resultMap="productResult">
         SELECT
-            p.id, p.name, p.show_price, p.introduction, p.show_pic, p.page_title, pd.introduction, p.is_show, p.created_time, p.remarks
+            p.id, p.name, p.show_price, p.introduction, p.show_pic, p.page_title, pd.page_introduction, p.is_show, p.created_time, p.remarks
         FROM os_product p, os_product_detail pd
         WHERE p.id = #{id} AND pd.product_id = #{id}
         LIMIT  1
     </select>
+    <!-- 商品参数-->
     <select id="findParameters" resultType="com.play001.cloud.productapi.entity.Parameter">
         SELECT
             id, product_id as productId, name, value, sort
         FROM os_product_parameter
         WHERE product_id = #{productId}
     </select>
+    <!-- 查找标签-->
     <select id="findLabels" resultType="String">
         SELECT
             name
         FROM os_product_label
+        WHERE product_id = #{productId}
+    </select>
+    <!-- 查找图片-->
+    <select id="findPics" resultType="String">
+        SELECT
+        path
+        FROM os_product_image
+        WHERE product_id = #{productId}
+    </select>
+    <!-- 查找套餐,分类-->
+    <select id="findSpecs" resultType="com.play001.cloud.productapi.entity.Specification">
+        SELECT
+        id, product_id as productId, name, stock, price
+        FROM os_product_specification
         WHERE product_id = #{productId}
     </select>
 </mapper>

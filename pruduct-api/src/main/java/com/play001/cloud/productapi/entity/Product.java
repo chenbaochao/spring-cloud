@@ -2,6 +2,9 @@ package com.play001.cloud.productapi.entity;
 
 import java.util.List;
 
+/**
+ * 产品
+ */
 public class Product {
     public static final Integer NOT_SHOW = 0;
     public static final Integer SHOW = 1;
@@ -14,9 +17,11 @@ public class Product {
     private String pageIntroduction;//商品介绍
     private byte isShow;//是否上架,0否,1是
     private String createdTime;//创建时间
+    private List<String> pics;//图片
 
     private List<Parameter> parameters;//参数详情
     private List<String> labels;//商品标签
+    private List<Specification> specs;//商品类别,套餐
     private String remarks;//备注
 
     public Long getId() {
@@ -113,5 +118,21 @@ public class Product {
 
     public void setRemarks(String remarks) {
         this.remarks = remarks;
+    }
+
+    public List<Specification> getSpecs() {
+        return specs;
+    }
+
+    public void setSpecs(List<Specification> specs) {
+        this.specs = specs;
+    }
+
+    public List<String> getPics() {
+        return pics;
+    }
+
+    public void setPics(List<String> pics) {
+        this.pics = pics;
     }
 }

@@ -1,4 +1,4 @@
-package com.play001.cloud.productapi.Controller;
+package com.play001.cloud.productapi.controller;
 
 
 import com.play001.cloud.productapi.entity.IException;
