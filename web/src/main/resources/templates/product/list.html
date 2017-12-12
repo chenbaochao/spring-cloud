@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>猫宁商城</title>
+  <link rel="stylesheet" href="./os/css/list.css">
+  <script src="./common/jquery/jquery-3.2.0.min.js"></script>
+
+  <link rel="stylesheet" href="./common/bootstrap/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="./os/css/base.css">
+</head>
+<body>
+<div class="site-topbar">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="topbar-nav">
+          <!--  <c:forEach items="${indexTop}" var="indexTop"> -->
+          <a rel="nofollow" href="${indexTop.href}" target="${indexTop.target}">${indexTop.name}</a><span class="sep">|</span>
+          <!-- </c:forEach>-->
+        </div>
+        <div class="topbar-cart" id="J_miniCartTrigger"> <a class="cart-mini" id="J_miniCartBtn" href="${ctx}/cart/list"><i class="glyphicon glyphicon-shopping-cart"></i>购物车<span class="cart-mini-num J_cartNum">（0）</span></a>
+          <div class="cart-menu" id="J_miniCartMenu" style="display: none;">
+            <div class="loading">
+              <div class="loader"></div>
+            </div>
+          </div>
+        </div>
+        <!--已登录-->
+        <div class="topbar-info" id="J_userInfo"><span class="user"><a rel="nofollow" class="user-name" href="" target="_blank"><span class="name">${user.userName}</span>&nbsp;&nbsp;<i class="glyphicon glyphicon-chevron-down"></i></a>
+          <ul class="user-menu" style="display: none;">
+            <li><a rel="nofollow" href="${ctx}/uc/user/portal" target="_blank">个人中心</a></li>
+            <li><a rel="nofollow" href="${ctx}/uc/order/comment" target="_blank">评价晒单</a></li>
+            <li><a rel="nofollow" href="${ctx}/uc/user/favorite" target="_blank">我的喜欢</a></li>
+            <li><a rel="nofollow" href="" target="_blank">猫宁账户</a></li>
+            <li><a rel="nofollow" href="${ctx}/pass/logout">退出登录</a></li>
+          </ul>
+          </span><span class="sep">|</span><span class="message"><a rel="nofollow" href="">消息通知<i class="J_miMessageTotal"></i></a></span><span class="sep">|</span><a rel="nofollow" class="link link-order" href="${ctx}/uc/order/list" target="_blank">我的订单</a></div>
+        <!--未登录
+        <div class="topbar-info"> <a rel="nofollow" class="link" href="${ctx}/pass/login">登录</a><span class="sep">|</span><a rel="nofollow" class="link" href="${ctx}/pass/register">注册</a></div>
+        -->
+      </div>
+    </div>
+  </div>
+</div>
+<div class="site-header">
+  <div class="container-fluid">
+    <div class="header-logo"> <a class="logo ir" href="${ctx}/index" title="猫宁官网"><img src="./os/images/logo.png"></a> </div>
+    <div class="header-nav">
+      <ul class="nav-list J_navMainList clearfix">
+        <li id="J_navCategory" class="nav-category"> <a class="link-category" href="${ctx}/list?categoryId=1"><span class="text">全部商品分类</span></a>
+          <!--     轮播top菜单导航begin       -->
+          <div class="site-category">
+            <ul class="site-category-list clearfix">
+              <li class="category-item"> <a class="title" href="${ctx}/list?categoryId=${category.categoryId}">手机<i class="glyphicon glyphicon-chevron-right"></i></a>
+                <div class="children clearfix children-col-3">
+                  <ul class="children-list children-list-col children-list-col-1">
+                    <li> <a class="link" title="${product.name}" href="${ctx}/detail/${product.productNumber}"><img class="thumb" src="${ctximg}/${product.picImg}" width="40" height="40" alt=	"${product.name}"><span class="text">产品名称</span></a>
+                    </li>
+                    <li> <a class="link" title="${product.name}" href="${ctx}/detail/${product.productNumber}"><img class="thumb" src="${ctximg}/${product.picImg}" width="40" height="40" alt=	"${product.name}"><span class="text">产品名称</span></a>
+                    </li>
+                    <li> <a class="link" title="${product.name}" href="${ctx}/detail/${product.productNumber}"><img class="thumb" src="${ctximg}/${product.picImg}" width="40" height="40" alt=	"${product.name}"><span class="text">产品名称</span></a>
+                    </li>
+                    <li> <a class="link" title="${product.name}" href="${ctx}/detail/${product.productNumber}"><img class="thumb" src="${ctximg}/${product.picImg}" width="40" height="40" alt=	"${product.name}"><span class="text">产品名称</span></a>
+                    </li>
+                  </ul>
+                  <ul class="children-list children-list-col children-list-col-2">
+                    <li> <a class="link" title="${product.name}" href="${ctx}/detail/${product.productNumber}"><img class="thumb" src="${ctximg}/${product.picImg}" width="40" height="40" alt="${product.name}"><span class="text">产品名称</span></a>
+                    </li>
+                    <li> <a class="link" title="${product.name}" href="${ctx}/detail/${product.productNumber}"><img class="thumb" src="${ctximg}/${product.picImg}" width="40" height="40" alt="${product.name}"><span class="text">产品名称</span></a>
+                    </li>
+                    <li> <a class="link" title="${product.name}" href="${ctx}/detail/${product.productNumber}"><img class="thumb" src="${ctximg}/${product.picImg}" width="40" height="40" alt="${product.name}"><span class="text">产品名称</span></a>
+                    </li>
+                    <li> <a class="link" title="${product.name}" href="${ctx}/detail/${product.productNumber}"><img class="thumb" src="${ctximg}/${product.picImg}" width="40" height="40" alt="${product.name}"><span class="text">产品名称</span></a>
+                    </li>
+                    <li> <a class="link" title="${product.name}" href="${ctx}/detail/${product.productNumber}"><img class="thumb" src="${ctximg}/${product.picImg}" width="40" height="40" alt="${product.name}"><span class="text">产品名称</span></a>
+                    </li>
+                  </ul>
+                  <ul class="children-list children-list-col children-list-col-3">
+                    <li> <a class="link" title="${product.name}" href="${ctx}/detail/${product.productNumber}"><img class="thumb" src="${ctximg}/${product.picImg}" width="40" height="40" alt="${product.name}"><span class="text">产品名称</span></a>
+                    </li>
+                    <li> <a class="link" title="${product.name}" href="${ctx}/detail/${product.productNumber}"><img class="thumb" src="${ctximg}/${product.picImg}" width="40" height="40" alt="${product.name}"><span class="text">产品名称</span></a>
+                    </li>
+                    <li> <a class="link" title="${product.name}" href="${ctx}/detail/${product.productNumber}"><img class="thumb" src="${ctximg}/${product.picImg}" width="40" height="40" alt="${product.name}"><span class="text">产品名称</span></a>
+                    </li>
+                    <li> <a class="link" title="${product.name}" href="${ctx}/detail/${product.productNumber}"><img class="thumb" src="${ctximg}/${product.picImg}" width="40" height="40" alt="${product.name}"><span class="text">产品名称</span></a>
+                    </li>
+
+                  </ul>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <!--     轮播top菜单导航end       -->
+        </li>
+        <!-- <c:forEach items="${indexClassify}" var="indexClassify">-->
+        <li class="nav-item"> <a class="link" href="${indexClassify.href}" target="${indexClassify.target}"><span class="text">手机</span><span class="arrow"></span></a> </li>
+        <!--</c:forEach>-->
+      </ul>
+    </div>
+    <div class="header-search"> <span class="zySearch" id="zySearch"></span> </div>
+  </div>
+</div>
+
+
+<!--     分类导航栏 begin       -->
+<div class="breadcrumbs">
+  <div class="container-fluid"><a href='${ctx}/index'>首页</a>
+    <span class="sep">&gt;</span><a href="${ctx}/list?categoryId=${upperCategory.categoryId}">手机</a>
+    <span class="sep">&gt;</span><a href="${ctx}/list?categoryId=${upperCategory.categoryId}">平板</a>
+    <span class="sep">&gt;</span><a href="${ctx}/list?categoryId=${upperCategory.categoryId}">电脑</a>
+  </div>
+</div>
+<!--     分类导航栏 end       -->
+
+<!--     产品分类目录begin       -->
+<div class="category">
+  <div class="container-fluid">
+    <div class="filter-box">
+      <div class="filter-list-wrap">
+        <dl class="filter-list clearfix">
+          <dt>分类：</dt>
+          <dd class="${category.categoryId eq 1 ? 'active':''}"><a href="${ctx}/list?categoryId=1">全部</a></dd>
+          <dd class="${lowerCategoriy.categoryId eq category.categoryId ? 'active':''}"><a href="${ctx}/list?categoryId=${lowerCategoriy.categoryId}">手机</a></dd>
+          <dd class="${lowerCategoriy.categoryId eq category.categoryId ? 'active':''}"><a href="${ctx}/list?categoryId=${lowerCategoriy.categoryId}">平板</a></dd>
+          <dd class="${lowerCategoriy.categoryId eq category.categoryId ? 'active':''}"><a href="${ctx}/list?categoryId=${lowerCategoriy.categoryId}">电脑</a></dd>
+          <dd class="${lowerCategoriy.categoryId eq category.categoryId ? 'active':''}"><a href="${ctx}/list?categoryId=${lowerCategoriy.categoryId}">电脑</a></dd>
+          <dd class="${lowerCategoriy.categoryId eq category.categoryId ? 'active':''}"><a href="${ctx}/list?categoryId=${lowerCategoriy.categoryId}">电脑</a></dd>
+          <dd class="${lowerCategoriy.categoryId eq category.categoryId ? 'active':''}"><a href="${ctx}/list?categoryId=${lowerCategoriy.categoryId}">电脑</a></dd>
+          <dd class="${lowerCategoriy.categoryId eq category.categoryId ? 'active':''}"><a href="${ctx}/list?categoryId=${lowerCategoriy.categoryId}">电脑</a></dd>
+        </dl>
+        <a class="more J_filterToggle" href="javascript:void(0);" onclick="showMornCategory(this);" >更多<i class="glyphicon glyphicon-chevron-down"></i></a> </div>
+    </div>
+  </div>
+</div>
+<!--     产品分类目录end       -->
+
+<!--     产品分类内容begin       -->
+<div class="content">
+  <div class="container-fluid">
+    <div class="order-list-box clearfix">
+      <ul class="order-list">
+        <li class="${sort eq 0 ? 'active':''} first"><a href="${ctx}/list?categoryId=${category.categoryId}&sort=0" rel="nofollow">推荐</a></li>
+        <li class="${sort eq 1 ? 'active':''}"><a href="${ctx}/list?categoryId=${category.categoryId}&sort=1" rel="nofollow">新品</a></li>
+        <li class="${sort eq 2 ? 'active':''}"><a href="${ctx}/list?categoryId=${category.categoryId}&sort=2" rel="nofollow">销量</a></li>
+        <li class="${sort eq 6 ? 'active':''}"><a href="${ctx}/list?categoryId=${category.categoryId}&sort=6" rel="nofollow">价格 <i class="glyphicon glyphicon-arrow-up"></i></a></li>
+        <li class="${sort eq 7 ? 'active':''}"><a href="${ctx}/list?categoryId=${category.categoryId}&sort=7" rel="nofollow">价格 <i class="glyphicon glyphicon-arrow-down"></i></a></li>
+        <li class="${sort eq 3 ? 'active':''}"><a href="${ctx}/list?categoryId=${category.categoryId}&sort=3"  rel="nofollow">评论最多</a></li>
+      </ul>
+    </div>
+    <div class="goods-list-box">
+      <div class="goods-list clearfix">
+        <c:forEach items="${products}" var="product">
+          <div class="goods-item">
+            <div class="figure figure-img"><a title="${product.introduce}" href="${ctx}/detail/${product.productNumber}"><img src="${ctximg}/${product.picImg}" title="${product.introduce}" width="200" height="200" alt="${product.name}" /></a></div>
+            <p class="desc"></p>
+            <h2 class="title"><a title="${product.name}" href="${ctx}/detail/${product.productNumber}">${product.name}</a></h2>
+            <p class="price">${product.showPrice}元</p>
+            <div class="thumbs">
+              <ul class="thumb-list clearfix">
+                <li data-gid="${product.productNumber}"><img src="${ctximg}/${product.picImg}" width="34" height="34" title="${product.introduce}" alt="${product.name}" /></li>
+              </ul>
+              <p class="desc"> ${product.introduce} </p>
+            </div>
+            <div class="actions clearfix"> <a class="btn-like J_likeGoods" data-pid="${product.productNumber}" onclick="add_favorite(this);" href="javascript: void(0);"><i class="glyphicon glyphicon-heart-empty"></i> <span>喜欢</span></a> <a class="btn-buy J_buyGoods" data-gid="${product.productNumber}" href="${ctx}/detail/${product.productNumber}"><span>加入购物车</span> <i class="glyphicon glyphicon-shopping-cart"></i></a> </div>
+            <div class="flags">
+              <c:if test="${not empty product.labelName}">
+                <div class="flag">${product.labelName}</div>
+              </c:if>
+            </div>
+            <div class="notice"></div>
+          </div>
+        </c:forEach>
+      </div>
+      <div class="xm-pagenavi">
+        <c:if test="${pageInfo.total gt pageInfo.limit and not empty products}">
+          <div id="pager" data-pager-href="${ctx}/list?categoryId=${category.categoryId}&sort=${sort}&page=" data-pager-totalPage="${pageInfo.totalPage}" data-pager-current="${pageInfo.current}"></div>
+        </c:if>
+      </div>
+    </div>
+  </div>
+  <div id="J_newPrudoct" class="xm-recommend-container container-fluid xm-carousel-container">
+    <!-- <h2 class="title">带上亲爱的朋友 把滑雪歌儿唱  (♥◠‿◠)ﾉ  ʅ(‾◡◝)</h2> -->
+  </div>
+</div>
+<!--     产品分类内容begin       -->
+
+<!--
+  <div class="container-fluid">
+    <div class="xm-box ">
+      <div class="bd">
+        <div class="shop-global-error">
+          <h2>你所查找的分类不存在</h2>
+          <p class="shop-global-error-tips"></p>
+          <p class="shop-global-error-btn"> <a href="${ctx}/index" class="btn btn-primary">去首页</a> <a href="javascript:;" onclick="history.go(-1);" class="btn btn-line-gray">返回上一页</a> </p>
+        </div>
+      </div>
+    </div>
+  </div>
+-->
+
+<!-- layer javascript -->
+<script src="./common/layer/layer.js"></script>
+<!-- 分页 javascript -->
+<script src="./common/pager/jquery.pager.js"></script>
+<script src="./os/js/list.js"></script>
+<script type="text/javascript">
+
+    // 收藏商品
+    function add_favorite(obj) {
+        var productNumber = $(obj).attr("data-pid");
+        var result = $(obj).hasClass("btn-liked");
+        console.info(productNumber);
+        if (result) {
+            $.ajax({
+                type : 'delete',
+                dataType : 'json',
+                url : baselocation + '/favorite/' + productNumber,
+                success : function(result) {
+                    if (result.success == true) {
+                        $(obj).toggleClass("btn-liked");
+                    } else {
+                        layer.alert(result.message, {
+                            icon : 2
+                        });
+                    }
+                }
+            })
+        }else {
+            $.ajax({
+                type : 'post',
+                dataType : 'json',
+                url : baselocation + '/favorite/' + productNumber,
+                success : function(result) {
+                    if (result.success == true) {
+                        $(obj).toggleClass("btn-liked");
+                    } else {
+                        layer.alert(result.message, {
+                            icon : 2
+                        });
+                    }
+                }
+            })
+        }
+    }
+</script>
+<script src="./common/bootstrap/js/bootstrap.min.js"></script>
+<!-- 自定义js -->
+<script src="./os/js/zySearch.js"></script>
+<script src="./os/js/jump.js"></script>
+<script src="./os/js/base.js"></script>
+</body>
+</html>
