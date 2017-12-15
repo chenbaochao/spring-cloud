@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 public class ProductEndPoint {
 
@@ -21,6 +23,14 @@ public class ProductEndPoint {
         if(id == null) throw new IException("参数错误");
         Response<Product> response =  new Response<>(Response.SUCCESS);
         response.setMessage(productService.findById(id));
+        return response;
+    }
+
+    @RequestMapping(value = "/search", method = RequestMethod.GET)
+    public Response<List<Product>> search(String keyword) throws Exception {
+        if(keyword == null || "".equals(keyword)) throw new IException("参数错误");
+        Response<List<Product>> response =  new Response<>(Response.SUCCESS);
+        response.setMessage(productService.search(keyword));
         return response;
     }
 

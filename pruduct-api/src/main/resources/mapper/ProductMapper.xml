@@ -21,6 +21,23 @@
         WHERE p.id = #{id} AND pd.product_id = #{id}
         LIMIT  1
     </select>
+
+    <!-- 搜索简单实现 -->
+    <select id="search" resultMap="productResult">
+        SELECT
+        p.id, p.name, p.show_price, p.introduction, p.show_pic, p.page_title, pd.page_introduction, p.is_show, p.created_time, p.remarks
+        FROM os_product p, os_product_detail pd
+        WHERE p.page_title like concat('%', #{keyword}, '%')  AND pd.product_id = #{id}
+    </select>
+
+
+
+
+
+
+
+
+
     <!-- 商品参数-->
     <select id="findParameters" resultType="com.play001.cloud.productapi.entity.Parameter">
         SELECT
