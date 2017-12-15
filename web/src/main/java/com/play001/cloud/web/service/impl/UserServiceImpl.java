@@ -1,8 +1,7 @@
-package com.play001.cloud.web.service.serviceImpl;
+package com.play001.cloud.web.service.impl;
 
 import com.play001.cloud.web.entity.IException;
 import com.play001.cloud.web.entity.User;
-import com.play001.cloud.web.response.LoginResponse;
 import com.play001.cloud.web.response.Response;
 import com.play001.cloud.web.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +10,6 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.io.OutputStream;
 
 @Service

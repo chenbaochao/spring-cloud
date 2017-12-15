@@ -1,7 +1,7 @@
 package com.play001.cloud.web.controller;
 
 import com.play001.cloud.web.entity.IException;
-import com.play001.cloud.web.service.serviceImpl.ProductServiceImpl;
+import com.play001.cloud.web.service.impl.ProductServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,5 +19,10 @@ public class ProductController {
     public String detail(@PathVariable Long id, Model model) throws IException {
         productService.getDetial(id, model);
         return "product/detail";
+    }
+    @RequestMapping("/search")
+    public String search(String keyword, Integer pageNo, Model model) throws IException {
+        productService.search(pageNo, keyword, model);
+        return "product/list";
     }
 }

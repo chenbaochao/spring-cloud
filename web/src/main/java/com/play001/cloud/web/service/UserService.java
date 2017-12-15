@@ -5,11 +5,12 @@ import com.play001.cloud.web.entity.Product;
 import com.play001.cloud.web.entity.User;
 import com.play001.cloud.web.response.LoginResponse;
 import com.play001.cloud.web.response.Response;
+import com.play001.cloud.web.service.fallback.DefaultFallbackFactory;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
 
-@FeignClient("ZUUL")
+@FeignClient(name = "ZUUL", fallbackFactory = DefaultFallbackFactory.class)
 public interface UserService {
 
     @RequestMapping(value = "/credential/getCredential", method = RequestMethod.GET)

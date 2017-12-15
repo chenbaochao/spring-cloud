@@ -1,11 +1,9 @@
 package com.play001.cloud.web.controller;
 
 
-import com.play001.cloud.web.entity.IException;
 import com.play001.cloud.web.entity.User;
-import com.play001.cloud.web.response.LoginResponse;
 import com.play001.cloud.web.response.Response;
-import com.play001.cloud.web.service.serviceImpl.UserServiceImpl;
+import com.play001.cloud.web.service.impl.UserServiceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,7 +15,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 @Controller
 @RequestMapping("/user")
