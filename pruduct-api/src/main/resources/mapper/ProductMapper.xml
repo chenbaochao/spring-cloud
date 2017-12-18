@@ -9,6 +9,7 @@
         <result property="pageIntroduction" column="page_introduction"/>
         <result property="isShow" column="is_show"/>
         <result property="createdTime" column="created_time"/>
+        <result property="quantitySold" column="quantity_sold"/>
         <collection property="parameters" select="findParameters" column="id" ofType="com.play001.cloud.productapi.entity.Parameter"/>
         <collection property="labels" select="findLabels" column="id" ofType="String" />
         <collection property="pics" select="findPics" column="id" ofType="String" />
@@ -16,7 +17,7 @@
     </resultMap>
     <select id="findById" resultMap="productResult">
         SELECT
-            p.id, p.name, p.show_price, p.introduction, p.show_pic, p.page_title, pd.page_introduction, p.is_show, p.created_time, p.remarks
+            p.id, p.name, p.quantity_sold, p.show_price, p.introduction, p.show_pic, p.page_title, pd.page_introduction, p.is_show, p.created_time, p.remarks
         FROM os_product p, os_product_detail pd
         WHERE p.id = #{id} AND pd.product_id = #{id}
         LIMIT  1
@@ -59,10 +60,11 @@
         FROM os_product_image
         WHERE product_id = #{productId}
     </select>
+
     <!-- 查找套餐,分类-->
     <select id="findSpecs" resultType="com.play001.cloud.productapi.entity.Specification">
         SELECT
-        id, product_id as productId, name, stock, price
+        id, product_id as productId, name, quantity_sold as quantitySold, stock, price
         FROM os_product_specification
         WHERE product_id = #{productId}
     </select>
