@@ -10,13 +10,14 @@ public class Product {
     public static final Integer SHOW = 1;
     private Long id;
     private String name;//商品名字
-    private Long showPrice;
+    private Long showPrice;//展示价格
     private String introduction;//商品简介
     private String showPic;//封面
     private String pageTitle;//商品页面标题
     private String pageIntroduction;//商品介绍
     private byte isShow;//是否上架,0否,1是
     private String createdTime;//创建时间
+    private Integer quantitySold;//卖出数量
     private List<String> pics;//图片
 
     private List<Parameter> parameters;//参数详情
@@ -134,5 +135,13 @@ public class Product {
 
     public void setPics(List<String> pics) {
         this.pics = pics;
+    }
+
+    public Integer getQuantitySold() {
+        return quantitySold;
+    }
+
+    public void setQuantitySold(Integer quantitySold) {
+        this.quantitySold = quantitySold;
     }
 }
