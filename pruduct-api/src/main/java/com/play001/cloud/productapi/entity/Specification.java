@@ -9,6 +9,7 @@ public class Specification {
     private Long productId;
     private String name;
     private String stock;
+    private Integer quantitySold;
     private Long price;
 
     public Long getId() {
@@ -49,5 +50,13 @@ public class Specification {
 
     public void setPrice(Long price) {
         this.price = price;
+    }
+
+    public Integer getQuantitySold() {
+        return quantitySold;
+    }
+
+    public void setQuantitySold(Integer quantitySold) {
+        this.quantitySold = quantitySold;
     }
 }
