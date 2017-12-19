@@ -1,4 +1,4 @@
-package com.play001.cloud.productapi.entity;
+package com.play001.cloud.commonapi.entity;
 
 //商品参数
 public class Parameter {

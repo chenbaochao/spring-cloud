@@ -1,4 +1,4 @@
-package com.play001.cloud.productapi.entity;
+package com.play001.cloud.commonapi.entity;
 
 /**
  * 产品规格,数量,价格属性

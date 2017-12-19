@@ -1,10 +1,10 @@
 package com.play001.cloud.productapi.controller;
 
 
-import com.play001.cloud.productapi.entity.IException;
-import com.play001.cloud.productapi.entity.Pagination;
-import com.play001.cloud.productapi.entity.Product;
-import com.play001.cloud.productapi.entity.Response;
+import com.play001.cloud.common.entity.IException;
+import com.play001.cloud.common.entity.Pagination;
+import com.play001.cloud.common.entity.Product;
+import com.play001.cloud.common.entity.Response;
 import com.play001.cloud.productapi.serivce.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,7 +26,6 @@ public class ProductEndPoint {
         response.setMessage(productService.findById(id));
         return response;
     }
-
     /**
      *
      * @param keyword 关键词
@@ -39,7 +38,6 @@ public class ProductEndPoint {
     public Response<Pagination<Product>> search(String keyword, Long start, Integer quantity) throws Exception {
         if(keyword == null || "".equals(keyword)) throw new IException("参数错误");
         Response<Pagination<Product>> response =  new Response<>(Response.SUCCESS);
-        Pagination<Product> pagination = new Pagination<>();
         response.setMessage(productService.search(keyword, start, quantity));
         return response;
     }

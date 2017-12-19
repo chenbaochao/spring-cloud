@@ -1,10 +1,7 @@
 package com.play001.cloud.productapi.mapper;
 
-import com.play001.cloud.productapi.entity.Pagination;
-import com.play001.cloud.productapi.entity.Product;
+import com.play001.cloud.common.entity.Product;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.logging.log4j.core.tools.picocli.CommandLine;
 
 import java.util.List;
 
@@ -18,5 +15,5 @@ public interface ProductMapper {
     List<Product> search(String keyword, Long start, Integer quantity);
 
     //搜索,计算总条数
-   Long count(String keyword);
+   Long countSearch(String keyword);
 }

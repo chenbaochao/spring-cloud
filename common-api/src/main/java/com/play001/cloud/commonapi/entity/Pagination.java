@@ -1,4 +1,4 @@
-package com.play001.cloud.productapi.entity;
+package com.play001.cloud.commonapi.entity;
 
 import java.util.List;
 
