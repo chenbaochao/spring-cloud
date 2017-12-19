@@ -1,9 +1,9 @@
 package com.play001.cloud.userapi.Controller;
 
-import com.play001.cloud.userapi.entity.IException;
-import com.play001.cloud.userapi.entity.User;
+import com.play001.cloud.common.entity.IException;
+import com.play001.cloud.common.entity.User;
 import com.play001.cloud.userapi.service.UserService;
-import com.play001.cloud.userapi.entity.Response;
+import com.play001.cloud.common.entity.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;

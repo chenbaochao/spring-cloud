@@ -1,7 +1,7 @@
 package com.play001.cloud.userapi.Controller;
 
-import com.play001.cloud.userapi.entity.IException;
-import com.play001.cloud.userapi.entity.Response;
+import com.play001.cloud.common.entity.IException;
+import com.play001.cloud.common.entity.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.ExceptionHandler;

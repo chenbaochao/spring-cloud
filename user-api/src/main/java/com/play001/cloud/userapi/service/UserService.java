@@ -1,8 +1,8 @@
 package com.play001.cloud.userapi.service;
 
 
-import com.play001.cloud.userapi.entity.Response;
-import com.play001.cloud.userapi.entity.User;
+import com.play001.cloud.common.entity.Response;
+import com.play001.cloud.common.entity.User;
 import com.play001.cloud.userapi.mapper.UserMapper;
 import com.play001.cloud.userapi.util.Captcha;
 import com.play001.cloud.userapi.util.TimeUtil;
@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
 import javax.imageio.ImageIO;
-import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.UUID;
