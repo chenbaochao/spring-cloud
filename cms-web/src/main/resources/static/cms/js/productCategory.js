@@ -76,7 +76,7 @@ InitSubTable = function(index, row, $detail) {
 	var parentid = row.categoryId;
 	var cur_table = $detail.html('<table></table>').find('table');
 	$(cur_table).bootstrapTable({
-		url : baselocation + '/product/category/gid/' + parentid,
+		url : baselocation + '/productapi/category/gid/' + parentid,
 		method : 'get',
 		sidePagination : 'server',
 		clickToSelect : true,
@@ -154,13 +154,13 @@ window.actionEvents = {
 		status_start(index, row.categoryId);
 	},
 	'click .edit' : function(e, value, row, index) {
-		layer_show(row.name, baselocation + '/product/category/' + row.categoryId + '/edit', 900, 650)
+		layer_show(row.name, baselocation + '/productapi/category/' + row.categoryId + '/edit', 900, 650)
 	},
 	'click .remove' : function(e, value, row, index) {
 		admin_delete(index, row.categoryId);
 	},
 	'click .log' : function(e, value, row, index) {
-		layer_show(row.name, baselocation + '/product/category/' + row.categoryId + '/create', 900, 650)
+		layer_show(row.name, baselocation + '/productapi/category/' + row.categoryId + '/create', 900, 650)
 	}
 };
 
@@ -175,7 +175,7 @@ function status_stop(e, index, value) {
 		$.ajax({
 			dataType : 'json',
 			type : 'put',
-			url : baselocation + '/product/category/' + value + '/audit',
+			url : baselocation + '/productapi/category/' + value + '/audit',
 			success : function(result) {
 				if (result.code == 1) {
 					$('#table').bootstrapTable('refresh', {
@@ -205,7 +205,7 @@ function status_start(index, value) {
 		$.ajax({
 			dataType : 'json',
 			type : 'put',
-			url : baselocation + '/product/category/' + value + '/audit',
+			url : baselocation + '/productapi/category/' + value + '/audit',
 			success : function(result) {
 				if (result.code == 1) {
 					$('#table').bootstrapTable('refresh', {
@@ -235,7 +235,7 @@ function admin_delete(index, value) {
 		$.ajax({
 			type : 'delete',
 			dataType : 'json',
-			url : baselocation + '/product/category/' + value,
+			url : baselocation + '/productapi/category/' + value,
 			success : function(result) {
 				if (result.code == 1) {
 					$('#table').bootstrapTable('hideRow', {

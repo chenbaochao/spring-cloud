@@ -1,6 +1,6 @@
 package com.play001.cloud.cmsweb.controller;
 
-import com.play001.cloud.cmsweb.entity.Menu;
+import com.play001.cloud.common.entity.Menu;
 import com.play001.cloud.cmsweb.service.impl.MenuServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

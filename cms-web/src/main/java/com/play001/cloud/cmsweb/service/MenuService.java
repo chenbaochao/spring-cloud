@@ -1,8 +1,8 @@
 package com.play001.cloud.cmsweb.service;
 
 
-import com.play001.cloud.cmsweb.entity.Menu;
-import com.play001.cloud.cmsweb.entity.Response;
+import com.play001.cloud.common.entity.Menu;
+import com.play001.cloud.common.entity.Response;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.RequestMapping;
 
