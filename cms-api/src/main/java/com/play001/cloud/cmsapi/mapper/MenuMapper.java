@@ -1,7 +1,7 @@
 package com.play001.cloud.cmsapi.mapper;
 
 
-import com.play001.cloud.cmsapi.entity.Menu;
+import com.play001.cloud.common.entity.Menu;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.Select;

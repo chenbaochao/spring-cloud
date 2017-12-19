@@ -1,7 +1,7 @@
 package com.play001.cloud.cmsapi.controller;
 
-import com.play001.cloud.cmsapi.entity.Menu;
-import com.play001.cloud.cmsapi.entity.Response;
+import com.play001.cloud.common.entity.Menu;
+import com.play001.cloud.common.entity.Response;
 import com.play001.cloud.cmsapi.service.MenuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;

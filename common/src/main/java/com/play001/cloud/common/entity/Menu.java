@@ -1,4 +1,4 @@
-package com.play001.cloud.cmsapi.entity;
+package com.play001.cloud.common.entity;
 
 import java.util.List;
 
