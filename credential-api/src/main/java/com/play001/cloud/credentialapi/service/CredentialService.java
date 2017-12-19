@@ -1,7 +1,7 @@
 package com.play001.cloud.credentialapi.service;
 
 
-import com.play001.cloud.credentialapi.entity.User;
+import com.play001.cloud.common.entity.User;
 import com.play001.cloud.credentialapi.mapper.UserMapper;
 import com.play001.cloud.credentialapi.util.JwtUtil;
 import org.slf4j.Logger;

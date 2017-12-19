@@ -1,6 +1,6 @@
 package com.play001.cloud.credentialapi.mapper;
 
-import com.play001.cloud.credentialapi.entity.User;
+import com.play001.cloud.common.entity.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
