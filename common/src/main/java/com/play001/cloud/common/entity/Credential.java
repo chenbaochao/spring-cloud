@@ -1,4 +1,4 @@
-package com.play001.cloud.credentialapi.entity;
+package com.play001.cloud.common.entity;
 
 
 import com.google.gson.Gson;
