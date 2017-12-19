@@ -21,6 +21,12 @@
 
     <dependencyManagement>
         <dependencies>
+            <!-- 些公用的entity -->
+            <dependency>
+                <groupId>com.play01.cloud</groupId>
+                <artifactId>common</artifactId>
+                <version>1.0</version>
+            </dependency>
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
@@ -36,6 +42,12 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
+        </dependency>
+        <!-- 些公用的entity -->
+        <dependency>
+            <groupId>com.play01.cloud</groupId>
+            <artifactId>common</artifactId>
+            <version>1.0</version>
         </dependency>
     </dependencies>
 
