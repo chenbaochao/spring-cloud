@@ -12,6 +12,7 @@ public class Product {
     private String name;//商品名字
     private Long showPrice;//展示价格
     private String introduction;//商品简介
+
     private String showPic;//封面
     private String pageTitle;//商品页面标题
     private String pageIntroduction;//商品介绍
@@ -19,7 +20,7 @@ public class Product {
     private String createdTime;//创建时间
     private Integer quantitySold;//卖出数量
     private List<String> pics;//图片
-
+    private Category category;//分类
     private List<Parameter> parameters;//参数详情
     private List<String> labels;//商品标签
     private List<Specification> specs;//商品类别,套餐
@@ -143,5 +144,13 @@ public class Product {
 
     public void setQuantitySold(Integer quantitySold) {
         this.quantitySold = quantitySold;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 }

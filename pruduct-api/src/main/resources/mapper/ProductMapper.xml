@@ -3,6 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.play001.cloud.productapi.mapper.ProductMapper">
     <resultMap id="productResult" type="com.play001.cloud.productapi.entity.Product">
+        <result property="id" column="id"/>
         <result property="showPrice" column="show_price"/>
         <result property="showPic" column="show_pic"/>
         <result property="pageTitle" column="page_title"/>
@@ -10,14 +11,23 @@
         <result property="isShow" column="is_show"/>
         <result property="createdTime" column="created_time"/>
         <result property="quantitySold" column="quantity_sold"/>
+        <!-- 产品分类 -->
+       <association property="category" select="findCategory" column="category_id" />
+       <!-- 产品参数 -->
         <collection property="parameters" select="findParameters" column="id" ofType="com.play001.cloud.productapi.entity.Parameter"/>
+        <!-- 产品标签 -->
         <collection property="labels" select="findLabels" column="id" ofType="String" />
+        <!-- 产品图片 -->
         <collection property="pics" select="findPics" column="id" ofType="String" />
+        <!-- 产品套餐 -->
         <collection property="specs" select="findSpecs" column="id" ofType="com.play001.cloud.productapi.entity.Specification"/>
+
+
     </resultMap>
+
     <select id="findById" resultMap="productResult">
         SELECT
-            p.id, p.name, p.quantity_sold, p.show_price, p.introduction, p.show_pic, p.page_title, pd.page_introduction, p.is_show, p.created_time, p.remarks
+            p.id, p.name, p.category_id, p.quantity_sold, p.show_price, p.introduction, p.show_pic, p.page_title, pd.page_introduction, p.is_show, p.created_time, p.remarks
         FROM os_product p, os_product_detail pd
         WHERE p.id = #{id} AND pd.product_id = #{id}
         LIMIT  1
@@ -26,7 +36,7 @@
     <!-- 搜索简单实现 -->
     <select id="search" resultMap="productResult">
         SELECT
-        p.id, p.name, p.show_price, p.introduction, p.show_pic, p.page_title, pd.page_introduction, p.is_show, p.created_time, p.remarks
+        p.id, p.name, p.category_id, p.show_price, p.introduction, p.show_pic, p.page_title, pd.page_introduction, p.is_show, p.created_time, p.remarks
         FROM os_product p, os_product_detail pd
         WHERE p.page_title like concat('%', #{keyword}, '%')  AND pd.product_id = #{id}
     </select>
@@ -44,28 +54,37 @@
         SELECT
             id, product_id as productId, name, value, sort
         FROM os_product_parameter
-        WHERE product_id = #{productId}
+        WHERE product_id = #{id}
     </select>
     <!-- 查找标签-->
     <select id="findLabels" resultType="String">
         SELECT
             name
         FROM os_product_label
-        WHERE product_id = #{productId}
+        WHERE product_id = #{id}
     </select>
     <!-- 查找图片-->
     <select id="findPics" resultType="String">
         SELECT
         path
         FROM os_product_image
-        WHERE product_id = #{productId}
+        WHERE product_id = #{id}
     </select>
 
-    <!-- 查找套餐,分类-->
+    <!-- 查找套餐-->
     <select id="findSpecs" resultType="com.play001.cloud.productapi.entity.Specification">
         SELECT
         id, product_id as productId, name, quantity_sold as quantitySold, stock, price
         FROM os_product_specification
-        WHERE product_id = #{productId}
+        WHERE product_id = #{id}
+    </select>
+
+    <!-- 产品所属分类-->
+    <select id="findCategory" resultType="com.play001.cloud.productapi.entity.Category">
+        SELECT
+        id, name
+        FROM os_category
+        WHERE id = #{category_id}
+        LIMIT  1
     </select>
 </mapper>

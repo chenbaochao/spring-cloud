@@ -2,6 +2,7 @@ package com.play001.cloud.productapi.controller;
 
 
 import com.play001.cloud.productapi.entity.IException;
+import com.play001.cloud.productapi.entity.Pagination;
 import com.play001.cloud.productapi.entity.Product;
 import com.play001.cloud.productapi.entity.Response;
 import com.play001.cloud.productapi.serivce.ProductService;
@@ -26,11 +27,20 @@ public class ProductEndPoint {
         return response;
     }
 
+    /**
+     *
+     * @param keyword 关键词
+     * @param start 数据开始索引,从1开始
+     * @param quantity 总共数据条数
+     * @return
+     * @throws Exception
+     */
     @RequestMapping(value = "/search", method = RequestMethod.GET)
-    public Response<List<Product>> search(String keyword) throws Exception {
+    public Response<Pagination<Product>> search(String keyword, Long start, Integer quantity) throws Exception {
         if(keyword == null || "".equals(keyword)) throw new IException("参数错误");
-        Response<List<Product>> response =  new Response<>(Response.SUCCESS);
-        response.setMessage(productService.search(keyword));
+        Response<Pagination<Product>> response =  new Response<>(Response.SUCCESS);
+        Pagination<Product> pagination = new Pagination<>();
+        response.setMessage(productService.search(keyword, start, quantity));
         return response;
     }
 
