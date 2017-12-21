@@ -16,6 +16,7 @@ function NewDate(str) {
 	return date;
 }
 function showsectime() {
+	/*
 	var birthDay = NewDate("2016-04-28");
 	var today = new Date();
 	var timeold = today.getTime() - birthDay.getTime();
@@ -34,6 +35,7 @@ function showsectime() {
 	var seconds = Math.floor((minsold - e_minsold) * -60).toString();
 	document.getElementById("showsectime").innerHTML = "网站运行：" + daysold + "天" + hrsold + "小时" + minsold + "分" + seconds + "秒";
 	setTimeout(showsectime, 1000);
+	*/
 }
 
 /**
@@ -45,7 +47,7 @@ $(function() {
 		"height" : "35",
 		"parentClass" : "pageTitle",
 		"callback" : function(keyword) {
-			window.location.href = '/search?search=' + keyword;
+            if(keyword != null && keyword != '')  window.location.href = '/product/search?keyword='+encodeURI(keyword)+'&pageNo=1';
 		}
 	});
 })

@@ -2,7 +2,7 @@ package com.play001.cloud.web.service;
 
 
 import com.play001.cloud.common.entity.User;
-import com.play001.cloud.web.response.Response;
+import com.play001.cloud.common.entity.Response;
 import com.play001.cloud.web.service.fallback.DefaultFallbackFactory;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.*;

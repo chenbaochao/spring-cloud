@@ -1,14 +1,16 @@
 package com.play001.cloud.web.service.impl;
 
 
-import com.play001.cloud.web.entity.IException;
-import com.play001.cloud.web.entity.Pagination;
-import com.play001.cloud.web.entity.Product;
-import com.play001.cloud.web.response.Response;
+import com.play001.cloud.common.entity.IException;
+import com.play001.cloud.common.entity.Pagination;
+import com.play001.cloud.common.entity.Product;
+import com.play001.cloud.common.entity.Response;
 import com.play001.cloud.web.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
+
+import java.util.List;
+
 
 @Service
 public class ProductServiceImpl {
@@ -20,25 +22,24 @@ public class ProductServiceImpl {
      * 获取商品详情
      * @param id 商品Id
      */
-    public void getDetial(Long id, Model model) throws IException {
+    public Product getDetial(Long id) throws IException {
         Response<Product> response = productService.getProduct(id);
         if(response.getStatus().equals(Response.ERROR)) throw new IException(response.getErrMsg());
-        model.addAttribute("product", response.getMessage());
+        return response.getMessage();
     }
 
     /**
-     * 搜索
+     * 搜索分页
      * @param keyword 关键字
      * @param pageNo 页面编号,从1开始
-     * @param model
      */
-    public void search(Integer pageNo, String keyword, Model model) throws IException {
+    public Pagination<Product> getPaginationBySearch(Integer pageNo, String keyword) throws IException {
         //一页显示二十个
         final Integer pageSize = 20;
         //计算开始位置
-        Long start = Long.valueOf((pageNo-1)*pageSize-1);
+        Long start = Long.valueOf((pageNo-1)*pageSize);
         Response<Pagination<Product>> response =  productService.search(keyword, start, pageSize);
-        if(Response.ERROR == response.getStatus()){
+        if(Response.ERROR.equals(response.getStatus())){
             throw new IException(response.getErrMsg());
         }
         Pagination<Product> pagination = response.getMessage();
@@ -46,6 +47,29 @@ public class ProductServiceImpl {
         pagination.setPageSize(pageSize);
         //计算总共有多少页
         pagination.setPageQuantity((pagination.getDataQuantity().intValue()+pageSize-1)/pageSize.intValue());
-        model.addAttribute("pagination", pagination);
+        return pagination;
+    }
+
+    /**
+     * 分类列出产品
+     * @param categoryId 产品目录ID
+     * @param sort 排序方式,1.新品,2.销量,3.价格up,4.价格down
+     * @param pageNo
+     * @return 分页数据
+     */
+    public Pagination<Product> getPaginationByCategoryId(Integer categoryId, Integer sort, Integer pageNo) throws IException {
+        //一页显示二十个
+        final Integer pageSize = 20;
+        Long start = Long.valueOf((pageNo-1)*pageSize);
+        Response<Pagination<Product>> response =  productService.listByCategoryId(categoryId, sort, start, pageSize);
+        if(Response.ERROR.equals(response.getStatus())){
+            throw new IException(response.getErrMsg());
+        }
+        Pagination<Product> pagination = response.getMessage();
+        pagination.setPageNo(pageNo);
+        pagination.setPageSize(pageSize);
+        //计算总共有多少页
+        pagination.setPageQuantity((pagination.getDataQuantity().intValue()+pageSize-1)/pageSize.intValue());
+        return pagination;
     }
 }

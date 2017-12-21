@@ -2,10 +2,10 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <title>猫宁商城</title>
-  <link rel="stylesheet" href="./os/css/list.css">
-  <script src="./common/jquery/jquery-3.2.0.min.js"></script>
-  <link rel="stylesheet" href="./common/bootstrap/css/bootstrap.min.css" />
-  <link rel="stylesheet" href="./os/css/base.css">
+  <link rel="stylesheet" href="/os/css/list.css">
+  <script src="/common/jquery/jquery-3.2.0.min.js"></script>
+  <link rel="stylesheet" href="/common/bootstrap/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="/os/css/base.css">
 </head>
 <body>
 <div class="site-topbar">
@@ -43,7 +43,7 @@
 </div>
 <div class="site-header">
   <div class="container-fluid">
-    <div class="header-logo"> <a class="logo ir" href="${ctx}/index" title="猫宁官网"><img src="./os/images/logo.png"></a> </div>
+    <div class="header-logo"> <a class="logo ir" href="${ctx}/index" title="猫宁官网"><img src="/os/images/logo.png"></a> </div>
     <div class="header-nav">
       <ul class="nav-list J_navMainList clearfix">
         <li id="J_navCategory" class="nav-category"> <a class="link-category" href="${ctx}/list?categoryId=1"><span class="text">全部商品分类</span></a>
@@ -118,14 +118,8 @@
       <div class="filter-list-wrap">
         <dl class="filter-list clearfix">
           <dt>分类：</dt>
-          <dd class="${category.categoryId eq 1 ? 'active':''}"><a href="${ctx}/list?categoryId=1">全部</a></dd>
-          <dd class="${lowerCategoriy.categoryId eq category.categoryId ? 'active':''}"><a href="${ctx}/list?categoryId=${lowerCategoriy.categoryId}">手机</a></dd>
-          <dd class="${lowerCategoriy.categoryId eq category.categoryId ? 'active':''}"><a href="${ctx}/list?categoryId=${lowerCategoriy.categoryId}">平板</a></dd>
-          <dd class="${lowerCategoriy.categoryId eq category.categoryId ? 'active':''}"><a href="${ctx}/list?categoryId=${lowerCategoriy.categoryId}">电脑</a></dd>
-          <dd class="${lowerCategoriy.categoryId eq category.categoryId ? 'active':''}"><a href="${ctx}/list?categoryId=${lowerCategoriy.categoryId}">电脑</a></dd>
-          <dd class="${lowerCategoriy.categoryId eq category.categoryId ? 'active':''}"><a href="${ctx}/list?categoryId=${lowerCategoriy.categoryId}">电脑</a></dd>
-          <dd class="${lowerCategoriy.categoryId eq category.categoryId ? 'active':''}"><a href="${ctx}/list?categoryId=${lowerCategoriy.categoryId}">电脑</a></dd>
-          <dd class="${lowerCategoriy.categoryId eq category.categoryId ? 'active':''}"><a href="${ctx}/list?categoryId=${lowerCategoriy.categoryId}">电脑</a></dd>
+          <dd th:class="${categoryId} eq 0 ? 'active':''"><a href="/product/list?categoryId=0">全部</a></dd>
+          <dd  th:each="item:${category}"   th:class="${item.id eq categoryId}?'active':''"><a  th:href="'/product/list?categoryId='+${item.id}" th:text="${item.name}">手机</a></dd>
         </dl>
         <a class="more J_filterToggle" href="javascript:void(0);" onclick="showMornCategory(this);" >更多<i class="glyphicon glyphicon-chevron-down"></i></a> </div>
     </div>
@@ -138,28 +132,30 @@
   <div class="container-fluid">
     <div class="order-list-box clearfix">
       <ul class="order-list">
-        <li class="${sort eq 0 ? 'active':''} first"><a href="${ctx}/list?categoryId=${category.categoryId}&sort=0" rel="nofollow">推荐</a></li>
-        <li class="${sort eq 1 ? 'active':''}"><a href="${ctx}/list?categoryId=${category.categoryId}&sort=1" rel="nofollow">新品</a></li>
-        <li class="${sort eq 2 ? 'active':''}"><a href="${ctx}/list?categoryId=${category.categoryId}&sort=2" rel="nofollow">销量</a></li>
-        <li class="${sort eq 6 ? 'active':''}"><a href="${ctx}/list?categoryId=${category.categoryId}&sort=6" rel="nofollow">价格 <i class="glyphicon glyphicon-arrow-up"></i></a></li>
-        <li class="${sort eq 7 ? 'active':''}"><a href="${ctx}/list?categoryId=${category.categoryId}&sort=7" rel="nofollow">价格 <i class="glyphicon glyphicon-arrow-down"></i></a></li>
-        <li class="${sort eq 3 ? 'active':''}"><a href="${ctx}/list?categoryId=${category.categoryId}&sort=3"  rel="nofollow">评论最多</a></li>
+        <li th:class="${sort} eq 1 ? 'active':''"><a th:href="'/product/list?categoryId='+${categoryId}+'&sort=1'" rel="nofollow">新品</a></li>
+        <li th:class="${sort} eq 2 ? 'active':''"><a th:href="'/product/list?categoryId='+${categoryId}+'&sort=2'" rel="nofollow">销量</a></li>
+        <li th:class="${sort} eq 3 ? 'active':''"><a th:href="'/product/list?categoryId='+${categoryId}+'&sort=3'" rel="nofollow">价格 <i class="glyphicon glyphicon-arrow-up"></i></a></li>
+        <li th:class="${sort} eq 4 ? 'active':''"><a th:href="'/product/list?categoryId='+${categoryId}+'&sort=4'" rel="nofollow">价格 <i class="glyphicon glyphicon-arrow-down"></i></a></li>
+        <!--<li class="${sort eq 3 ? 'active':''}"><a href="${ctx}/list?categoryId=${category.categoryId}&sort=3"  rel="nofollow">评论最多</a></li>-->
       </ul>
     </div>
     <div class="goods-list-box">
       <div class="goods-list clearfix">
           <div class="goods-item" th:each="product:${pagination.data}">
-            <div class="figure figure-img"><a th:title="${product.pageTitle}"  th:href="/product/detail/${product.id}"><img th:src="/${product.showPic}" th:title="${product.pageTitle}" width="200" height="200" alt="${product.name}" /></a></div>
+            <div class="figure figure-img"><a th:title="${product.pageTitle}"  th:href="|/product/detail/-${product.id}|"><img th:src="${product.showPic}" th:title="${product.pageTitle}" width="200" height="200" th:alt="${product.name}" /></a></div>
             <p class="desc"></p>
-            <h2 class="title"><a th:title="${product.pageTitle}"  th:href="/detail/${product.id}" th:text="${product.title}">小米拍照手机1300W柔光手机</a></h2>
-            <p class="price" th:text="${product.showPrice}元"></p>
+            <h2 class="title"><a th:title="${product.pageTitle}"  th:href="|/detail/${product.id}|" th:text="${product.name}">小米拍照手机1300W柔光手机</a></h2>
+            <p class="price" th:text="|${product.showPrice}元|"></p>
+            <!--
             <div class="thumbs">
               <ul class="thumb-list clearfix">
-                <li th:attr="data-gid=${product.id}" ><img th:src="${product.showPic}" width="34" height="34" th:title="${product.pagetitle}" alt="${product.name}" /></li>
+                <li th:attr="data-gid=${product.id}" ><img th:src="${product.showPic}" width="34" height="34" th:title="${product.pageTitle}" th:alt="${product.pageTitle}" /></li>
               </ul>
               <p class="desc" th:text=" ${product.introduction}"> </p>
             </div>
-            <div class="actions clearfix"> <a class="btn-like J_likeGoods" data-pid="${product.productNumber}" onclick="add_favorite(this);" href="javascript: void(0);"><i class="glyphicon glyphicon-heart-empty"></i> <span>喜欢</span></a> <a class="btn-buy J_buyGoods" th:attr="data-gid=${product.id}"  th:href="/detail-${product.id}"><span>加入购物车</span> <i class="glyphicon glyphicon-shopping-cart"></i></a> </div>
+            -->
+            <p class="desc" th:text=" ${product.introduction}"> </p>
+            <div class="actions clearfix"> <a class="btn-like J_likeGoods" th:attr="data-pid=${product.id}"  onclick="add_favorite(this);" href="javascript: void(0);"><i class="glyphicon glyphicon-heart-empty"></i> <span>喜欢</span></a> <a class="btn-buy J_buyGoods" th:attr="data-gid=${product.id}"  th:href="|/detail-${product.id}|"><span>加入购物车</span> <i class="glyphicon glyphicon-shopping-cart"></i></a> </div>
             <div class="flags">
                 <div class="flag">拍照</div>
             </div>
@@ -169,7 +165,7 @@
       </div>
       <!--分页 -->
       <div class="xm-pagenavi">
-          <div id="pager" data-pager-href="/search?categoryId=${category.categoryId}&sort=${sort}&page=" th:attr="data-pager-totalPage=${pagination.pageQuantity}" th:attr="data-pager-current=${pagination.pageNo}" ></div>
+          <div id="pager"   th:attr="data-pager-totalPage=${pagination.pageQuantity}, data-pager-current=${pagination.pageNo},data-pager-href=${url}" ></div>
       </div>
     </div>
   </div>
@@ -179,25 +175,25 @@
 </div>
 <!--     产品分类内容begin       -->
 
-<!--
-  <div class="container-fluid">
+
+  <div class="container-fluid" th:if="${ #lists.isEmpty(pagination.data)}">
     <div class="xm-box ">
       <div class="bd">
         <div class="shop-global-error">
-          <h2>没有找到任何商品哦</h2>
+          <h2>此分类还没有任何商品哦</h2>
           <p class="shop-global-error-tips"></p>
-          <p class="shop-global-error-btn"> <a href="${ctx}/index" class="btn btn-primary">去首页</a> <a href="javascript:;" onclick="history.go(-1);" class="btn btn-line-gray">返回上一页</a> </p>
+          <p class="shop-global-error-btn"> <a href="/index" class="btn btn-primary">去首页</a> <a href="javascript:;" onclick="history.go(-1);" class="btn btn-line-gray">返回上一页</a> </p>
         </div>
       </div>
     </div>
   </div>
--->
+
 
 <!-- layer javascript -->
-<script src="./common/layer/layer.js"></script>
+<script src="/common/layer/layer.js"></script>
 <!-- 分页 javascript -->
-<script src="./common/pager/jquery.pager.js"></script>
-<script src="./os/js/list.js"></script>
+<script src="/common/pager/jquery.pager.js"></script>
+<script src="/os/js/list.js"></script>
 <script type="text/javascript">
 
     // 收藏商品
@@ -238,27 +234,11 @@
         }
     }
 
-    // 添加搜索回车事件
-    $(".searchInput-btn").onkeydown = function(event) {
-        var e = event || window.event || arguments.callee.caller.arguments[0];
-        if (e && e.keyCode == 13) { // enter 键
-            search()
-        }
-    };
-
-    $(".search-btn").bind("click", function() {
-        search()
-    });
-
-    function search(){
-        var keyword = $('searchInput').val();
-        if(keyword != '')  window.location.href = '/product/search?keyword='+encodeURI(keyword)+'&pageNo=1';
-    }
 </script>
-<script src="./common/bootstrap/js/bootstrap.min.js"></script>
+<script src="/common/bootstrap/js/bootstrap.min.js"></script>
 <!-- 自定义js -->
-<script src="./os/js/zySearch.js"></script>
-<script src="./os/js/jump.js"></script>
-<script src="./os/js/base.js"></script>
+<script src="/os/js/zySearch.js"></script>
+<script src="/os/js/jump.js"></script>
+<script src="/os/js/base.js"></script>
 </body>
 </html>

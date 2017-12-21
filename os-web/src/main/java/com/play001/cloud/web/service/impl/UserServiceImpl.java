@@ -2,7 +2,7 @@ package com.play001.cloud.web.service.impl;
 
 import com.play001.cloud.common.entity.IException;
 import com.play001.cloud.common.entity.User;
-import com.play001.cloud.web.response.Response;
+import com.play001.cloud.common.entity.Response;
 import com.play001.cloud.web.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

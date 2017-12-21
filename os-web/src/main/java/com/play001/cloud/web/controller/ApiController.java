@@ -2,13 +2,12 @@ package com.play001.cloud.web.controller;
 
 
 import com.play001.cloud.common.entity.User;
-import com.play001.cloud.web.response.Response;
+import com.play001.cloud.common.entity.Response;
 import com.play001.cloud.web.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.Cookie;

@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
+
 
 @FeignClient(name = "ZUUL", fallbackFactory = DefaultFallbackFactory.class)
 public interface ProductService {
@@ -20,4 +22,11 @@ public interface ProductService {
     Response<Pagination<Product>> search(@RequestParam("keyword")String keyword,
                                          @RequestParam("start")Long start,
                                          @RequestParam("quantity") Integer quantity);
+
+    @RequestMapping(value = "/product/listByCategoryId", method = RequestMethod.GET)
+    Response<Pagination<Product>> listByCategoryId(@RequestParam("categoryId")Integer categoryId,
+                                                        @RequestParam("sort") Integer sort,
+                                                        @RequestParam("start")Long start,
+                                                        @RequestParam("quantity") Integer quantity);
+
 }
