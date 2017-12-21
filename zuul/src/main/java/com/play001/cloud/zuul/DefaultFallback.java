@@ -5,7 +5,9 @@ import com.sun.xml.internal.messaging.saaj.util.ByteInputStream;
 import org.springframework.cloud.netflix.zuul.filters.route.ZuulFallbackProvider;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.client.ClientHttpResponse;
+import org.springframework.stereotype.Component;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -14,6 +16,7 @@ import java.io.InputStream;
 /**
  * 网关请求微服务失败时,设置默认返回值
  */
+
 public class DefaultFallback implements ZuulFallbackProvider {
 
     @Override
@@ -26,7 +29,9 @@ public class DefaultFallback implements ZuulFallbackProvider {
         return new ClientHttpResponse() {
             @Override
             public HttpHeaders getHeaders() {
-                return null;
+                HttpHeaders headers = new HttpHeaders();
+                headers.setContentType(MediaType.APPLICATION_JSON);
+                return headers;
             }
 
             /**
