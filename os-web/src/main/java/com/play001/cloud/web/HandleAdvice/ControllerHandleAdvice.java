@@ -2,9 +2,12 @@ package com.play001.cloud.web.HandleAdvice;
 
 
 import com.play001.cloud.common.entity.IException;
+import com.play001.cloud.common.entity.Response;
+import com.play001.cloud.web.controller.ProductController;
+import com.play001.cloud.web.controller.UserController;
+import com.play001.cloud.web.controller.api.UserApi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -14,9 +17,9 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * 异常统一返回
- * 此拦截器针对的是@RestController注解
+ * 此拦截器针对的是@Controller注解
  */
-@ControllerAdvice(annotations = Controller.class)
+@ControllerAdvice(assignableTypes = {UserController.class, ProductController.class, UserController.class})
 public class ControllerHandleAdvice {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -24,14 +27,15 @@ public class ControllerHandleAdvice {
     @ExceptionHandler
     public String handler(HttpServletRequest request, HttpServletResponse response, Exception e, Model model){
         e.printStackTrace();
-        logger.info("拦截到异常:"+e.getMessage());
-        model.addAttribute("manJump",true);
-        model.addAttribute("url", request.getHeader("referer"));
+        logger.info("ControllerHandleAdvice拦截到异常:"+e.getMessage());
+        Response<String> responseMsg = new Response<>();
+        responseMsg.setStatus(Response.ERROR);
         if(e instanceof IException){
-            model.addAttribute("message",e.getMessage());
+            responseMsg.setErrMsg(e.getMessage());
         }else{
-            model.addAttribute("message","未知错误");
+            responseMsg.setErrMsg("出错啦");
         }
+        model.addAttribute("response", responseMsg);
         return "message";
     }
 }

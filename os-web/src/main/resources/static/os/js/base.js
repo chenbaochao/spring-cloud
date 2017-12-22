@@ -1,6 +1,7 @@
 $(function() {
-	showsectime(); //网站计时器
-	show_cart_umber(); // 购物车商品数量
+	//showsectime(); //网站计时器
+	//show_cart_umber(); // 购物车商品数量
+    isLogin();//登陆与未登录的判断和显示不同的内容
 })
 
 /**
@@ -38,6 +39,28 @@ function showsectime() {
 	*/
 }
 
+/**
+ * 登陆与未登录的判断和显示不同的内容
+ */
+function isLogin(){
+    var cookie = $.cookie('credential');
+    if(cookie != null){
+        var strs = cookie.split('.');
+        if(strs != null && strs.length == 3){
+        	var credential = eval('('+window.atob(strs[1])+')');
+        	var expiryData = credential.expiryDate;//有效期
+        	var nowTime = Date.parse(new Date());
+        	if(expiryData > nowTime){//未过期
+                var username = credential.username;
+                $('#LoginUsername').text(username);
+                $('#J_userInfo').css('display','');
+                return;
+			}
+
+		}
+	}
+    $('#noLogin').css('display','');
+}
 /**
  * 搜索栏
  */

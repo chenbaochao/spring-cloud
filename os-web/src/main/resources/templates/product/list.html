@@ -4,6 +4,7 @@
   <title>猫宁商城</title>
   <link rel="stylesheet" href="/os/css/list.css">
   <script src="/common/jquery/jquery-3.2.0.min.js"></script>
+  <script src="/common/jquery/jquery.cookie.js"></script>
   <link rel="stylesheet" href="/common/bootstrap/css/bootstrap.min.css" />
   <link rel="stylesheet" href="/os/css/base.css">
 </head>
@@ -25,7 +26,7 @@
           </div>
         </div>
         <!--已登录-->
-        <div class="topbar-info" id="J_userInfo"><span class="user"><a rel="nofollow" class="user-name" href="" target="_blank"><span class="name">${user.userName}</span>&nbsp;&nbsp;<i class="glyphicon glyphicon-chevron-down"></i></a>
+        <div class="topbar-info" id="J_userInfo" style="display: none"><span class="user"><a rel="nofollow" class="user-name" href="" target="_blank"><span class="name" id="LoginUsername">用户名</span>&nbsp;&nbsp;<i class="glyphicon glyphicon-chevron-down"></i></a>
           <ul class="user-menu" style="display: none;">
             <li><a rel="nofollow" href="${ctx}/uc/user/portal" target="_blank">个人中心</a></li>
             <li><a rel="nofollow" href="${ctx}/uc/order/comment" target="_blank">评价晒单</a></li>
@@ -33,10 +34,11 @@
             <li><a rel="nofollow" href="" target="_blank">猫宁账户</a></li>
             <li><a rel="nofollow" href="${ctx}/pass/logout">退出登录</a></li>
           </ul>
-          </span><span class="sep">|</span><span class="message"><a rel="nofollow" href="">消息通知<i class="J_miMessageTotal"></i></a></span><span class="sep">|</span><a rel="nofollow" class="link link-order" href="${ctx}/uc/order/list" target="_blank">我的订单</a></div>
-        <!--未登录
-        <div class="topbar-info"> <a rel="nofollow" class="link" href="${ctx}/pass/login">登录</a><span class="sep">|</span><a rel="nofollow" class="link" href="${ctx}/pass/register">注册</a></div>
-        -->
+          </span><span class="sep">|</span><span class="message"><a rel="nofollow" href="">消息通知<i class="J_miMessageTotal"></i></a></span><span class="sep">|</span><a rel="nofollow" class="link link-order" href="${ctx}/uc/order/list" target="_blank">我的订单</a>
+        </div>
+        <!-- 未登录 -->
+        <div class="topbar-info" id="noLogin" style="display: none"> <a rel="nofollow" class="link" href="${ctx}/pass/login">登录</a><span class="sep">|</span><a rel="nofollow" class="link" href="${ctx}/pass/register">注册</a></div>
+
       </div>
     </div>
   </div>
@@ -142,20 +144,12 @@
     <div class="goods-list-box">
       <div class="goods-list clearfix">
           <div class="goods-item" th:each="product:${pagination.data}">
-            <div class="figure figure-img"><a th:title="${product.pageTitle}"  th:href="|/product/detail/-${product.id}|"><img th:src="${product.showPic}" th:title="${product.pageTitle}" width="200" height="200" th:alt="${product.name}" /></a></div>
+            <div class="figure figure-img"><a th:title="${product.pageTitle}"  th:href="|/product/detail-${product.id}|"><img th:src="${product.showPic}" th:title="${product.pageTitle}" width="200" height="200" th:alt="${product.name}" /></a></div>
             <p class="desc"></p>
-            <h2 class="title"><a th:title="${product.pageTitle}"  th:href="|/detail/${product.id}|" th:text="${product.name}">小米拍照手机1300W柔光手机</a></h2>
+            <h2 class="title"><a th:title="${product.pageTitle}"  th:href="|/product/detail-${product.id}|" th:text="${product.name}">小米拍照手机1300W柔光手机</a></h2>
             <p class="price" th:text="|${product.showPrice}元|"></p>
-            <!--
-            <div class="thumbs">
-              <ul class="thumb-list clearfix">
-                <li th:attr="data-gid=${product.id}" ><img th:src="${product.showPic}" width="34" height="34" th:title="${product.pageTitle}" th:alt="${product.pageTitle}" /></li>
-              </ul>
-              <p class="desc" th:text=" ${product.introduction}"> </p>
-            </div>
-            -->
             <p class="desc" th:text=" ${product.introduction}"> </p>
-            <div class="actions clearfix"> <a class="btn-like J_likeGoods" th:attr="data-pid=${product.id}"  onclick="add_favorite(this);" href="javascript: void(0);"><i class="glyphicon glyphicon-heart-empty"></i> <span>喜欢</span></a> <a class="btn-buy J_buyGoods" th:attr="data-gid=${product.id}"  th:href="|/detail-${product.id}|"><span>加入购物车</span> <i class="glyphicon glyphicon-shopping-cart"></i></a> </div>
+            <div class="actions clearfix"> <a class="btn-like J_likeGoods" th:attr="data-pid=${product.id}"  onclick="add_favorite(this);" href="javascript: void(0);"><i class="glyphicon glyphicon-heart-empty"></i> <span>喜欢</span></a> <a class="btn-buy J_buyGoods" th:attr="data-gid=${product.id}"  th:href="|/product/detail-${product.id}|"><span>加入购物车</span> <i class="glyphicon glyphicon-shopping-cart"></i></a> </div>
             <div class="flags">
                 <div class="flag">拍照</div>
             </div>

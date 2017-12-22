@@ -1,8 +1,7 @@
-package com.play001.cloud.web.controller;
+package com.play001.cloud.web.controller.api;
 
-
-import com.play001.cloud.common.entity.User;
 import com.play001.cloud.common.entity.Response;
+import com.play001.cloud.common.entity.User;
 import com.play001.cloud.web.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,11 +13,9 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/**
- * 所有api接口放在这里,便于扑捉全局异常,并返回错误信息
- */
+@RequestMapping("/user")
 @RestController
-public class ApiController {
+public class UserApi {
 
     @Autowired
     private UserServiceImpl userService;
@@ -33,14 +30,16 @@ public class ApiController {
      * @return
      * @throws Exception
      */
-    @RequestMapping(value = "/user/doLogin", method = RequestMethod.POST)
+    @RequestMapping(value = "/doLogin", method = RequestMethod.POST)
     public Response doLogin(String key, String password, HttpServletResponse response) throws Exception {
         if(key == null || password == null){
             return new Response(Response.ERROR, "用户名或密码为空");
         }
         Response<String> responseMsg  = userService.getCredential(key, password, expiryDate);
         //成功登陆后,要设置cookie,这样浏览器每次请求都会带上口令cookie
-        response.addCookie(new Cookie("credential", responseMsg.getMessage()));
+        Cookie cookie = new Cookie("credential", responseMsg.getMessage());
+        cookie.setPath("/");
+        response.addCookie(cookie);
         return responseMsg;
     }
 
@@ -51,7 +50,7 @@ public class ApiController {
      * @param request
      * @return
      */
-    @RequestMapping(value = "/user/doRegister", method = RequestMethod.POST)
+    @RequestMapping(value = "/doRegister", method = RequestMethod.POST)
     public Response doRegister(User user, String code, HttpServletRequest request){
         return  userService.register(user, code, request);
     }

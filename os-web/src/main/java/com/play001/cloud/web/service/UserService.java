@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 public interface UserService {
 
     @RequestMapping(value = "/credential/getCredential", method = RequestMethod.GET)
-    Response<String> getCredential(@RequestParam("username") String username,
+    Response<String> getCredential(@RequestParam("key") String key,
                                 @RequestParam("password") String password,
                                 @RequestParam("expiryDate") Long expiryDate);
 
