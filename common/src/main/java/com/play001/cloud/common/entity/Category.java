@@ -1,5 +1,7 @@
 package com.play001.cloud.common.entity;
 
+import java.util.List;
+
 /**
  * 产品分类
  */
@@ -11,7 +13,8 @@ public class Category {
     private byte status;
     //是否显示在导航栏
     private byte showInNav;
-
+    //有时可能会需要
+    private List<Product> products;
     public Integer getId() {
         return id;
     }
@@ -50,5 +53,13 @@ public class Category {
 
     public void setShowInNav(byte showInNav) {
         this.showInNav = showInNav;
+    }
+
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
     }
 }
