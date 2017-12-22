@@ -2,7 +2,7 @@
 <!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.play001.cloud.productapi.mapper.ProductMapper">
-    <resultMap id="productResult" type="com.play001.cloud.productapi.entity.Product">
+    <resultMap id="productResult" type="com.play001.cloud.common.entity.Product">
         <result property="id" column="id"/>
         <result property="showPrice" column="show_price"/>
         <result property="showPic" column="show_pic"/>
@@ -14,13 +14,13 @@
         <!-- 产品分类 -->
        <association property="category" select="findCategory" column="category_id" />
        <!-- 产品参数 -->
-        <collection property="parameters" select="findParameters" column="id" ofType="com.play001.cloud.productapi.entity.Parameter"/>
+        <collection property="parameters" select="findParameters" column="id" ofType="com.play001.cloud.common.entity.Parameter"/>
         <!-- 产品标签 -->
         <collection property="labels" select="findLabels" column="id" ofType="String" />
         <!-- 产品图片 -->
         <collection property="pics" select="findPics" column="id" ofType="String" />
         <!-- 产品套餐 -->
-        <collection property="specs" select="findSpecs" column="id" ofType="com.play001.cloud.productapi.entity.Specification"/>
+        <collection property="specs" select="findSpecs" column="id" ofType="com.play001.cloud.common.entity.Specification"/>
 
 
     </resultMap>
@@ -41,8 +41,38 @@
         WHERE p.page_title like concat('%', #{keyword}, '%')  AND pd.product_id = #{id}
     </select>
 
+    <!-- 分类+分页 -->
+    <select id="listByCategoryId" resultMap="productResult">
+        SELECT
+        p.id, p.name, p.category_id, p.show_price, p.introduction, p.show_pic, p.page_title, pd.page_introduction, p.is_show, p.created_time, p.remarks
+        FROM os_product p, os_product_detail pd
+        WHERE pd.product_id = p.id
+        <!-- categoryId为0表示检索全部商品 -->
+            <if test='categoryId != 0'>
+                AND p.category_id = #{categoryId}
+            </if>
+            <if test='sort == 1'>
+                ORDER BY p.created_time DESC
+            </if>
+            <if test='sort == 2'>
+                ORDER BY p.quantity_sold DESC
+            </if>
+            <if test='sort == 3'>
+                ORDER BY p.show_price
+            </if>
+            <if test='sort == 4'>
+                ORDER BY p.show_price DESC
+            </if>
+        LIMIT #{start}, #{quantity}
+    </select>
 
-
+    <!-- 计算总条数 -->
+    <select id="countByCategory" resultType="Long">
+        SELECT
+        count(p.id)
+        FROM os_product p
+        WHERE p.category_id = #{categoryId}
+    </select>
 
 
 
@@ -50,7 +80,7 @@
 
 
     <!-- 商品参数-->
-    <select id="findParameters" resultType="com.play001.cloud.productapi.entity.Parameter">
+    <select id="findParameters" resultType="com.play001.cloud.common.entity.Parameter">
         SELECT
             id, product_id as productId, name, value, sort
         FROM os_product_parameter
@@ -72,7 +102,7 @@
     </select>
 
     <!-- 查找套餐-->
-    <select id="findSpecs" resultType="com.play001.cloud.productapi.entity.Specification">
+    <select id="findSpecs" resultType="com.play001.cloud.common.entity.Specification">
         SELECT
         id, product_id as productId, name, quantity_sold as quantitySold, stock, price
         FROM os_product_specification
@@ -80,7 +110,7 @@
     </select>
 
     <!-- 产品所属分类-->
-    <select id="findCategory" resultType="com.play001.cloud.productapi.entity.Category">
+    <select id="findCategory" resultType="com.play001.cloud.common.entity.Category">
         SELECT
         id, name
         FROM os_category

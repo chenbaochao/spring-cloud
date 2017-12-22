@@ -42,5 +42,14 @@ public class ProductEndPoint {
         return response;
     }
 
+    @RequestMapping(value = "/listByCategoryId", method = RequestMethod.GET)
+    public Response<Pagination<Product>> listByCategoryId(Integer categoryId, Integer sort ,Long start, Integer quantity) throws Exception {
+        if(categoryId == null || categoryId < 0) throw new IException("目录ID错误");
+        if(start == null || start < 0) throw new IException("起始位置错误");
+        if(quantity == null || quantity < 1) throw new IException("数量错误");
+        Response<Pagination<Product>> response =  new Response<>(Response.SUCCESS);
+        response.setMessage(productService.listByCategoryId(categoryId, sort,  start, quantity));
+        return response;
+    }
 
 }
