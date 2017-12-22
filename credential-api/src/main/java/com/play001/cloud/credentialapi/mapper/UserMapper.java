@@ -7,6 +7,6 @@ import org.apache.ibatis.annotations.Select;
 @Mapper
 public interface UserMapper {
 
-    @Select("select distinct id, username, password from jd_user where username = #{key} or telephone = #{key} or email=#{key}")
+    @Select("select distinct id, username, password from os_user where username = #{key} or telephone = #{key} or email=#{key}")
     User findByUsername(String key);
 }
