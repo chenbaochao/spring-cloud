@@ -14,25 +14,29 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
+@RequestMapping("/category")
 public class CategoryController {
 
     @Autowired
     private CategoryService categoryService;
 
     @RequestMapping(value = "/findById", method = RequestMethod.GET)
-    public Response<Category> findById(Integer id) throws IException {
-        if(id == null || id < 1) throw new IException("参数错误");
-        Response<Category> response = new Response<>(categoryService.findById(id));
-        return response;
+    public Response<Category> findById(Integer categoryId) throws IException {
+        if(categoryId == null || categoryId < 0) throw new IException("参数错误");
+        if(categoryId == 0){
+            Category category = new Category();
+            category.setId(0);
+            category.setName("全部商品");
+            return new Response<>(category);
+        }
+        return new Response<>(categoryService.findAllWithProduct(categoryId));
     }
 
 
 
-    @RequestMapping(value = "/findAll", method = RequestMethod.GET)
-    public Response<List<Category>> findAll() throws IException {
-        Response<List<Category>> response = new Response<>();
-        response.setMessage(categoryService.findAll());
-        return response;
+    @RequestMapping(value = "/findAllWithProduct", method = RequestMethod.GET)
+    public Response<List<Category>> findAllWithProduct() throws IException {
+        return  new Response<>(categoryService.findAllWithProduct());
     }
 
 }

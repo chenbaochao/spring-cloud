@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.play001.cloud.commonapi.mapper.CategoryMapper">
+    <resultMap id="categoryResult" type="com.play001.cloud.common.entity.Category">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="sort" column="sort"/>
+        <result property="status" column="status"/>
+        <result property="showInNav" column="show_in_nav"/>
+        <result property="showInHot" column="show_in_hot"/>
+        <!-- 附带产品 -->
+        <collection property="products" select="findProduct" column="id" ofType="com.play001.cloud.common.entity.Product"/>
+
+    </resultMap>
+
+    <select id="findAllWithProduct" resultMap="categoryResult">
+        SELECT
+       c.id, c.name, c.sort, c.status, c.show_in_nav, c.show_in_hot
+        FROM os_category c
+        WHERE c.status = 1
+        ORDER by c.sort
+    </select>
+
+    <select id="findById" resultType="com.play001.cloud.common.entity.Category">
+        SELECT
+        c.id, c.name, c.sort, c.status, c.show_in_nav AS showInNav, c.show_in_hot as showInHot
+        FROM os_category c
+        WHERE c.id = #{id}
+        LIMIT 1
+    </select>
+
+    <!-- 搜索附带商品 -->
+    <select id="findProduct" resultType="com.play001.cloud.common.entity.Product">
+        SELECT
+        p.id, p.name, p.show_pic as showPic, p.page_title as pageTitle, p.show_price as showPrice
+        FROM os_product p
+        WHERE p.category_id = #{id} AND p.is_show = 1
+        ORDER by p.created_time DESC
+        LIMIT 18
+    </select>
+</mapper>
