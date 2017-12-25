@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+<div class="site-header">
+    <div class="container-fluid">
+        <div class="header-logo"> <a class="logo ir" href="/" title="猫宁官网"><img src="/os/images/logo.png"></a> </div>
+        <div class="header-nav">
+            <ul class="nav-list J_navMainList clearfix">
+                <li id="J_navCategory" class="nav-category"> <a class="link-category" href="javascript:;"><span class="text">全部商品分类</span></a>
+                    <!--     轮播top菜单导航begin       -->
+                    <div class="site-category">
+                        <ul class="site-category-list clearfix">
+                            <li class="category-item" th:each="item:${categories}"  th:if="${item.showInNav eq 1}">
+                                <a class="title" th:href="'/product/list?categoryId='+${item.id}" th:text="${item.name}">手机<i class="glyphicon glyphicon-chevron-right"></i></a>
+                                <div th:class="'children clearfix children-col-'+${ (#lists.size(item.products)+5)/6}">
+                                    <ul class="children-list children-list-col children-list-col-1" th:if="${#lists.size(item.products) gt 0}">
+                                        <li th:each="productItem, status:${item.products}" th:if="${status.index lt 6 }">
+                                            <a class="link" th:title="${productItem.pageTitle}"  th:href="'/product/detail/-'+${productItem.id}">
+                                                <img class="thumb" th:src="${productItem.showPic}" width="40" height="40" th:attr="alt=${productItem.pageTitle}">
+                                                <span class="text" th:text="${productItem.name}">产品名称</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                    <ul class="children-list children-list-col children-list-col-2" th:if="${#lists.size(item.products) gt 6}">
+                                        <li th:each="productItem, status:${item.products}" th:if="${status.index gt 5 && status.index lt 12 }">
+                                            <a class="link" th:title="${productItem.pageTitle}"  th:href="'/product/detail/-'+${productItem.id}">
+                                                <img class="thumb" th:src="${productItem.showPic}" width="40" height="40" th:attr="alt=${productItem.pageTitle}">
+                                                <span class="text" th:text="${productItem.name}">产品名称</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                    <ul class="children-list children-list-col children-list-col-3" th:if="${#lists.size(item.products) gt 12}">
+                                        <li th:each="productItem, status:${item.products}" th:if="${status.index gt 11 && status.index lt 18 }">
+                                            <a class="link" th:title="${productItem.pageTitle}"  th:href="'/product/detail/-'+${productItem.id}">
+                                                <img class="thumb" th:src="${productItem.showPic}" width="40" height="40" th:attr="alt=${productItem.pageTitle}">
+                                                <span class="text" th:text="${productItem.name}">产品名称</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <!--     轮播top菜单导航end       -->
+                </li>
+                <li class="nav-item"  th:each="item:${categories}" th:if="${item.showInHot eq 1}">
+                    <a class="link" th:href="'/product/list?categoryId='+${item.id}" >
+                        <span class="text" th:text="${item.name}">手机</span>
+                        <span class="arrow"></span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="header-search"> <span class="zySearch" id="zySearch"></span> </div>
+    </div>
+</div>
+
+</body>
+</html>

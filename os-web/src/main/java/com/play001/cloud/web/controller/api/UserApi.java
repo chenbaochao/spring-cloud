@@ -27,8 +27,6 @@ public class UserApi {
      * 登陆
      * @param key 用户名/手机/邮箱
      * @param password 密码
-     * @return
-     * @throws Exception
      */
     @RequestMapping(value = "/doLogin", method = RequestMethod.POST)
     public Response doLogin(String key, String password, HttpServletResponse response) throws Exception {
@@ -47,8 +45,6 @@ public class UserApi {
      * 注册
      * @param user 用户实体
      * @param code 验证码
-     * @param request
-     * @return
      */
     @RequestMapping(value = "/doRegister", method = RequestMethod.POST)
     public Response doRegister(User user, String code, HttpServletRequest request){

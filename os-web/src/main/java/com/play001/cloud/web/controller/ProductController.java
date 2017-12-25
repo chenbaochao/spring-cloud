@@ -46,9 +46,9 @@ public class ProductController {
         sort = (sort != null && sort > 0 && sort < 5)?sort:1;
         pageNo = (pageNo != null && pageNo > 0)?pageNo:1;
         model.addAttribute("pagination", productService.getPaginationByCategoryId(categoryId, sort, pageNo));
-        model.addAttribute("category", categoryService.findAll());
+        model.addAttribute("categories", categoryService.findAllWithProduct());
         model.addAttribute("sort", sort);
-        model.addAttribute("categoryId", categoryId);
+        model.addAttribute("category", categoryService.findById(categoryId));
         model.addAttribute("url","/product/list?categoryId="+categoryId+"&sort="+sort+"&pageNo=");
         return "product/list";
     }

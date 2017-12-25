@@ -9,108 +9,21 @@
   <link rel="stylesheet" href="/os/css/base.css">
 </head>
 <body>
-<div class="site-topbar">
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-md-12">
-        <div class="topbar-nav">
-          <!--  <c:forEach items="${indexTop}" var="indexTop"> -->
-          <a rel="nofollow" href="${indexTop.href}" target="${indexTop.target}">${indexTop.name}</a><span class="sep">|</span>
-          <!-- </c:forEach>-->
-        </div>
-        <div class="topbar-cart" id="J_miniCartTrigger"> <a class="cart-mini" id="J_miniCartBtn" href="${ctx}/cart/list"><i class="glyphicon glyphicon-shopping-cart"></i>购物车<span class="cart-mini-num J_cartNum">（0）</span></a>
-          <div class="cart-menu" id="J_miniCartMenu" style="display: none;">
-            <div class="loading">
-              <div class="loader"></div>
-            </div>
-          </div>
-        </div>
-        <!--已登录-->
-        <div class="topbar-info" id="J_userInfo" style="display: none"><span class="user"><a rel="nofollow" class="user-name" href="" target="_blank"><span class="name" id="LoginUsername">用户名</span>&nbsp;&nbsp;<i class="glyphicon glyphicon-chevron-down"></i></a>
-          <ul class="user-menu" style="display: none;">
-            <li><a rel="nofollow" href="${ctx}/uc/user/portal" target="_blank">个人中心</a></li>
-            <li><a rel="nofollow" href="${ctx}/uc/order/comment" target="_blank">评价晒单</a></li>
-            <li><a rel="nofollow" href="${ctx}/uc/user/favorite" target="_blank">我的喜欢</a></li>
-            <li><a rel="nofollow" href="" target="_blank">猫宁账户</a></li>
-            <li><a rel="nofollow" href="${ctx}/pass/logout">退出登录</a></li>
-          </ul>
-          </span><span class="sep">|</span><span class="message"><a rel="nofollow" href="">消息通知<i class="J_miMessageTotal"></i></a></span><span class="sep">|</span><a rel="nofollow" class="link link-order" href="${ctx}/uc/order/list" target="_blank">我的订单</a>
-        </div>
-        <!-- 未登录 -->
-        <div class="topbar-info" id="noLogin" style="display: none"> <a rel="nofollow" class="link" href="${ctx}/pass/login">登录</a><span class="sep">|</span><a rel="nofollow" class="link" href="${ctx}/pass/register">注册</a></div>
-
-      </div>
-    </div>
-  </div>
+<div th:replace="common/site_topbar :: div">
 </div>
-<div class="site-header">
-  <div class="container-fluid">
-    <div class="header-logo"> <a class="logo ir" href="${ctx}/index" title="猫宁官网"><img src="/os/images/logo.png"></a> </div>
-    <div class="header-nav">
-      <ul class="nav-list J_navMainList clearfix">
-        <li id="J_navCategory" class="nav-category"> <a class="link-category" href="${ctx}/list?categoryId=1"><span class="text">全部商品分类</span></a>
-          <!--     轮播top菜单导航begin       -->
-          <div class="site-category">
-            <ul class="site-category-list clearfix">
-              <li class="category-item"> <a class="title" href="${ctx}/list?categoryId=${category.categoryId}">手机<i class="glyphicon glyphicon-chevron-right"></i></a>
-                <div class="children clearfix children-col-3">
-                  <ul class="children-list children-list-col children-list-col-1">
-                    <li> <a class="link" title="${product.name}" href="${ctx}/detail/${product.productNumber}"><img class="thumb" src="${ctximg}/${product.picImg}" width="40" height="40" alt=	"${product.name}"><span class="text">产品名称</span></a>
-                    </li>
-                    <li> <a class="link" title="${product.name}" href="${ctx}/detail/${product.productNumber}"><img class="thumb" src="${ctximg}/${product.picImg}" width="40" height="40" alt=	"${product.name}"><span class="text">产品名称</span></a>
-                    </li>
-                    <li> <a class="link" title="${product.name}" href="${ctx}/detail/${product.productNumber}"><img class="thumb" src="${ctximg}/${product.picImg}" width="40" height="40" alt=	"${product.name}"><span class="text">产品名称</span></a>
-                    </li>
-                    <li> <a class="link" title="${product.name}" href="${ctx}/detail/${product.productNumber}"><img class="thumb" src="${ctximg}/${product.picImg}" width="40" height="40" alt=	"${product.name}"><span class="text">产品名称</span></a>
-                    </li>
-                  </ul>
-                  <ul class="children-list children-list-col children-list-col-2">
-                    <li> <a class="link" title="${product.name}" href="${ctx}/detail/${product.productNumber}"><img class="thumb" src="${ctximg}/${product.picImg}" width="40" height="40" alt="${product.name}"><span class="text">产品名称</span></a>
-                    </li>
-                    <li> <a class="link" title="${product.name}" href="${ctx}/detail/${product.productNumber}"><img class="thumb" src="${ctximg}/${product.picImg}" width="40" height="40" alt="${product.name}"><span class="text">产品名称</span></a>
-                    </li>
-                    <li> <a class="link" title="${product.name}" href="${ctx}/detail/${product.productNumber}"><img class="thumb" src="${ctximg}/${product.picImg}" width="40" height="40" alt="${product.name}"><span class="text">产品名称</span></a>
-                    </li>
-                    <li> <a class="link" title="${product.name}" href="${ctx}/detail/${product.productNumber}"><img class="thumb" src="${ctximg}/${product.picImg}" width="40" height="40" alt="${product.name}"><span class="text">产品名称</span></a>
-                    </li>
-                    <li> <a class="link" title="${product.name}" href="${ctx}/detail/${product.productNumber}"><img class="thumb" src="${ctximg}/${product.picImg}" width="40" height="40" alt="${product.name}"><span class="text">产品名称</span></a>
-                    </li>
-                  </ul>
-                  <ul class="children-list children-list-col children-list-col-3">
-                    <li> <a class="link" title="${product.name}" href="${ctx}/detail/${product.productNumber}"><img class="thumb" src="${ctximg}/${product.picImg}" width="40" height="40" alt="${product.name}"><span class="text">产品名称</span></a>
-                    </li>
-                    <li> <a class="link" title="${product.name}" href="${ctx}/detail/${product.productNumber}"><img class="thumb" src="${ctximg}/${product.picImg}" width="40" height="40" alt="${product.name}"><span class="text">产品名称</span></a>
-                    </li>
-                    <li> <a class="link" title="${product.name}" href="${ctx}/detail/${product.productNumber}"><img class="thumb" src="${ctximg}/${product.picImg}" width="40" height="40" alt="${product.name}"><span class="text">产品名称</span></a>
-                    </li>
-                    <li> <a class="link" title="${product.name}" href="${ctx}/detail/${product.productNumber}"><img class="thumb" src="${ctximg}/${product.picImg}" width="40" height="40" alt="${product.name}"><span class="text">产品名称</span></a>
-                    </li>
 
-                  </ul>
-                </div>
-              </li>
-            </ul>
-          </div>
-          <!--     轮播top菜单导航end       -->
-        </li>
-        <!-- <c:forEach items="${indexClassify}" var="indexClassify">-->
-        <li class="nav-item"> <a class="link" href="${indexClassify.href}" target="${indexClassify.target}"><span class="text">手机</span><span class="arrow"></span></a> </li>
-        <!--</c:forEach>-->
-      </ul>
-    </div>
-    <div class="header-search"> <span class="zySearch" id="zySearch"></span> </div>
-  </div>
+<div th:replace="common/site_header :: div">
 </div>
 
 
 <!--     分类导航栏 begin       -->
 <div class="breadcrumbs">
   <div class="container-fluid"><a href='${ctx}/index'>首页</a>
-    <span class="sep">&gt;</span><a href="${ctx}/list?categoryId=${upperCategory.categoryId}">手机</a>
-    <span class="sep">&gt;</span><a href="${ctx}/list?categoryId=${upperCategory.categoryId}">平板</a>
-    <span class="sep">&gt;</span><a href="${ctx}/list?categoryId=${upperCategory.categoryId}">电脑</a>
+    <span class="sep">&gt;</span>
+    <a th:href="'/product/list?categoryId='+${category.id}" th:text="${category.name}">手机</a>
   </div>
 </div>
+
 <!--     分类导航栏 end       -->
 
 <!--     产品分类目录begin       -->
@@ -120,8 +33,8 @@
       <div class="filter-list-wrap">
         <dl class="filter-list clearfix">
           <dt>分类：</dt>
-          <dd th:class="${categoryId} eq 0 ? 'active':''"><a href="/product/list?categoryId=0">全部</a></dd>
-          <dd  th:each="item:${category}"   th:class="${item.id eq categoryId}?'active':''"><a  th:href="'/product/list?categoryId='+${item.id}" th:text="${item.name}">手机</a></dd>
+          <dd th:class="${category.id} eq 0 ? 'active':''"><a href="/product/list?categoryId=0">全部</a></dd>
+          <dd  th:each="item:${categories}"   th:class="${item.id eq category.id}?'active':''"><a  th:href="'/product/list?categoryId='+${item.id}" th:text="${item.name}">手机</a></dd>
         </dl>
         <a class="more J_filterToggle" href="javascript:void(0);" onclick="showMornCategory(this);" >更多<i class="glyphicon glyphicon-chevron-down"></i></a> </div>
     </div>
@@ -130,14 +43,14 @@
 <!--     产品分类目录end       -->
 
 <!--     产品分类内容begin       -->
-<div class="content">
+<div class="content" th:if="${ #lists.size(pagination.data) gt 0}">
   <div class="container-fluid">
     <div class="order-list-box clearfix">
       <ul class="order-list">
-        <li th:class="${sort} eq 1 ? 'active':''"><a th:href="'/product/list?categoryId='+${categoryId}+'&sort=1'" rel="nofollow">新品</a></li>
-        <li th:class="${sort} eq 2 ? 'active':''"><a th:href="'/product/list?categoryId='+${categoryId}+'&sort=2'" rel="nofollow">销量</a></li>
-        <li th:class="${sort} eq 3 ? 'active':''"><a th:href="'/product/list?categoryId='+${categoryId}+'&sort=3'" rel="nofollow">价格 <i class="glyphicon glyphicon-arrow-up"></i></a></li>
-        <li th:class="${sort} eq 4 ? 'active':''"><a th:href="'/product/list?categoryId='+${categoryId}+'&sort=4'" rel="nofollow">价格 <i class="glyphicon glyphicon-arrow-down"></i></a></li>
+        <li th:class="${sort} eq 1 ? 'active':''"><a th:href="'/product/list?categoryId='+${category.id}+'&sort=1'" rel="nofollow">新品</a></li>
+        <li th:class="${sort} eq 2 ? 'active':''"><a th:href="'/product/list?categoryId='+${category.id}+'&sort=2'" rel="nofollow">销量</a></li>
+        <li th:class="${sort} eq 3 ? 'active':''"><a th:href="'/product/list?categoryId='+${category.id}+'&sort=3'" rel="nofollow">价格 <i class="glyphicon glyphicon-arrow-up"></i></a></li>
+        <li th:class="${sort} eq 4 ? 'active':''"><a th:href="'/product/list?categoryId='+${category.id}+'&sort=4'" rel="nofollow">价格 <i class="glyphicon glyphicon-arrow-down"></i></a></li>
         <!--<li class="${sort eq 3 ? 'active':''}"><a href="${ctx}/list?categoryId=${category.categoryId}&sort=3"  rel="nofollow">评论最多</a></li>-->
       </ul>
     </div>
@@ -182,6 +95,8 @@
     </div>
   </div>
 
+<div th:replace="common/site_footer :: div">
+</div>
 
 <!-- layer javascript -->
 <script src="/common/layer/layer.js"></script>
