@@ -26,7 +26,7 @@
 <!--     分类导航栏 end       -->
 
 <!-- 商品详情 begin -->
-<div class="goods-detail">
+<div class="goods-detail" th:if="${product != null}">>
     <!-- 商品简介begin-->
     <div class="goods-detail-info  clearfix J_goodsDetail">
         <div class="container-fluid">
@@ -67,13 +67,20 @@
                                 <dd  class="goods-info-head-price clearfix"> <b class="J_mi_goodsPrice sys_item_price" id="show_price" >****</b> <i>&nbsp;元</i> <span> 赠送积分:<span class="J_mi_marketPrice sys_item_score">123</span> </span> </dd>
                                 <dd class="goods-info-head-size clearfix sys_item_specpara" data-sid="123456"> <span class="style-label">分类：</span>
                                     <ul class="clearfix">
-                                        <li th:each="item:${product.specs}" th:attr="data-price=${item.price}">
+                                        <li th:each="item:${product.specs}" th:attr="data-price=${item.price}, data-spec-id=${item.id}" >
                                             <a href="javascript:;"class="item goodsStyle"  th:title="${item.name}" th:utext="${item.name}">标准套餐</a>
                                         </li>
                                     </ul>
                                 </dd>
-                                <dd class="goods-info-head-cart" id="goodsDetailBtnBox"> <a href="javascript:void(0)" onclick="add_cart(this)" id="goodsDetailAddCartBtn" class="btn btn-primary goods-add-cart-btn" data-product-spec-number=""> <i class="glyphicon glyphicon-shopping-cart"></i>加入购物车 </a> <a id="goodsDetailCollectBtn" data-pid="${product.productNumber}" data-isfavorite="false" class=" btn btn-gray  goods-collect-btn" href="javascript:void(0)" onclick="add_favorite(this);"> <i class="glyphicon glyphicon-heart-empty"></i>&nbsp;喜欢&nbsp; </a> </dd>
-                                <dd class="goods-info-head-cart" id="goodsDetailBtnBoxForInform" style="display: none;"> <a href="" class="btn  btn-gray goods-over-btn" data-stat-id="01b1dbea83f08143"> <i class="iconfont "></i>到货通知 </a> <a id="" th:attr="data-pid=${product.id}" data-isfavorite="false" class=" btn btn-gray  goods-collect-btn " href="javascript:void(0)" onclick="add_favorite(this);"> <i class="glyphicon glyphicon-heart-empty"></i>&nbsp;喜欢&nbsp;</a></dd>
+                                <dd class="goods-info-head-cart" id="goodsDetailBtnBox">
+                                    <a href="javascript:void(0)" onclick="add_cart(this)" id="goodsDetailAddCartBtn" class="btn btn-primary goods-add-cart-btn" th:attr="data-product-id=${product.id}" >
+                                        <i class="glyphicon glyphicon-shopping-cart"></i>加入购物车 </a>
+                                    <a id="goodsDetailCollectBtn" data-pid="${product.productNumber}" data-isfavorite="false" class=" btn btn-gray  goods-collect-btn" href="javascript:void(0)" onclick="add_favorite(this);">
+                                        <i class="glyphicon glyphicon-heart-empty"></i>&nbsp;喜欢&nbsp; </a>
+                                </dd>
+                                <dd class="goods-info-head-cart" id="goodsDetailBtnBoxForInform" style="display: none;">
+                                    <a href="" class="btn  btn-gray goods-over-btn" data-stat-id="01b1dbea83f08143">
+                                    <i class="iconfont "></i>到货通知 </a> <a id="" th:attr="data-pid=${product.id}" data-isfavorite="false" class=" btn btn-gray  goods-collect-btn " href="javascript:void(0)" onclick="add_favorite(this);"> <i class="glyphicon glyphicon-heart-empty"></i>&nbsp;喜欢&nbsp;</a></dd>
                                 <dd class="goods-info-head-userfaq">
                                     <ul class="detail-list">
                                         <li class="J_scrollHref"><a href="#goodsComment" data-index='2' class='J_scrollHref'><i class="glyphicon glyphicon-edit"></i>&nbsp;评价&nbsp;<b>112</b> </a> </li>
@@ -256,8 +263,21 @@
 </div>
 <!-- 商品详情 end -->
 
+<!--商品不存在 -->
+<div class="container-fluid" th:if="${product == null}">
+    <div class="xm-box ">
+        <div class="bd">
+            <div class="shop-global-error">
+                <h2>你所查找的商品不存在</h2>
+                <p class="shop-global-error-tips"></p>
+                <p class="shop-global-error-btn"> <a href="${ctx }/index" class="btn btn-primary">去首页</a> <a href="javascript:;" onclick="history.go(-1);" class="btn btn-line-gray">返回上一页</a> </p>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- 跟随 导航 begin -->
-<div class="goods-sub-bar  goods-sub-bar-play" id="goodsSubBar" style="top: 0px;display: none;">
+<div class="goods-sub-bar  goods-sub-bar-play" id="goodsSubBar" style="top: 0px;display: none;" th:if="${product != null}">
     <div class="container-fluid">
         <div class="row">
             <div class="span4">
@@ -285,34 +305,13 @@
     </div>
 </div>
 <!-- 跟随 导航 end -->
-<!--商品不存在
-<c:if test="${empty productapi}">
-  <div class="container-fluid">
-    <div class="xm-box ">
-      <div class="bd">
-        <div class="shop-global-error">
-          <h2>你所查找的商品不存在</h2>
-          <p class="shop-global-error-tips"></p>
-          <p class="shop-global-error-btn"> <a href="${ctx }/index" class="btn btn-primary">去首页</a> <a href="javascript:;" onclick="history.go(-1);" class="btn btn-line-gray">返回上一页</a> </p>
-        </div>
-      </div>
-    </div>
-  </div>
-</c:if> -->
+
 
 <!-- layer javascript -->
 <script src="/common/layer/layer.js"></script>
 <script src="/os/js/goodsDetail.js"></script>
 
 <script>
-    //价格json
-    /*
-    var sys_item=${productSpecifications};
-    var default_price=${productapi.showPrice};
-    var default_score=${productapi.showScore};
-    var productNumber=${productapi.productNumber};
-    var productId=${productapi.productId};
-    */
     var _score=123;
     var sys_item ={};
     sys_item['default'] = {};

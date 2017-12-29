@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>猫宁商城</title>
+  <script src="/common/jquery/jquery-3.2.0.min.js"></script>
+  <link rel="stylesheet" href="/common/bootstrap/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="/os/css/base.css">
+  <link rel="stylesheet" href="/os/css/buy-success.css">
+  <script src="/common/jquery/jquery.cookie.js"></script>
+</head>
+<body>
+<div th:replace="common/site_topbar :: div">
+</div>
+
+<div th:replace="common/site_header :: div">
+</div>
+
+<div class="page-main">
+  <div class="container">
+    <div class="buy-succ-box clearfix">
+      <div class="goods-content" id="J_goodsBox">
+        <div class="goods-img"> <img src="/os/images/success.png" width="64" height="64"> </div>
+        <div class="goods-info">
+          <h3>已成功加入购物车！</h3>
+          <span class="name" th:text="${pageTitle}">红米5 全网通版 2GB内存 黑色 16GB  </span>
+        </div>
+      </div>
+      <div class="actions J_actBox">
+        <a href="javascript:void(0);" class="btn btn-line-gray J_goBack" >返回上一级</a>
+        <a href="https://static.mi.com/cart/" class="btn btn-primary" >去购物车结算</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- layer javascript -->
+<script src="/common/layer/layer.js"></script>
+
+
+<div th:replace="common/site_footer :: div">
+
+</div>
+
+
+<script src="/common/bootstrap/js/bootstrap.min.js"></script>
+<script src="/os/js/zySearch.js"></script>
+<script src="/os/js/jump.js"></script>
+<script src="/os/js/base.js"></script>
+</body>
+</html>

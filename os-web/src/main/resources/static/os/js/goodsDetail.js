@@ -108,6 +108,7 @@ $(".goods-info-head-userfaq .detail-list a").click(function() {
 /**
  * 商品规格选择
  */
+var productSpecId;
 $(function() {
 	$(".goods-info-head .sys_item_specpara").each(function() {
 		var i = $(this);
@@ -116,9 +117,8 @@ $(function() {
 			$(this).addClass("current").siblings("li").removeClass("current");
 			i.attr("data-attrval", $(this).attr("data-aid"))
 			var price = $(this).data('price');
-			console.log(this)
+            productSpecId = $(this).data('spec-id');
             $('#show_price').text(price);
-            console.log(price);
 		})
 	})
 
@@ -214,21 +214,22 @@ function comment_time_line() {
  * 加入购物车
  */
 function add_cart(obj) {
-	var productSpecNumber = $(obj).attr("data-productapi-spec-number");
+	var productId = $(obj).data("product-id");
+
 	$.ajax({
 		type : 'post',
 		dataType : 'json',
 		data : {
-			'productSpecNumber' : productSpecNumber
+			'productId' : productId,
+			'productSpecId':productSpecId
+
 		},
-		url : baselocation + '/cart',
+		url :  '/cart/add',
 		success : function(result) {
-			if (result.code == 1) {
-				window.location.href = baselocation + '/cart/' + result.data;
-			} else if (result.code == 401) {
-				window.location.href = baselocation + '/pass/login';
+			if (result.status == 'SUCCESS') {
+				window.location.href =  '/cart/addSuccess?pageTitle='+encodeURI($('#goodsName').text());
 			} else {
-				layer.alert(result.message, {
+				layer.alert(result.errMsg, {
 					icon : 2
 				});
 			}

@@ -17,7 +17,6 @@ function NewDate(str) {
 	return date;
 }
 function showsectime() {
-	/*
 	var birthDay = NewDate("2016-04-28");
 	var today = new Date();
 	var timeold = today.getTime() - birthDay.getTime();
@@ -36,14 +35,14 @@ function showsectime() {
 	var seconds = Math.floor((minsold - e_minsold) * -60).toString();
 	document.getElementById("showsectime").innerHTML = "网站运行：" + daysold + "天" + hrsold + "小时" + minsold + "分" + seconds + "秒";
 	setTimeout(showsectime, 1000);
-	*/
+
 }
 
 /**
  * 登陆与未登录的判断和显示不同的内容
  */
 function isLogin(){
-    var cookie = $.cookie('credential');
+    var cookie = $.cookie('userJwt');
     if(cookie != null){
         var strs = cookie.split('.');
         if(strs != null && strs.length == 3){
