@@ -11,18 +11,31 @@ import org.springframework.web.bind.annotation.*;
 @FeignClient(name = "ZUUL", fallbackFactory = DefaultFallbackFactory.class)
 public interface UserService {
 
-    @RequestMapping(value = "/credential/getCredential", method = RequestMethod.GET)
+    /**
+     * 获取jwt
+     */
+    @RequestMapping(value = "/user/getCredential", method = RequestMethod.GET)
     Response<String> getCredential(@RequestParam("key") String key,
                                 @RequestParam("password") String password,
                                 @RequestParam("expiryDate") Long expiryDate);
 
+    /**
+     * 获取验证码数据
+     */
     @RequestMapping(value = "/user/captcha", method = RequestMethod.GET)
     Response<byte[]> getCaptcha();
 
+    /**
+     * 注册
+     */
     @RequestMapping(value = "/user/register", method = RequestMethod.POST)
     Response<String> register(@RequestBody User user,
                       @RequestParam("code") String code,
                       @RequestHeader("registerCookie") String cookie);
 
-
+    /**
+     * 获取用户信息
+     */
+    @RequestMapping(value = "/user/getInfo", method = RequestMethod.GET)
+    Response<User> getInfo(@RequestHeader("userJwt")String userJwt);
 }
