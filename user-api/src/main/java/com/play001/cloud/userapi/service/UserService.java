@@ -3,6 +3,7 @@ package com.play001.cloud.userapi.service;
 
 import com.play001.cloud.common.entity.Response;
 import com.play001.cloud.common.entity.User;
+import com.play001.cloud.common.util.JwtUtil;
 import com.play001.cloud.userapi.mapper.UserMapper;
 import com.play001.cloud.userapi.util.Captcha;
 import com.play001.cloud.userapi.util.TimeUtil;
@@ -26,9 +27,29 @@ public class UserService {
 
     @Autowired
     private UserMapper userMapper;
+
     @Autowired
     private StringRedisTemplate template;
 
+    /**
+     * 获取身份令牌
+     */
+    public String getCredential(String key, String password, Long expiryDate) throws Exception {
+        expiryDate = expiryDate==null?1000*60*60*24:expiryDate;//默认身份令牌有效期为一天
+        User user = userMapper.findByKey(key);
+        if(user != null && user.getPassword().equals(password)){
+            String jwt = JwtUtil.createJwt(user.getId(), key, System.currentTimeMillis()+expiryDate);
+            logger.info("用户:"+user.getUsername()+"获取令牌成功, Jwt=" + jwt);
+            return jwt;
+        }else{
+            throw new Exception("用户名或密码错误");
+        }
+
+    }
+
+    /**
+     * 注册
+     */
     public void insert(User user, String registerCookie, String code) throws Exception {
         //验证码是否正确
         if(registerCookie == null) throw new Exception("验证码cookie为空");
@@ -49,6 +70,9 @@ public class UserService {
         }
     }
 
+    /**
+     * 获取验证码
+     */
     public  Response<byte[]> createCaptcha() throws IOException {
         String code = Captcha.randCaptchaCode();
         String uuid = UUID.randomUUID().toString();
@@ -65,15 +89,17 @@ public class UserService {
         byte []cookieByte = uuid.getBytes();//验证码的cookie长度为36,
         //将图片数据和验证码吗cookie整合到一起作为response里的message传递
         byte []data = new byte[36+imageByte.length];
-        for(int i = 0;i < imageByte.length;i++){
-            data[i] = imageByte[i];
-        }
-        for(int i= imageByte.length;i < data.length; i++){
-            data[i] = cookieByte[i-imageByte.length];
-        }
+        //复制图片数据到data
+        System.arraycopy(imageByte, 0, data, 0, imageByte.length);
+        //复制验证码cookie到data
+        System.arraycopy(cookieByte, 0,  data, imageByte.length, 36);
+
         Response<byte[]> response = new Response<>(Response.SUCCESS);
         response.setMessage(data);
 
         return response;
+    }
+    public User getInfo(Long id){
+        return userMapper.findById(id);
     }
 }
