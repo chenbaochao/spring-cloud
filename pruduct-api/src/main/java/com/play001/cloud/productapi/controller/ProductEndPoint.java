@@ -31,8 +31,6 @@ public class ProductEndPoint {
      * @param keyword 关键词
      * @param start 数据开始索引,从1开始
      * @param quantity 总共数据条数
-     * @return
-     * @throws Exception
      */
     @RequestMapping(value = "/search", method = RequestMethod.GET)
     public Response<Pagination<Product>> search(String keyword, Long start, Integer quantity) throws Exception {
@@ -42,6 +40,13 @@ public class ProductEndPoint {
         return response;
     }
 
+    /**
+     * 根据分类列出商品
+     * @param categoryId 分类ID
+     * @param sort 排序方式
+     * @param start 开始位置
+     * @param quantity 数据条数
+     */
     @RequestMapping(value = "/listByCategoryId", method = RequestMethod.GET)
     public Response<Pagination<Product>> listByCategoryId(Integer categoryId, Integer sort ,Long start, Integer quantity) throws Exception {
         if(categoryId == null || categoryId < 0) throw new IException("目录ID错误");
