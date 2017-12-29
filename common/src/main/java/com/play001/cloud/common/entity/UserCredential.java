@@ -3,25 +3,25 @@ package com.play001.cloud.common.entity;
 
 import com.google.gson.Gson;
 
-public class Credential {
-   private Integer userId;
+public class UserCredential {
+   private Long userId;
    private String username;
     private Long expiryDate;
 
-    public Credential() {
+    public UserCredential() {
     }
 
-    public Credential(Integer userId, String username, Long expiryDate) {
+    public UserCredential(Long userId, String username, Long expiryDate) {
         this.userId = userId;
         this.username = username;
         this.expiryDate = expiryDate;
     }
 
-    public Integer getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(Integer userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 
