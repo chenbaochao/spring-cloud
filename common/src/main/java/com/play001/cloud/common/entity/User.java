@@ -3,20 +3,29 @@ package com.play001.cloud.common.entity;
 import com.google.gson.Gson;
 
 public class User {
-    private Integer id;
+    private Long id;
 
     private String username;
     private String password;
     private String telephone;
     private String email;
+    private String profilePhoto;//头像
     private String createdTime;
     private String updatedTime;
 
-    public Integer getId() {
+    public String getProfilePhoto() {
+        return profilePhoto;
+    }
+
+    public void setProfilePhoto(String profilePhoto) {
+        this.profilePhoto = profilePhoto;
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
