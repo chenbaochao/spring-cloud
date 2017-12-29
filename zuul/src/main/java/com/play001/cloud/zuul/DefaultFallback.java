@@ -27,10 +27,11 @@ public class DefaultFallback implements ZuulFallbackProvider {
     @Override
     public ClientHttpResponse fallbackResponse() {
         return new ClientHttpResponse() {
+
             @Override
             public HttpHeaders getHeaders() {
                 HttpHeaders headers = new HttpHeaders();
-                headers.setContentType(MediaType.APPLICATION_JSON);
+                headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
                 return headers;
             }
 
@@ -41,7 +42,10 @@ public class DefaultFallback implements ZuulFallbackProvider {
              */
             @Override
             public InputStream getBody() throws IOException {
-                return new ByteArrayInputStream(new Response<>(Response.ERROR).toJson().getBytes());
+                Response<String> response = new Response<>();
+                response.setStatus(Response.ERROR);
+                response.setErrMsg("请求失败");
+                return new ByteArrayInputStream(response.toJson().getBytes());
             }
 
             @Override
