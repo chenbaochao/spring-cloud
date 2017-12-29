@@ -5,6 +5,7 @@ import com.play001.cloud.common.entity.User;
 import com.play001.cloud.web.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -35,7 +36,7 @@ public class UserApi {
         }
         Response<String> responseMsg  = userService.getCredential(key, password, expiryDate);
         //成功登陆后,要设置cookie,这样浏览器每次请求都会带上口令cookie
-        Cookie cookie = new Cookie("credential", responseMsg.getMessage());
+        Cookie cookie = new Cookie("userJwt", responseMsg.getMessage());
         cookie.setPath("/");
         response.addCookie(cookie);
         return responseMsg;
@@ -47,7 +48,7 @@ public class UserApi {
      * @param code 验证码
      */
     @RequestMapping(value = "/doRegister", method = RequestMethod.POST)
-    public Response doRegister(User user, String code, HttpServletRequest request){
-        return  userService.register(user, code, request);
+    public Response doRegister(User user, String code, @CookieValue("registerCookie")String registerCookie){
+        return  userService.register(user, code, registerCookie);
     }
 }
