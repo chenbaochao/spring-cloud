@@ -1,5 +1,7 @@
 package com.play001.cloud.common.entity;
 
+import com.google.gson.Gson;
+
 /**
  * 用于ajax返回各种信息
  * 通用类型
@@ -39,6 +41,7 @@ public class Response<T> {
     }
 
     public void setMessage(T message) {
+        this.status = SUCCESS;
         this.message = message;
     }
 
@@ -56,5 +59,9 @@ public class Response<T> {
 
     public void setErrMsg(String errMsg) {
         this.errMsg = errMsg;
+    }
+
+    public String toJson(){
+        return new Gson().toJson(this);
     }
 }
