@@ -47,18 +47,25 @@ public class UserServiceImpl {
         os.close();
     }
 
-    public Response register(User user, String code, HttpServletRequest request){
-        String registerCookie = null;
-        //获取cookie
-        for(Cookie cookie : request.getCookies()){
-            if("registerCookie".equals(cookie.getName())){
-                registerCookie = cookie.getValue();
-            }
-        }
-        if(registerCookie == null){
-            return new Response(Response.ERROR, "cookie无效, 请刷新验证码");
+    /**
+     * 注册
+     * @param user 用户信息
+     * @param code 验证码
+     * @param registerCookie 确认验证码是否正确的cookie
+     */
+    public Response register(User user, String code, String registerCookie){
+        if(registerCookie == null || registerCookie.length() < 1){
+            return new Response(Response.ERROR, "验证码无效, 请刷新验证码");
         }
         return userService.register(user, code, registerCookie);
     }
 
+    /**
+     * 获取用户基本信息
+     */
+    public User getInfo(String userJwt) throws IException {
+        Response<User> response = userService.getInfo(userJwt);
+        if(Response.ERROR.equals(response.getStatus())) throw new IException(response.getErrMsg());
+        return response.getMessage();
+    }
 }
