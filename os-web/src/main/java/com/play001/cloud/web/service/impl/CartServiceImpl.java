@@ -15,7 +15,7 @@ public class CartServiceImpl {
     @Autowired
     private CartService cartService;
     /**
-     *
+     * 加购????
      * @param productId 产品Id
      * @param productSpecId 服务规格ID
      * @param userJwt 用户口令
@@ -32,5 +32,13 @@ public class CartServiceImpl {
         Response<List<ShopCart>> response = cartService.list(userJwt);
         if(Response.ERROR.equals(response.getStatus())) throw new IException(response.getErrMsg());
         return response.getMessage();
+    }
+
+    /**
+     * 删除操作
+     */
+    public void delete(Long cartId, String userJwt) throws IException {
+        Response<Integer> response = cartService.delete(cartId, userJwt);
+        if(Response.ERROR.equals(response.getStatus())) throw new IException(response.getErrMsg());
     }
 }

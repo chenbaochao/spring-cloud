@@ -21,4 +21,7 @@ public interface CartService {
     @RequestMapping(value = "/common/cart/list", method = RequestMethod.GET)
     Response<List<ShopCart>>  list(@RequestHeader("userJwt") String userJwt);
 
+    @RequestMapping(value = "/common/cart/delete", method = RequestMethod.POST)
+    Response<Integer> delete(@RequestParam("cartId")Long cartId, @RequestHeader("userJwt") String userJwt);
+
 }

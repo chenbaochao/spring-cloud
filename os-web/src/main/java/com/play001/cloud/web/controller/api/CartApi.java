@@ -34,4 +34,11 @@ public class CartApi {
         return response;
     }
 
+    @RequestMapping(value = "/delete", method = RequestMethod.POST)
+    public Response<String> delete(Long cartId, @CookieValue("userJwt") String userJwt) throws Exception {
+        cartService.delete(cartId, userJwt);
+        Response<String> response = new Response<>();
+        response.setStatus(Response.SUCCESS);
+        return response;
+    }
 }

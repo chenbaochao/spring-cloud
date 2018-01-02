@@ -159,7 +159,7 @@ $(function() {
 	$('.topbar-cart').hover(function() {
 		$('.site-topbar .cart-menu').css('display', 'block');
 		$.ajax({
-			url : "/cart/topbar",
+			url : "/cart/topBar",
 			type : 'get',
 			dataType : 'text',
 			beforeSend : function() {
@@ -196,15 +196,15 @@ $(function() {
  */
 function cart_delete(obj, data) {
 	$.ajax({
-		type : 'delete',
+		type : 'post',
 		dataType : 'json',
-		url : '/cart/' + data,
+		url : '/cart/delete?&cartId=' + data,
 		success : function(result) {
-			if (result.code == 1) {
+			if (result.status == 'SUCCESS') {
 				$(obj).parent().parent().parent("li").remove();
 				show_cart_umber();
 			} else {
-				layer.alert(result.message, {
+				layer.alert(result.errMsg, {
 					icon : 2
 				});
 			}

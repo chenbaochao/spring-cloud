@@ -1,6 +1,7 @@
 package com.play001.cloud.web.controller;
 
 import com.play001.cloud.common.entity.IException;
+import com.play001.cloud.common.entity.ShopCart;
 import com.play001.cloud.web.service.impl.CartServiceImpl;
 import com.play001.cloud.web.service.impl.CategoryServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +11,10 @@ import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.awt.event.FocusEvent;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.List;
 
 @Controller
 @RequestMapping("/cart")
@@ -41,4 +44,23 @@ public class CartController {
         model.addAttribute("carts", cartService.list(userJwt));
         return "product/cart_list";
     }
+
+    /**
+     * 导航栏购物车
+     */
+    @RequestMapping(value = "/topBar", method = RequestMethod.GET)
+    public String topBar(Model model, @CookieValue("userJwt")String userJwt) throws IException {
+        List<ShopCart> carts = cartService.list(userJwt);
+        //计算总件数和总价格
+        int totalNumber = 0, totalPrice = 0;
+        for (ShopCart cart : carts){
+            totalNumber+=cart.getBuyQuantity();
+            totalPrice+=cart.getBuyQuantity()+cart.getSpec().getPrice();
+        }
+        model.addAttribute("carts", carts);
+        model.addAttribute("totalNumber", totalNumber);
+        model.addAttribute("totalPrice", totalPrice);
+        return "product/cart_top_bar";
+    }
+
 }

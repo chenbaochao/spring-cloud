@@ -1,0 +1,25 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<!--     导航栏购物车 begin       -->
+  <ul class="cart-list"  th:if="${#lists.size(carts) gt 0}" >
+      <li th:each="cart:${carts}">
+        <div class="cart-item clearfix first">
+          <a class="thumb" th:href="'/product/detail-'+${cart.product.id}">
+            <img th:alt="${cart.product.name}" th:src="${cart.product.showPic}" width="60" height="60">
+          </a>
+          <a class="name" th:href="'/product/detail-'+${cart.product.id}" th:text="${cart.product.name}+' '+${cart.spec.name}"></a>
+          <span class="price" th:text="${cart.spec.price}+'元×'+${cart.buyQuantity}"></span>
+          <a class="btn-del J_delItem" href="javascript: void(0);">
+            <i class="glyphicon glyphicon-remove" th:onclick="|cart_delete(this, ${cart.id})|"></i>
+          </a>
+        </div>
+      </li>
+  </ul>
+  <div class="cart-total clearfix">
+    <span class="total">共 <em th:text="${totalNumber}">1</em> 件商品
+      <span class="price"><em th:text="${totalPrice}">55</em>元</span>
+    </span>
+    <a href="/cart/list" class="btn btn-primary btn-cart">去购物车结算</a>
+  </div>
+
+  <div class="loading" th:if="${#lists.isEmpty(carts)}"> 购物车中还没有商品，赶紧选购吧！ </div>
+<!--     导航栏购物车 end         --> 
