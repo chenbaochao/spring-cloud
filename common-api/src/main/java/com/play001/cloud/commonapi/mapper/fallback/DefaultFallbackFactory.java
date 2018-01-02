@@ -1,6 +1,6 @@
-package com.play001.cloud.web.service.fallback;
+package com.play001.cloud.commonapi.mapper.fallback;
 
-import com.play001.cloud.web.response.Response;
+import com.play001.cloud.common.entity.Response;
 import feign.hystrix.FallbackFactory;
 
 /**

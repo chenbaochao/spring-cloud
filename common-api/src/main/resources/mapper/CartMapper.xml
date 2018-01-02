@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.play001.cloud.commonapi.mapper.CartMapper">
+    <resultMap id="cartResult" type="com.play001.cloud.common.entity.ShopCart">
+        <result property="id" column="id"/>
+        <result property="buyQuantity" column="buy_quantity"/>
+        <!-- 产品信息 -->
+        <association property="product" select="findProduct" column="product_id" />
+        <!-- 产品规格-->
+        <association property="spec" select="findSpec" column="product_spec_id" />
+    </resultMap>
+
+    <select id="list" resultMap="cartResult">
+        SELECT id, buy_quantity, product_id, product_spec_id, user_id
+        FROM os_shop_cart
+        WHERE user_id = #{userId}
+    </select>
+    <!-- 产品信息 -->
+    <select id="findProduct" resultType="com.play001.cloud.common.entity.Product">
+        select id, name, page_title as pageTitle, show_pic as showPic
+        FROM os_product
+        where id = #{product_id}
+    </select>
+    <!-- 产品规格-->
+    <select id="findSpec" resultType="com.play001.cloud.common.entity.Specification">
+        select id, name, price
+        FROM os_product_specification
+        where id = #{product_spec_id}
+    </select>
+</mapper>

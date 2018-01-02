@@ -9,6 +9,7 @@ import com.play001.cloud.common.interceptor.UserPermissionVerify;
 import com.play001.cloud.common.util.JwtUtil;
 import com.play001.cloud.commonapi.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.ldap.embedded.EmbeddedLdapProperties;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -51,5 +52,14 @@ public class CartEndPoint {
         Response<List<ShopCart>> response = new Response<>();
         response.setMessage(cartService.list(userCredential.getUserId()));
         return response;
+    }
+    @UserPermissionVerify
+    @RequestMapping(value = "/delete", method = RequestMethod.POST)
+    public Response<Integer> delete(Long cartId, @RequestHeader("userJwt") String userJwt) throws IOException {
+        if(cartId != null && cartId > 0){
+            UserCredential userCredential = JwtUtil.getCredentialByJwt(userJwt);
+            cartService.delete(cartId, userCredential.getUserId());
+        }
+        return new Response<>(Response.SUCCESS);
     }
 }

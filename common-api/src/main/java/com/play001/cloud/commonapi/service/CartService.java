@@ -46,4 +46,8 @@ public class CartService {
     public List<ShopCart> list(Long userId){
         return cartMapper.list(userId);
     }
+
+    public void delete(Long cartId, Long userId){
+        cartMapper.delete(cartId, userId);
+    }
 }
