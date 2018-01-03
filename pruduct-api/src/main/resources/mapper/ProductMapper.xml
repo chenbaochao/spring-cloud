@@ -6,10 +6,10 @@
         <result property="id" column="id"/>
         <result property="showPrice" column="show_price"/>
         <result property="showPic" column="show_pic"/>
-        <result property="pageTitle" column="page_title"/>
-        <result property="pageIntroduction" column="page_introduction"/>
+        <result property="title" column="title"/>
+        <result property="introduction" column="introduction"/>
         <result property="isShow" column="is_show"/>
-        <result property="createdTime" column="created_time"/>
+        <result property="createdTime" column="create_time"/>
         <result property="quantitySold" column="quantity_sold"/>
         <!-- 产品分类 -->
        <association property="category" select="findCategory" column="category_id" />
@@ -27,7 +27,7 @@
 
     <select id="findById" resultMap="productResult">
         SELECT
-            p.id, p.name, p.category_id, p.quantity_sold, p.show_price, p.introduction, p.show_pic, p.page_title, pd.page_introduction, p.is_show, p.created_time, p.remarks
+            p.id, p.name, p.category_id, p.quantity_sold, p.show_price, p.title, p.show_pic, pd.introduction, p.is_show, p.create_time, p.remarks
         FROM os_product p, os_product_detail pd
         WHERE p.id = #{id} AND pd.product_id = #{id}
         LIMIT  1
@@ -36,7 +36,7 @@
     <!-- 搜索简单实现 -->
     <select id="search" resultMap="productResult">
         SELECT
-        p.id, p.name, p.category_id, p.show_price, p.introduction, p.show_pic, p.page_title, pd.page_introduction, p.is_show, p.created_time, p.remarks
+        p.id, p.name, p.category_id, p.show_price, p.title, p.show_pic, pd.introduction, p.is_show, p.create_time, p.remarks
         FROM os_product p, os_product_detail pd
         WHERE p.page_title like concat('%', #{keyword}, '%')  AND pd.product_id = #{id}
     </select>
@@ -44,7 +44,7 @@
     <!-- 分类+分页 -->
     <select id="listByCategoryId" resultMap="productResult">
         SELECT
-        p.id, p.name, p.category_id, p.show_price, p.introduction, p.show_pic, p.page_title, pd.page_introduction, p.is_show, p.created_time, p.remarks
+        p.id, p.name, p.category_id, p.show_price, p.title, p.show_pic, pd.introduction, p.is_show, p.create_time, p.remarks
         FROM os_product p, os_product_detail pd
         WHERE pd.product_id = p.id
         <!-- categoryId为0表示检索全部商品 -->
@@ -52,7 +52,7 @@
                 AND p.category_id = #{categoryId}
             </if>
             <if test='sort == 1'>
-                ORDER BY p.created_time DESC
+                ORDER BY p.create_time DESC
             </if>
             <if test='sort == 2'>
                 ORDER BY p.quantity_sold DESC
