@@ -11,11 +11,9 @@ public class Product {
     private Long id;
     private String name;//商品名字
     private Long showPrice;//展示价格
-    private String introduction;//商品简介
-
+    private String title;//商品简介
     private String showPic;//封面
-    private String pageTitle;//商品页面标题
-    private String pageIntroduction;//商品介绍
+    private String introduction;//商品介绍
     private byte isShow;//是否上架,0否,1是
     private String createdTime;//创建时间
     private Integer quantitySold;//卖出数量
@@ -64,22 +62,6 @@ public class Product {
 
     public void setShowPic(String showPic) {
         this.showPic = showPic;
-    }
-
-    public String getPageTitle() {
-        return pageTitle;
-    }
-
-    public void setPageTitle(String pageTitle) {
-        this.pageTitle = pageTitle;
-    }
-
-    public String getPageIntroduction() {
-        return pageIntroduction;
-    }
-
-    public void setPageIntroduction(String pageIntroduction) {
-        this.pageIntroduction = pageIntroduction;
     }
 
     public byte getIsShow() {
@@ -152,5 +134,13 @@ public class Product {
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 }
