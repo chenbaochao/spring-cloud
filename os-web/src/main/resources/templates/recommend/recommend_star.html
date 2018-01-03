@@ -1,8 +1,6 @@
-<%@ page language="java" import="java.util.*" contentType="text/html; charset=utf-8"%>
-<%@ include file="/WEB-INF/layouts/base.jsp"%>
-
+<html  xmlns:th="http://www.thymeleaf.org">
 <!--     明星产品 begin       -->
-<c:if test="${not empty products}">
+
   <div class="row" id="J_recommend_stat">
     <div class="col-md-12 col-sm-12">
       <div class="xm-plain-box">
@@ -18,20 +16,22 @@
         <div class="box-bd">
           <div class="xm-carousel-wrapper" style="height: 340px; overflow: hidden;">
             <ul class="xm-carousel-list xm-carousel-col-5-list goods-list rainbow-list clearfix J_carouselList J_statList" style="width: 2480px; margin-left: 0px; transition: margin-left 0.5s ease;">
-              <c:forEach items="${products}" var="product">
-                <li data-gid="${product.productNumber}"> <a class="thumb" href="${ctx}/detail/${product.productNumber}" target="_blank" data-recommend-product-id="${product.recommendProductId}"><img title="${product.name}" src="${ctximg}/${product.picImg}" alt="${product.name}" width="160" height="160"></a>
-                  <h3 class="title"><a href="${ctx}/detail/${product.productNumber}" target="_blank">${product.name}</a></h3>
+
+                <li data-gid="1" th:each="advert:${startAdvert}">
+                  <a class="thumb" th:href="${advert.href}" target="_blank" data-recommend-product-id="2">
+                    <img th:title="${advert.title}" th:src="${advert.showPic}" th:alt="${advert.name}" width="160" height="160">
+                  </a>
+                  <h3 class="title"><a th:href="${advert.href}" target="_blank" th:text="${advert.title}"></a></h3>
                   <p class="desc"> ${product.introduce} </p>
                   <p class="price"> ${product.showPrice} </p>
                 </li>
-              </c:forEach>
+
             </ul>
           </div>
         </div>
       </div>
     </div>
   </div>
-</c:if>
 <!--     明星产品 end         -->
 <script type="text/javascript">
 	/**
@@ -95,3 +95,4 @@
 		});
 	})
 </script>
+</html>

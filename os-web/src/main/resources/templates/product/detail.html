@@ -51,9 +51,9 @@
                     <dl class="goods-info-box ">
                         <dt class="goods-info-head">
                             <dl id="J_goodsInfoBlock">
-                                <dt id="goodsName" class="goods-name" th:utext="${product.pageTitle}"> 小米5x </dt>
+                                <dt id="goodsName" class="goods-name" th:utext="${product.name}"> 小米5x </dt>
                                 <dd class="goods-subtitle">
-                                    <p th:utext="${product.introduction}">> 产品介绍 </p>
+                                    <p th:utext="${product.title}">> 产品介绍 </p>
                                 </dd>
                                 <dd class="goods-info-head-tip">
                                     <ul>
@@ -115,7 +115,7 @@
     <div class="goods-detail-desc J_itemBox" id="goodsDesc" style="display: block;">
         <div class="container">
             <div class="shape-container">
-                <p class="detailBlock" th:utext="${product.pageIntroduction}"></p>
+                <p class="detailBlock" th:utext="${product.introduction}"></p>
 
             </div>
         </div>

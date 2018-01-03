@@ -26,23 +26,11 @@
         <div class="col-md-12 col-sm-12">
           <div class="box">
             <ul class="ull">
-              <!--<c:forEach items="${indexCarouselImgs}" var="indexCarouselImg">-->
-              <li>
-                <a href="${indexCarouselImg.href}" title="${indexCarouselImg.title}" target="_blank">
-                  <img src="https://i1.mifile.cn/a4/xmad_15145456592979_Rhbig.jpg" alt="${indexCarouselImg.title }">
+              <li th:each="advert:${sliderAdvert}">
+                <a th:href="${advert.href}" th:title="${advert.title}" target="_blank">
+                  <img th:src="${advert.showPic}" th:alt="${advert.title}">
                 </a>
               </li>
-              <li>
-                <a href="${indexCarouselImg.href}" title="${indexCarouselImg.title}" target="_blank">
-                  <img src="https://i1.mifile.cn/a4/xmad_1513304443358_gzjfM.jpg" alt="${indexCarouselImg.title }">
-                </a>
-              </li>
-              <li>
-                <a href="${indexCarouselImg.href}" title="${indexCarouselImg.title}" target="_blank">
-                  <img src="https://i1.mifile.cn/a4/xmad_15142058803402_hlmZJ.jpg" alt="${indexCarouselImg.title }">
-                </a>
-              </li>
-              <!--</c:forEach>-->
             </ul>
             <ol class="oll">
             </ol>
@@ -58,7 +46,7 @@
           <div class="span4">
             <ul class="home-channel-list clearfix">
               <!--<c:forEach items="${indexAdvertLeft}" var="indexAdvertLeft">-->
-              <li><a href="${indexAdvertLeft.href }" target="${indexAdvertLeft.target}" title="${indexAdvertLeft.name}">以旧换新</a></li>
+              <li><a  href="${indexAdvertLeft.href }" target="${indexAdvertLeft.target}" title="${indexAdvertLeft.name}">以旧换新</a></li>
               <li><a href="${indexAdvertLeft.href }" target="${indexAdvertLeft.target}" title="${indexAdvertLeft.name}">以旧换新</a></li>
               <li><a href="${indexAdvertLeft.href }" target="${indexAdvertLeft.target}" title="${indexAdvertLeft.name}">以旧换新</a></li>
               <li><a href="${indexAdvertLeft.href }" target="${indexAdvertLeft.target}" title="${indexAdvertLeft.name}">以旧换新</a></li>
@@ -69,21 +57,10 @@
           </div>
           <div class="span16" id="J_homePromo" data-stat-title="焦点图下方小图">
             <ul class="home-promo-list clearfix">
-              <!--<c:forEach items="${indexHotAdvertImgs }" var="indexHotAdvertImg" varStatus="indexHotAdvertImgStat">-->
-              <!--<c:if test="${indexHotAdvertImgStat.first}">-->
-              <li class="first"><a class="item" href="${indexHotAdvertImg.href }" title="${indexHotAdvertImg.title}">
-                <img src="https://i1.mifile.cn/a4/xmad_1513304443358_gzjfM.jpg" alt="${indexHotAdvertImg.title }"></a>
+              <li th:each="advert,status:${underSliderAdvert}" th:class="${status.index} eq 0?'first':'item'">
+                <a class="item" th:href="${advert.href}" th:title="${advert.title}">
+                <img th:src="${advert.showPic}" th:alt="${advert.title}"></a>
               </li>
-              <!--</c:if>-->
-              <!--<c:if test="${!indexHotAdvertImgStat.first}">-->
-              <li><a class="item" href="${indexHotAdvertImg.href }" title="${indexHotAdvertImg.title}">
-                <img src="https://i1.mifile.cn/a4/xmad_1513304443358_gzjfM.jpg" alt="${indexHotAdvertImg.title }"></a>
-              </li>
-              <li><a class="item" href="${indexHotAdvertImg.href }" title="${indexHotAdvertImg.title}">
-                <img src="https://i1.mifile.cn/a4/xmad_1513304443358_gzjfM.jpg" alt="${indexHotAdvertImg.title }"></a>
-              </li>
-              <!--</c:if>            -->
-              <!--</c:forEach>-->
             </ul>
           </div>
         </div>
