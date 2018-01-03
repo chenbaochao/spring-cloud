@@ -18,7 +18,7 @@
     </select>
     <!-- 产品信息 -->
     <select id="findProduct" resultType="com.play001.cloud.common.entity.Product">
-        select id, name, page_title as pageTitle, show_pic as showPic
+        select id, name, title, show_pic as showPic
         FROM os_product
         where id = #{product_id}
     </select>

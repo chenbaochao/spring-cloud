@@ -19,6 +19,7 @@ public class AdvertService {
      * 1.首页-轮播广告
      * 2.首页-轮播下方
      * 3.首页-分栏广告
+     * 4.首页-明星产品
      */
 
     @Autowired
@@ -29,5 +30,18 @@ public class AdvertService {
      */
     public List<Advert> getSliderAdvert() {
         return advertMapper.getAdvertsByCategoryId(1, 8);
+    }
+
+    /**
+     * 轮播下面的广告
+     */
+    public List<Advert> getUnderSliderAdvert() {
+        return advertMapper.getAdvertsByCategoryId(2, 3);
+    }
+    /**
+     * 首页明显产品
+     */
+    public List<Advert> getStartAdvert() {
+        return advertMapper.getAdvertsByCategoryId(4, 99);
     }
 }

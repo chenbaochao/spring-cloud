@@ -33,7 +33,7 @@
     <!-- 搜索附带商品 -->
     <select id="findProduct" resultType="com.play001.cloud.common.entity.Product">
         SELECT
-        p.id, p.name, p.show_pic as showPic, p.page_title as pageTitle, p.show_price as showPrice
+        p.id, p.name, p.show_pic as showPic, p.title, p.show_price as showPrice
         FROM os_product p
         WHERE p.category_id = #{id} AND p.is_show = 1
         ORDER by p.create_time DESC

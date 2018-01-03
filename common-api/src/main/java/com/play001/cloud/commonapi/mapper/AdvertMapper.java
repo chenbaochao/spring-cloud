@@ -16,7 +16,7 @@ public interface AdvertMapper {
      * @param advertCategoryId 广告类型
      * @param number 获取数量
      */
-    @Select("select id, title, sort, href, show_pic from os_advert_detail where advert_category_id = #{advertCategoryId} order by sort limit #{number}")
+    @Select("select id, title, sort, href, show_pic as showPic from os_advert_detail where advert_category_id = #{advertCategoryId} order by sort limit #{number}")
     List<Advert> getAdvertsByCategoryId(@Param("advertCategoryId") Integer advertCategoryId,
                             @Param("number") Integer number);
 
@@ -25,8 +25,9 @@ public interface AdvertMapper {
      * @param sectionId 首页栏目ID
      * @param number 获取数量
      */
-    @Select("select id, title, sort, href, show_pic from os_advert_detail where section_id = #{sectionId} order by sort limit #{number}")
+    @Select("select id, title, sort, href, show_pic as showPic from os_advert_detail where section_id = #{sectionId} order by sort limit #{number}")
     List<Advert> getAdvertsBySectionId(@Param("sectionId") Integer sectionId,
                                         @Param("number") Integer number);
+
 
 }
