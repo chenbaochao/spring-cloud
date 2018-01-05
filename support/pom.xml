@@ -5,15 +5,18 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.play01.cloud</groupId>
-    <artifactId>common</artifactId>
+    <artifactId>support</artifactId>
     <version>1.0</version>
     <packaging>jar</packaging>
+
+
     <parent>
         <groupId>com.play001.cloud</groupId>
         <artifactId>parent</artifactId>
         <version>1.0</version>
         <relativePath>../parent</relativePath>
     </parent>
+
     <dependencies>
 
 

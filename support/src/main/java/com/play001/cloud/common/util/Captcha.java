@@ -1,6 +1,5 @@
-package com.play001.cloud.userapi.util;
+package com.play001.cloud.common.util;
 
-import javax.servlet.http.HttpSession;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Random;
@@ -43,6 +42,6 @@ public class Captcha {
             int index = random.nextInt(codeChar.length);
             captcha += codeChar[index];
         }
-        return captcha;
+        return captcha.toLowerCase();
     }
 }

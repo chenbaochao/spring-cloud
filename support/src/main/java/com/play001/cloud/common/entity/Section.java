@@ -13,6 +13,7 @@ public class Section {
     private String name;
     private List<Category> categories;
     private List<Advert> advert;//广告
+
     public Integer getId() {
         return id;
     }
@@ -68,4 +69,5 @@ public class Section {
     public void setAdvert(List<Advert> advert) {
         this.advert = advert;
     }
+
 }
