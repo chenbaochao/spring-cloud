@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.play001.cloud.commonapi.mapper.SectionMappr">
+    <resultMap id="sectionResult" type="com.play001.cloud.common.entity.Section">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="sort" column="sort"/>
+        <result property="status" column="status"/>
+        <result property="isHot" column="is_hot"/>
+        <!-- 分类 -->
+        <collection property="categories" select="findCategory"   column="category_ids"  ofType="com.play001.cloud.common.entity.Category"/>
+        <collection property="advert" select="findAdvert" column="id" ofType="com.play001.cloud.common.entity.Advert"/>
+    </resultMap>
+
+    <resultMap id="categoryResult" type="com.play001.cloud.common.entity.Category">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <!-- 附带产品 -->
+        <collection property="products" select="findProduct" column="id" ofType="com.play001.cloud.common.entity.Product"/>
+    </resultMap>
+
+
+
+
+    <!--首页section -->
+    <select id="getIndexSections" resultMap="sectionResult">
+        select id, name, is_hot, category_ids
+        from os_index_section
+        where status = 1
+        ORDER BY sort
+    </select>
+
+    <!-- section下的产品分类 -->
+    <select id="findCategory" resultMap="categoryResult" parameterType="String">
+        SELECT
+            c.id, c.name
+        FROM os_category c
+        WHERE c.status = 1 AND id IN(${_parameter})
+        ORDER by c.sort
+    </select>
+    <!-- 搜索附带商品 -->
+    <select id="findProduct" resultType="com.play001.cloud.common.entity.Product">
+        SELECT
+        p.id, p.name, p.show_pic as showPic, p.title, p.show_price as showPrice, quantity_sold as quantitySold, remarks
+        FROM os_product p
+        WHERE p.category_id = #{id} AND p.is_show = 1
+        ORDER by p.create_time DESC
+        LIMIT 8
+    </select>
+    <!-- 栏目广告 -->
+    <select id="findAdvert" resultType="com.play001.cloud.common.entity.Advert">
+        SELECT id, title, href, show_pic as showPic
+        FROM os_advert_detail
+        WHERE section_id = #{id}
+    </select>
+</mapper>
