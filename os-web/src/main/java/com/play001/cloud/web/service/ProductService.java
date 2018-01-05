@@ -1,5 +1,6 @@
 package com.play001.cloud.web.service;
 
+import com.play001.cloud.common.entity.Advert;
 import com.play001.cloud.common.entity.Pagination;
 import com.play001.cloud.common.entity.Product;
 import com.play001.cloud.common.entity.Response;
@@ -29,4 +30,9 @@ public interface ProductService {
                                                         @RequestParam("start")Long start,
                                                         @RequestParam("quantity") Integer quantity);
 
+    /**
+     * 获取首页明星产品
+     */
+    @RequestMapping(value = "/product/getStarProduct", method = RequestMethod.GET)
+    Response<List<Product>> getStarProduct();
 }

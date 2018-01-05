@@ -9,19 +9,14 @@
     <script src="/common/jquery/jquery.cookie.js"></script>
 </head>
 <body>
-<div th:replace="common/site_topbar :: div">
-</div>
-
-<div th:replace="common/site_header :: div">
-</div>
+<div id="site-topBar"></div>
+<div id="site-header"></div>
 
 <!--     分类导航栏 begin       -->
 <div class="breadcrumbs">
     <div class="container-fluid"><a href='${ctx}/index'>首页</a>
-        <!--<c:forEach items="${upperCategories}" var="upperCategory">-->
-        <span class="sep">&gt;</span><a href="${ctx}/list?categoryId=${upperCategory.categoryId}">上一级目录</a>
-        <!--</c:forEach>-->
-        <span class="sep">&gt;</span><a href="/product/detail/${product.productNumber}" th:text="${product.name}"></a> </div>
+        <span class="sep">&gt;</span><a th:href="|/product/list?categoryId=${product.category.id}|">上一级目录</a>
+        <span class="sep">&gt;</span><a href="javascript:;" th:text="${product.name}"></a> </div>
 </div>
 <!--     分类导航栏 end       -->
 
@@ -270,7 +265,10 @@
             <div class="shop-global-error">
                 <h2>你所查找的商品不存在</h2>
                 <p class="shop-global-error-tips"></p>
-                <p class="shop-global-error-btn"> <a href="${ctx }/index" class="btn btn-primary">去首页</a> <a href="javascript:;" onclick="history.go(-1);" class="btn btn-line-gray">返回上一页</a> </p>
+                <p class="shop-global-error-btn">
+                    <a href="/" class="btn btn-primary">去首页</a>
+                    <a href="javascript:;" onclick="history.go(-1);" class="btn btn-line-gray">返回上一页</a>
+                </p>
             </div>
         </div>
     </div>
@@ -283,8 +281,10 @@
             <div class="span4">
                 <dl class="goods-sub-bar-info clearfix">
                     <dt> <img alt="${pruduct.name}" src="${ctximg}/${product.picImg}"> </dt>
-                    <dd> <strong>小米5x</strong>
-                        <p> <em><span class="J_mi_goodsPrice">19999</span>元</em> <del><span class="J_mi_marketPrice">79元</span></del> </p>
+                    <dd> <strong th:text="${product.name}">小米5x</strong>
+                        <p> <em><span class="J_mi_goodsPrice" th:text="${product.showPrice}">1999</span>元</em
+                            <del><span class="J_mi_marketPrice" th:text="|${product.showPrice}元|">199元</span></del>
+                        </p>
                     </dd>
                 </dl>
             </div>
@@ -381,9 +381,7 @@
 </script>
 
 
-<div th:replace="common/site_footer :: div">
-
-</div>
+<div id="site-footer"></div>
 
 
 <script src="/common/bootstrap/js/bootstrap.min.js"></script>

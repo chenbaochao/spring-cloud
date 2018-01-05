@@ -32,7 +32,6 @@ public class CartController {
     public String addSuccess(String pageTitle, Model model) throws UnsupportedEncodingException, IException {
         pageTitle = URLDecoder.decode(pageTitle,"UTF-8");
         model.addAttribute("pageTitle", pageTitle);
-        model.addAttribute("categories", categoryService.findAllWithProduct());
         return "product/add_cart_success";
     }
 

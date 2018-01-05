@@ -3,6 +3,8 @@ package com.play001.cloud.web.controller;
 import com.play001.cloud.common.entity.IException;
 import com.play001.cloud.web.service.impl.AdvertServiceImpl;
 import com.play001.cloud.web.service.impl.CategoryServiceImpl;
+import com.play001.cloud.web.service.impl.ProductServiceImpl;
+import com.play001.cloud.web.service.impl.SectionServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,24 +17,49 @@ public class IndexController {
     private CategoryServiceImpl categoryService;
     @Autowired
     private AdvertServiceImpl advertService;
-
+    @Autowired
+    private ProductServiceImpl productService;
+    @Autowired
+    private SectionServiceImpl sectionService;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String index(Model model) throws IException {
-        model.addAttribute("categories", categoryService.findAllWithProduct());
+
         //轮播广告
         model.addAttribute("sliderAdvert", advertService.getSliderAdvert());
         //轮播下面三个小广告
         model.addAttribute("underSliderAdvert", advertService.getUnderSliderAdvert());
-
-
         return "webfront/index";
     }
+
+
     //明星产品
-    @RequestMapping(value = "/startAdvert", method = RequestMethod.GET)
-    public String startAdvert(Model model) throws IException {
+    @RequestMapping(value = "/starProduct", method = RequestMethod.GET)
+    public String starProduct(Model model) throws IException {
         //明星产品
-        model.addAttribute("startAdvert", advertService.getStartAdvert());
-        return "";
+        model.addAttribute("starProduct", productService.getStarProduct());
+        return "recommend/recommend_star";
+    }
+
+
+    //section
+    @RequestMapping(value = "/section", method = RequestMethod.GET)
+    public String hotProduct(Model model) throws IException {
+        model.addAttribute("sections", sectionService.getSection());
+        return "webfront/section";
+    }
+
+    @RequestMapping(value = "/siteHeader", method = RequestMethod.GET)
+    public String siteHeader(Model model) throws IException {
+        model.addAttribute("categories", categoryService.findAllWithProduct());
+        return "common/site_header";
+    }
+    @RequestMapping(value = "/siteTopBar", method = RequestMethod.GET)
+    public String siteTopBar(Model model)  {
+        return "common/site_top_bar";
+    }
+    @RequestMapping(value = "/siteFooter", method = RequestMethod.GET)
+    public String siteFooter(Model model)  {
+        return "common/site_footer";
     }
 }

@@ -1,0 +1,135 @@
+<html  xmlns:th="http://www.thymeleaf.org">
+<!--     主产品区热门分类 begin       -->
+
+
+
+    <div class="row J_recommend_hot">
+      <div class="col-md-12 col-sm-12">
+        <div class="home-brick-box home-brick-row-2-box xm-plain-box" id="category-0">
+          <div class="box-hd">
+            <h2 class="title">智能</h2>
+            <div class="more J_brickNav">
+              <ul class="tab-list J_brickTabSwitch">
+                <li>出行</li>
+                <li>健康</li>
+                <li>酷玩</li>
+                <li>路由器</li>
+             </ul>
+           </div>
+         </div>
+         <div class="box-bd J_brickBd">
+           <div class="row">
+             <div class="span4 span-first">
+               <ul class="brick-promo-list clearfix">
+                   <li class="brick-item2 brick-item-m" data-gid="1">
+                     <a title="广告一" href="${categoryAdvert.href}" target="_blank">
+                       <img src="https://i1.mifile.cn/a1/pms_1495520422.36514041!220x220.jpg" alt="${categoryAdvert.title}">
+                     </a>
+                   </li>
+                 <li class="brick-item2 brick-item-m" data-gid="${categoryAdvert.categoryAdvertId}">
+                   <a title="广告二" href="${categoryAdvert.href}" target="_blank">
+                     <img src="https://i1.mifile.cn/a1/pms_1495520422.36514041!220x220.jpg" alt="${categoryAdvert.title}">
+                   </a>
+                 </li>
+               </ul>
+             </div>
+             <div class="span16">
+               <div class="tab-container" id="category-0-content">
+
+                 <ul class="brick-list">
+                     <li class="brick-item brick-item-m" >
+                       <div class="figure figure-img">
+                         <a target="_blank" title="${product.name}" href="${ctx}/detail/${product.productNumber}">
+                           <img src="https://i1.mifile.cn/a1/pms_1495520422.36514041!220x220.jpg" width="160" height="160" alt="${product.name}">
+                         </a>
+                       </div>
+                       <h3 class="title"><a target="_blank" title="${product.name}" href="${ctx}/detail/${product.productNumber}">小米1</a></h3>
+                       <p class="price"> <span class="num">1999</span>元 </p>
+                       <p class="rank"> 已售1232 </p>
+                         <div class="review-wrapper">
+                           <a title="${product.name}" href="${ctx}/detail/${product.productNumber}">
+                             <span class="review">商品introduction</span>
+                             <span class="author">  <span class="date"></span></span>
+                           </a>
+                         </div>
+                        <div class="flag"> 标签名字 </div>
+                     </li>
+                 </ul>
+
+                 <ul class="brick-list">
+                   <li class="brick-item brick-item-m" data-gid="2">
+                     <div class="figure figure-img">
+                       <a target="_blank" title="${product.name}" href="${ctx}/detail/${product.productNumber}">
+                         <img src="https://i1.mifile.cn/a1/pms_1495520422.36514041!220x220.jpg" width="160" height="160" alt="${product.name}">
+                       </a>
+                     </div>
+                     <h3 class="title"><a target="_blank" title="${product.name}" href="${ctx}/detail/${product.productNumber}">小米2</a></h3>
+                     <p class="price"> <span class="num">1999</span>元 </p>
+                     <p class="rank"> 1232人评价 </p>
+                     <div class="review-wrapper">
+                       <a title="${product.name}" href="${ctx}/detail/${product.productNumber}">
+                         <span class="review">商品introduction</span>
+                         <span class="author">  <span class="date"></span></span>
+                       </a>
+                     </div>
+                     <div class="flag"> 标签名字 </div>
+                   </li>
+                 </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<!--     主产品区热门分类 end         -->
+<script type="text/javascript">
+	/**
+	 * 随机分配产品标签颜色
+	 */
+	$(function() {
+		var $elements = $('#J_hotCategory .flag');
+		var len = $elements.length;
+		// alert('有 ' + len + ' 个相同class');
+		$elements.each(function() {
+			var $this = $(this);
+			var num = (Math.floor(Math.random() * 4) + 1); //输出1-4的随机数搜索
+			switch (num) { //然后判断
+			case 1:
+				$this.addClass("flag-new");
+				break;
+			case 2:
+				$this.addClass("flag-saleoff");
+				break;
+			case 3:
+				$this.addClass("flag-postfree");
+				break;
+			default:
+				$this.addClass("flag-gift");
+				break;
+			}
+		});
+	})
+
+	/**
+ 	 * TAB-list
+ 	 */
+	$(function() {
+		var $elements = $('#J_hotCategory .J_recommend_hot');
+		var len = $elements.length;
+		console.log("run!!!!");
+		for (var i = 0; i < len; i++) {
+			$('#category-' + i + '-content .brick-list').eq(0).show().siblings().hide();
+			$('#category-' + i + ' .tab-list li').eq(0).show();
+			$('#category-' + i + ' .tab-list li').eq(0).addClass('tab-active');
+
+			$('#category-' + i + ' .tab-list li').mouseover(function(e) {
+			    console.log("i="+i)
+				var that = $(this).parents('.home-brick-box').attr('id');
+				$(this).addClass('tab-active').siblings().removeClass('tab-active');
+				var index = $(this).index();
+				$('#' + that + ' .brick-list').eq(index).show().siblings().hide();
+			})
+		}
+	})
+</script>

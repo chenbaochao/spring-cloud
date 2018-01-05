@@ -9,11 +9,8 @@
   <script src="/common/jquery/jquery.cookie.js"></script>
 </head>
 <body>
-<div th:replace="common/site_topbar :: div">
-</div>
-
-<div th:replace="common/site_header :: div">
-</div>
+<div id="site-topBar"></div>
+<div id="site-header"></div>
 
 <div class="page-main">
   <div class="container">
@@ -35,15 +32,13 @@
 
 
 
+
+
+
+<div id="site-footer"></div>
+
 <!-- layer javascript -->
 <script src="/common/layer/layer.js"></script>
-
-
-<div th:replace="common/site_footer :: div">
-
-</div>
-
-
 <script src="/common/bootstrap/js/bootstrap.min.js"></script>
 <script src="/os/js/zySearch.js"></script>
 <script src="/os/js/jump.js"></script>

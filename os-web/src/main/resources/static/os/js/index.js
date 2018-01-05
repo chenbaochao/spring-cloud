@@ -6,6 +6,8 @@ $(function() {
 	show_popular_product(); // 为你推荐
 	show_comment_product(); // 热评产品
 	*/
+    show_star_product(); // 明星单品
+    show_hot_category(); // 热门分类
 });
 
 /**
@@ -13,7 +15,7 @@ $(function() {
  */
 function show_star_product() {
 	$.ajax({
-		url : baselocation + "/recommend/star",
+		url :  "/starProduct",
 		type : 'get',
 		dataType : 'text',
 		success : function(result) {
@@ -27,7 +29,7 @@ function show_star_product() {
  */
 function show_popular_product() {
 	$.ajax({
-		url : baselocation + "/recommend/popular",
+		url :  "/recommend/popular",
 		type : 'get',
 		dataType : 'text',
 		success : function(result) {
@@ -41,7 +43,7 @@ function show_popular_product() {
  */
 function show_comment_product() {
 	$.ajax({
-		url : baselocation + "/recommend/comment",
+		url :  "/recommend/comment",
 		type : 'get',
 		dataType : 'text',
 		success : function(result) {
@@ -69,8 +71,9 @@ function show_top_category() {
  */
 function show_hot_category() {
 	$.ajax({
-		url : baselocation + "/recommend/hot",
+		url : "/section",
 		type : 'get',
+        async: false,
 		dataType : 'text',
 		success : function(result) {
 			$("#J_hotCategory").html(result);

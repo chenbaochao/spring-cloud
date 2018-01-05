@@ -33,12 +33,5 @@ public class AdvertServiceImpl {
         return response.getMessage();
     }
 
-    /**
-     * 首页明星产品
-     */
-    public List<Advert> getStartAdvert() throws IException {
-        Response<List<Advert>> response = advertService.getStartAdvert();
-        if(Response.ERROR.equals(response.getStatus())) throw new IException(response.getErrMsg());
-        return response.getMessage();
-    }
+
 }

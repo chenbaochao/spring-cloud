@@ -16,14 +16,13 @@
         <div class="box-bd">
           <div class="xm-carousel-wrapper" style="height: 340px; overflow: hidden;">
             <ul class="xm-carousel-list xm-carousel-col-5-list goods-list rainbow-list clearfix J_carouselList J_statList" style="width: 2480px; margin-left: 0px; transition: margin-left 0.5s ease;">
-
-                <li data-gid="1" th:each="advert:${startAdvert}">
-                  <a class="thumb" th:href="${advert.href}" target="_blank" data-recommend-product-id="2">
-                    <img th:title="${advert.title}" th:src="${advert.showPic}" th:alt="${advert.name}" width="160" height="160">
+                <li data-gid="1" th:each="product:${starProduct}">
+                  <a class="thumb" th:href="|/product/detial-${product.id}|" target="_blank" data-recommend-product-id="2">
+                    <img th:title="${product.title}" th:src="${product.showPic}" th:alt="${product.name}" width="160" height="160">
                   </a>
-                  <h3 class="title"><a th:href="${advert.href}" target="_blank" th:text="${advert.title}"></a></h3>
-                  <p class="desc"> ${product.introduce} </p>
-                  <p class="price"> ${product.showPrice} </p>
+                  <h3 class="title"><a th:href="|/product/detial-${product.id}|" target="_blank" th:text="${product.name}"></a></h3>
+                  <p class="desc" th:text="${product.title}"> </p>
+                  <p class="price" th:text="|${product.showPrice}元|">1999元</p>
                 </li>
 
             </ul>

@@ -24,10 +24,5 @@ public interface AdvertService {
     @RequestMapping(value = "/common/advert/getUnderSliderAdvert", method = RequestMethod.GET)
     Response<List<Advert>> getUnderSliderAdvert();
 
-    /**
-     * 获取首页明星产品
-     */
-    @RequestMapping(value = "/common/advert/getStartAdvert", method = RequestMethod.GET)
-    Response<List<Advert>> getStartAdvert();
 
 }

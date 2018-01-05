@@ -1,7 +1,4 @@
-<!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<body>
-
 <div class="site-header">
     <div class="container-fluid">
         <div class="header-logo"> <a class="logo ir" href="/" title="猫宁官网"><img src="/os/images/logo.png"></a> </div>
@@ -16,24 +13,24 @@
                                 <div th:class="'children clearfix children-col-'+${ (#lists.size(item.products)+5)/6}">
                                     <ul class="children-list children-list-col children-list-col-1" th:if="${#lists.size(item.products) gt 0}">
                                         <li th:each="productItem, status:${item.products}" th:if="${status.index lt 6 }">
-                                            <a class="link" th:title="${productItem.pageTitle}"  th:href="'/product/detail/-'+${productItem.id}">
-                                                <img class="thumb" th:src="${productItem.showPic}" width="40" height="40" th:attr="alt=${productItem.pageTitle}">
+                                            <a class="link" th:title="${productItem.title}"  th:href="'/product/detail/-'+${productItem.id}">
+                                                <img class="thumb" th:src="${productItem.showPic}" width="40" height="40" th:attr="alt=${productItem.title}">
                                                 <span class="text" th:text="${productItem.name}">产品名称</span>
                                             </a>
                                         </li>
                                     </ul>
                                     <ul class="children-list children-list-col children-list-col-2" th:if="${#lists.size(item.products) gt 6}">
                                         <li th:each="productItem, status:${item.products}" th:if="${status.index gt 5 && status.index lt 12 }">
-                                            <a class="link" th:title="${productItem.pageTitle}"  th:href="'/product/detail/-'+${productItem.id}">
-                                                <img class="thumb" th:src="${productItem.showPic}" width="40" height="40" th:attr="alt=${productItem.pageTitle}">
+                                            <a class="link" th:title="${productItem.title}"  th:href="'/product/detail/-'+${productItem.id}">
+                                                <img class="thumb" th:src="${productItem.showPic}" width="40" height="40" th:attr="alt=${productItem.title}">
                                                 <span class="text" th:text="${productItem.name}">产品名称</span>
                                             </a>
                                         </li>
                                     </ul>
                                     <ul class="children-list children-list-col children-list-col-3" th:if="${#lists.size(item.products) gt 12}">
                                         <li th:each="productItem, status:${item.products}" th:if="${status.index gt 11 && status.index lt 18 }">
-                                            <a class="link" th:title="${productItem.pageTitle}"  th:href="'/product/detail/-'+${productItem.id}">
-                                                <img class="thumb" th:src="${productItem.showPic}" width="40" height="40" th:attr="alt=${productItem.pageTitle}">
+                                            <a class="link" th:title="${productItem.title}"  th:href="'/product/detail/-'+${productItem.id}">
+                                                <img class="thumb" th:src="${productItem.showPic}" width="40" height="40" th:attr="alt=${productItem.title}">
                                                 <span class="text" th:text="${productItem.name}">产品名称</span>
                                             </a>
                                         </li>
@@ -55,6 +52,3 @@
         <div class="header-search"> <span class="zySearch" id="zySearch"></span> </div>
     </div>
 </div>
-
-</body>
-</html>

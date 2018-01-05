@@ -1,9 +1,66 @@
 $(function() {
 	//showsectime(); //网站计时器
 	//show_cart_umber(); // 购物车商品数量
-    isLogin();//登陆与未登录的判断和显示不同的内容
+    show_topBar();
+    show_header();
+    show_footer();
 })
 
+/**
+ * 获取并显示topBar
+ */
+function show_topBar() {
+	var topBar = $('#site-topBar');
+	if(topBar != null){
+        $.ajax({
+            url : "/siteTopBar",
+            type : 'get',
+            async: false,
+            dataType : 'text',
+            success : function(result) {
+                topBar.html(result);
+                //加载完毕后判断是否登陆
+                isLogin();
+            }
+        });
+
+	}
+}
+/**
+ * 获取并显示header
+ */
+function show_header() {
+    var siteHeader = $('#site-header');
+    if(siteHeader != null){
+        $.ajax({
+            url : "/siteHeader",
+            type : 'get',
+            async: false,
+            dataType : 'text',
+            success : function(result) {
+                siteHeader.html(result);
+            }
+        });
+    }
+}
+
+/**
+ * 获取并显示siteFooter
+ */
+function show_footer() {
+    var footer = $('#site-footer');
+    if(footer != null){
+        $.ajax({
+            url : "/siteFooter",
+            type : 'get',
+            async: false,
+            dataType : 'text',
+            success : function(result) {
+                footer.html(result);
+            }
+        });
+    }
+}
 /**
  * 网站计时器
  * @param {} str
@@ -53,6 +110,7 @@ function isLogin(){
                 var username = credential.username;
                 $('#LoginUsername').text(username);
                 $('#J_userInfo').css('display','');
+				$('#J_miniCartTrigger').css('display','');
                 return;
 			}
 
@@ -154,7 +212,7 @@ $(function() {
 /**
  * 导航栏购物车
  */
-var lodingHtml = '<div style="text-align: center" class="tac"><img src="/static/os/images/loading.gif"></div>';
+var lodingHtml = '<div style="text-align: center" class="tac"><img src="/os/images/loading.gif"></div>';
 $(function() {
 	$('.topbar-cart').hover(function() {
 		$('.site-topbar .cart-menu').css('display', 'block');

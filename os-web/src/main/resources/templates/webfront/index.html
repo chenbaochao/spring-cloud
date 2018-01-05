@@ -7,16 +7,14 @@
   <script src="/common/jquery/jquery-3.2.0.min.js"></script>
   <script src="/common/jquery/jquery.cookie.js"></script>
   <link rel="stylesheet" href="/common/bootstrap/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="/common/bootstrap/js/bootstrap.min.js" />
   <link rel="stylesheet" href="/os/css/base.css">
   <link rel="stylesheet" href="/os/css/index.css">
 </head>
 <body>
 
-<div th:replace="common/site_topbar :: div">
-</div>
-
-<div th:replace="common/site_header :: div">
-</div>
+<div id="site-topBar"></div>
+<div id="site-header"></div>
 
 <!--     轮播begin       -->
 <div class="home-hero-container container-fluid">
@@ -97,10 +95,10 @@
   </div>
 </div>
 <!--     主产品end       -->
+<div id="site-footer"></div>
 
-<myfooter> 
-  <script src="/os/js/index.js"></script>
-</myfooter>
+
+<script src="/os/js/index.js"></script>
 <script src="/common/bootstrap/js/bootstrap.min.js"></script>
 <!-- 自定义js -->
 <script src="/os/js/zySearch.js"></script>

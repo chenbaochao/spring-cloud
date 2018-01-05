@@ -1,10 +1,7 @@
 package com.play001.cloud.web.service.impl;
 
 
-import com.play001.cloud.common.entity.IException;
-import com.play001.cloud.common.entity.Pagination;
-import com.play001.cloud.common.entity.Product;
-import com.play001.cloud.common.entity.Response;
+import com.play001.cloud.common.entity.*;
 import com.play001.cloud.web.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -71,5 +68,13 @@ public class ProductServiceImpl {
         //计算总共有多少页
         pagination.setPageQuantity((pagination.getDataQuantity().intValue()+pageSize-1)/pageSize.intValue());
         return pagination;
+    }
+    /**
+     * 首页明星产品
+     */
+    public List<Product> getStarProduct() throws IException {
+        Response<List<Product>> response = productService.getStarProduct();
+        if(Response.ERROR.equals(response.getStatus())) throw new IException(response.getErrMsg());
+        return response.getMessage();
     }
 }

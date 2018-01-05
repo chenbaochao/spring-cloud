@@ -1,5 +1,5 @@
 $(function() {
-	show_new_product(); //新品推荐
+	//show_new_product(); //新品推荐
 });
 
 /**
