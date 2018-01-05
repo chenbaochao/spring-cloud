@@ -21,7 +21,7 @@ $(function() {
 			validating : 'glyphicon glyphicon-refresh'
 		},
 		fields : {
-			'loginName' : {
+			'username' : {
 				message : '用户名验证失败',
 				validators : {
 					notEmpty : {
@@ -29,7 +29,7 @@ $(function() {
 					}
 				}
 			},
-			'loginPassword' : {
+			'password' : {
 				message : '密码验证失败',
 				validators : {
 					notEmpty : {
@@ -81,7 +81,7 @@ $(function() {
 					type : 'put',
 					url : $form.attr('action'),
 					success : function(result) {
-						if (result.code == 1) {
+						if (result.status == 'SUCCESS') {
 							parent.layer.msg("更新管理员成功!", {
 								shade : 0.3,
 								time : 1500
@@ -103,7 +103,7 @@ $(function() {
 					type : 'post',
 					url : $form.attr('action'),
 					success : function(result) {
-						if (result.code == 1) {
+						if (result.status == 'SUCCESS') {
 							parent.layer.msg("创建管理员成功!", {
 								shade : 0.3,
 								time : 1500

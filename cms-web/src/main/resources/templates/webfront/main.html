@@ -10,22 +10,7 @@
   <link rel="stylesheet" href="/common/font-awesome/css/font-awesome.min.css" />
   <link rel="stylesheet" href="/cms/css/animate.css" />
   <link rel="stylesheet" href="/cms/css/style.css" />
-  <script src="/common/jquery/jquery-3.2.0.min.js"></script>
-  <script src="/common/bootstrap/js/bootstrap.min.js"></script>
-  <script src="/common/metismenu/metisMenu.min.js"></script>
-  <script src="/common/slimscroll/jquery.slimscroll.min.js"></script>
-  <!-- layer弹出框js -->
-  <script src="/common/layer/layer.js"></script>
-  <!-- iCheck -->
-  <script src="/common/icheck/icheck.min.js"></script>
-  <!-- bootstrapvalidator-master前端验证框架 -->
-  <script src="/common/bootstrapvalidator/js/bootstrapValidator.min.js"></script>
-  <!-- 自定义js -->
-  <script src="/cms/js/hplus.js"></script>
-  <script src="/cms/js/contabs.js"></script>
-  <script src="/cms/js/content.js"></script>
-  <!-- 第三方插件 -->
-  <script src="/common/pace/pace.min.js"></script>
+
 </head>
 <body class="fixed-sidebar full-height-layout gray-bg">
   <div id="wrapper">
@@ -35,7 +20,14 @@
       <div class="sidebar-collapse">
         <ul class="nav" id="side-menu">
           <li class="nav-header">
-            <div class="dropdown profile-element"> <span><img src="#" alt="头像加载中..." class="img-circle" style="width: 64px; height: 64px;"> </span> <a data-toggle="dropdown" class="dropdown-toggle" href="#"> <span class="clear"> <span class="block m-t-xs"><strong class="font-bold">${user.userName}</strong></span> <span class="text-muted text-xs block">${user.organizationName}<b class="caret"></b></span> </span> </a>
+            <div class="dropdown profile-element">
+              <span><img src="#" alt="头像加载中..." class="img-circle" style="width: 64px; height: 64px;"> </span>
+              <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                <span class="clear">
+                  <span class="block m-t-xs"><strong class="font-bold">admin</strong></span>
+                  <span class="text-muted text-xs block">管理员<b class="caret"></b></span>
+                </span>
+              </a>
               <ul class="dropdown-menu animated fadeInRight m-t-xs">
                 <li><a class="J_menuItem" href="/administrator/info/avatar">修改头像</a> </li>
                 <li><a class="J_menuItem" href="/administrator/info">个人资料</a> </li>
@@ -332,7 +324,22 @@
     <!--右侧边栏结束-->
   </div>
   <myfooter>
-
+    <script src="/common/jquery/jquery-3.2.0.min.js"></script>
+    <script src="/common/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/common/metismenu/metisMenu.min.js"></script>
+    <script src="/common/slimscroll/jquery.slimscroll.min.js"></script>
+    <!-- layer弹出框js -->
+    <script src="/common/layer/layer.js"></script>
+    <!-- iCheck -->
+    <script src="/common/icheck/icheck.min.js"></script>
+    <!-- bootstrapvalidator-master前端验证框架 -->
+    <script src="/common/bootstrapvalidator/js/bootstrapValidator.min.js"></script>
+    <!-- 自定义js -->
+    <script src="/cms/js/hplus.js"></script>
+    <script src="/cms/js/contabs.js"></script>
+    <script src="/cms/js/content.js"></script>
+    <!-- 第三方插件 -->
+    <script src="/common/pace/pace.min.js"></script>
   </myfooter>
   </div>
 </body>

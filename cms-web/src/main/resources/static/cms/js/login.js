@@ -44,7 +44,7 @@ function showsectime() {
  */
 $(function() {
 	$('#kaptchaImage').click(function() {
-		$(this).attr('src', baselocation + '/captcha-image.jpg?' + Math.floor(Math.random() * 100));
+		$(this).attr('src', '/captcha?model=login&' + Math.floor(Math.random() * 100));
 	})
 });
 
@@ -53,35 +53,36 @@ $(function() {
  */
 $(function() {
 	$('.submit_btn').click(function() {
-		var loginName = $("input[name='loginName']").val();
-		if (loginName.length <= 0) {
-			$("input[name='loginName']").attr("placeholder", "请输入帐号");
+		var username = $("input[name='username']").val();
+		if (username.length <= 0) {
+			$("input[name='username']").attr("placeholder", "请输入帐号");
 			return false;
 		}
-		var loginPassword = $("input[name='loginPassword']").val();
-		if (loginPassword.length <= 0) {
-			$("input[name='loginPassword']").attr("placeholder", "请输入密码");
+		var password = $("input[name='password']").val();
+		if (password.length <= 0) {
+			$("input[name='password']").attr("placeholder", "请输入密码");
 			return false;
 		}
-		var registerCode = $("input[name='registerCode']").val();
-		if (registerCode.length <= 0) {
-			$("input[name='registerCode']").attr("placeholder", "输入验证码");
+		var captchaCode = $("input[name='captchaCode']").val();
+		if (captchaCode.length <= 0) {
+			$("input[name='captchaCode']").attr("placeholder", "输入验证码");
 			return false;
 		}
 		$.ajax({
-			url : baselocation + '/login',
+			url : '/admin/login',
 			type : 'post',
 			dataType : 'json',
 			data : {
-				"loginName" : loginName,
-				"loginPassword" : loginPassword,
-				"registerCode" : registerCode
+				"username" : username,
+				"password" : password,
+				"captchaCode" : captchaCode
 			},
 			success : function(result) {
 				console.info(result);
-				if (result.code == 1) {
-					window.location.href = baselocation + '/index';
-				} else if (result.code == 10005) {
+				if (result.status == 'SUCCESS') {
+					window.location.href = '/admin/index';
+				} else
+					/*if (result.code == 10005) {
 					$("input[name='registerCode']").val("");
 					$("input[name='registerCode']").attr("placeholder", result.message);
 					$(".ver_btn").trigger("click");
@@ -89,8 +90,9 @@ $(function() {
 					$("input[name='loginPassword']").val("");
 					$("input[name='loginPassword']").attr("placeholder", result.message);
 					$(".ver_btn").trigger("click");
-				} else {
-					layer.alert(result.message, {
+				} else*/
+					{
+					layer.alert(result.errMsg, {
 						icon : 2
 					});
 				}

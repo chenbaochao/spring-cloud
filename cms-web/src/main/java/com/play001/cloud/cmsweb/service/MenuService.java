@@ -1,16 +1,19 @@
 package com.play001.cloud.cmsweb.service;
 
-
+import com.play001.cloud.cmsweb.mapper.MenuMapper;
 import com.play001.cloud.common.entity.Menu;
-import com.play001.cloud.common.entity.Response;
-import org.springframework.cloud.netflix.feign.FeignClient;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@FeignClient("ZUUL")
-public interface MenuService {
+@Service
+public class MenuService {
 
-    @RequestMapping("/cms/menu/getMenus")
-    Response<List<Menu>> getMenus();
+    @Autowired
+    private MenuMapper menuMapper;
+
+    public List<Menu> getMenus(){
+        return menuMapper.getMenus();
+    }
 }
