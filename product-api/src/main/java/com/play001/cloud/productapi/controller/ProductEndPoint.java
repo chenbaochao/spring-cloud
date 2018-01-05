@@ -6,7 +6,9 @@ import com.play001.cloud.common.entity.Pagination;
 import com.play001.cloud.common.entity.Product;
 import com.play001.cloud.common.entity.Response;
 import com.play001.cloud.productapi.serivce.ProductService;
+import com.play001.cloud.productapi.serivce.RecommendService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,6 +21,19 @@ public class ProductEndPoint {
     @Autowired
     private ProductService productService;
 
+    @Autowired
+    private RecommendService recommendService;
+    /**
+     * 明星产品
+     */
+    @RequestMapping(value = "/getStarProduct", method = RequestMethod.GET)
+    public Response<List<Product>> getStarProduct(){
+        return new Response<>(recommendService.getStarProduct());
+    }
+
+    /**
+     * 产品详细信息
+     */
     @RequestMapping(value = "/getDetail", method = RequestMethod.GET)
     public Response<Product> getDetail(Long id) throws Exception {
         if(id == null) throw new IException("参数错误");

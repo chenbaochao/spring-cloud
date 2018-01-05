@@ -14,13 +14,4 @@ import java.util.List;
 @RequestMapping(value = "/recommend")
 public class RecommendEndPoint {
 
-    @Autowired
-    private RecommendService recommendService;
-    /**
-     * 明星产品
-     */
-    @RequestMapping(value = "/getStartProduct", method = RequestMethod.GET)
-    public List<Product> getStartProduct(Model model){
-        return recommendService.getStartProduct();
-    }
 }

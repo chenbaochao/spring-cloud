@@ -17,7 +17,7 @@ public class RecommendService {
     @Autowired
     private RecommendMapper recommendMapper;
 
-    public List<Product> getStartProduct(){
+    public List<Product> getStarProduct(){
         return recommendMapper.findRecommendById(1);
     }
 }
