@@ -20,7 +20,7 @@ $(function() {
 /**
  * 导航栏购物车
  */
-var lodingHtml = '<div style="text-align: center" class="tac"><img src="' + baselocation + '/static/web/img/loading.gif"></div>';
+var lodingHtml = '<div style="text-align: center" class="tac"><img src="' + baselocation + '/static/os/img/loading.gif"></div>';
 $(function() {
 	$('.topbar-cart').hover(function() {
 		$('.site-topbar .cart-menu').css('display', 'block');

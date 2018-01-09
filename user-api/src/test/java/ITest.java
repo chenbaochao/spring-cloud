@@ -9,7 +9,6 @@ public class ITest {
     @Test
     public void it()   {
         User user = new User();
-        user.setId(1);
         user.setUsername("sss");
         System.out.println(user.toString());
 

@@ -72,14 +72,14 @@ $(function() {
 			var bv = $form.data('bootstrapValidator');
 
 			var method = $('#form').attr('data-method');
-			console.info(method);
-			// Use Ajax to submit form data
-			if (method == 'put') {
+			var url = $form.attr('action');
+			// 更新
+			if ('/admin/update' == url) {
 				$.ajax({
 					data : $form.serialize(),
 					dataType : 'json',
-					type : 'put',
-					url : $form.attr('action'),
+					type : 'post',
+					url : url,
 					success : function(result) {
 						if (result.status == 'SUCCESS') {
 							parent.layer.msg("更新管理员成功!", {
@@ -89,19 +89,20 @@ $(function() {
 								window.parent.location.reload(); // 刷新父页面
 							});
 						} else {
-							layer.msg(result.message, {
+							layer.msg(result.errMsg, {
 								icon : 2,
 								time : 1000
 							});
 						}
 					}
 				})
-			} else if (method == 'post') {
+
+			} else if ('/admin/create' == url) {
 				$.ajax({
 					data : $form.serialize(),
 					dataType : 'json',
 					type : 'post',
-					url : $form.attr('action'),
+					url : url,
 					success : function(result) {
 						if (result.status == 'SUCCESS') {
 							parent.layer.msg("创建管理员成功!", {
@@ -111,7 +112,7 @@ $(function() {
 								window.parent.location.reload(); // 刷新父页面
 							});
 						} else {
-							layer.msg(result.message, {
+							layer.msg(result.errMsg, {
 								icon : 2,
 								time : 1000
 							});

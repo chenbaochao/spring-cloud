@@ -73,19 +73,4 @@ public class JwtUtil {
         mac.init(signingKey);
         return Base64.encodeBase64String(mac.doFinal(data));//加密后进行base64再加密
     }
-
-    /**
-     * 从request中获取jwt cookie
-     * @param request HttpServletRequest
-     * @return jwt
-
-    public static String getJwt(HttpServletRequest request){
-        String jwt = null;
-        Cookie []cookies = request.getCookies();
-        for(Cookie cookie : cookies){
-            if(cookie.getName().equals("userCredential")) jwt = cookie.getValue();
-        }
-        return jwt;
-    }
-     */
 }

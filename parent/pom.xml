@@ -24,7 +24,7 @@
             <!-- 些公用的entity -->
             <dependency>
                 <groupId>com.play01.cloud</groupId>
-                <artifactId>common</artifactId>
+                <artifactId>support</artifactId>
                 <version>1.0</version>
             </dependency>
             <dependency>
@@ -46,8 +46,14 @@
         <!-- 些公用的entity -->
         <dependency>
             <groupId>com.play01.cloud</groupId>
-            <artifactId>common</artifactId>
+            <artifactId>support</artifactId>
             <version>1.0</version>
+        </dependency>
+        <!-- spring 验证框架-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+            <version>1.5.9.RELEASE</version>
         </dependency>
     </dependencies>
 

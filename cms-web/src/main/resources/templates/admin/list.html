@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="/common/font-awesome/css/font-awesome.min.css" />
   <link rel="stylesheet" href="/cms/css/animate.css" />
   <link rel="stylesheet" href="/cms/css/style.css" />
+  <script src="/common/jquery/jquery-3.2.0.min.js"></script>
 </head>
 
 <body class="gray-bg">
@@ -25,7 +26,7 @@
               <div class="example-wrap">
                 <div class="example">
                   <div id="toolbar" class="btn-group m-t-sm">
-                      <button th:if="${session.permission.permission.admin_create eq true}" type="button" class="btn btn-default"  title="创建管理员" onclick="layer_show('创建管理员','/admin/create','900','700')">
+                      <button th:if="${session.admin.permission.admin_create eq true}" type="button" class="btn btn-default"  title="创建管理员" onclick="layer_show('创建管理员','/admin/create','900','700')">
                         <i class="glyphicon glyphicon-plus"></i>
                       </button>
                   </div>
@@ -38,8 +39,9 @@
                          data-show-export="true"
                          data-show-pagination-switch="true"
                          data-show-columns="true"
-                         data-url=/administrator/list/"
+                         data-url=/admin/getList"
                          data-pagination="true"
+                         data-uniqueId="id"
                          data-page-size="20"
                          data-page-list="[20, 50, 100, 200]"
                          data-side-pagination="server"
@@ -49,14 +51,12 @@
                          data-toolbar="#toolbar">
                     <thead>
                       <tr>
-                        <th data-field="userName" data-formatter="nameFormatter" data-halign="center" data-align="center" data-sortable="true">昵称</th>
+                        <th data-field="username"  data-halign="center" data-align="center" data-sortable="true">用户名</th>
                         <th data-field="realName" data-halign="center" data-align="center" data-sortable="true">姓名</th>
                         <th data-field="telephone" data-halign="center" data-align="center" data-sortable="true">手机</th>
                         <th data-field="email" data-halign="center" data-align="center" data-sortable="true">邮箱</th>
-                        <th data-field="organizationName" data-halign="center" data-align="center" data-sortable="true">组织</th>
-                        <th data-field="createTime" data-formatter="registerTimeFormatter" data-halign="center" data-align="center" data-sortable="true">注册时间</th>
-                        <th data-field="lastLoginTime" data-formatter="loginTimeFormatter" data-halign="center" data-align="center" data-sortable="true">最后登录时间</th>
-                        <th data-field="lastLoginIp" data-halign="center" data-align="center" data-sortable="true">登录IP</th>
+                        <th data-field="role.name" data-halign="center" data-align="center" data-sortable="true">用户组</th>
+                        <th data-field="createTime"  data-halign="center" data-align="center" data-sortable="true">注册时间</th>
                         <th data-field="status" data-formatter="statusFormatter" data-halign="center" data-align="center">状态</th>
                         <th data-formatter="actionFormatter" data-events="actionEvents" data-halign="center" data-align="center">操作</th>
                       </tr>
@@ -71,35 +71,34 @@
     </div>
   </div>
 </div>
-<myfooter> 
+<myfooter>
+
+  <!-- layer弹出框js -->
+  <script src="/common/layer/layer.js"></script>
+  <script src="/common/particleground/js/jquery.particleground.min.js"></script>
   <!-- Bootstrap table --> 
   <script src="/common/bootstrap-table/bootstrap-table.min.js"></script>
   <script src="/common/bootstrap-table/extensions/export/bootstrap-table-export.js"></script>
   <script src="/common/bootstrap-table/tableExport.js"></script>
   <script src="/common/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
-  <!-- 自定义js --> 
-  <script src="/cms/js/adminUserList.js"></script>
 
-  <script src="/common/jquery/jquery-3.2.0.min.js"></script>
   <!-- iCheck -->
   <script src="/common/icheck/icheck.min.js"></script>
   <!-- bootstrapvalidator-master前端验证框架 -->
   <script src="/common/bootstrapvalidator/js/bootstrapValidator.min.js"></script>
-  <!-- 自定义js -->
-  <script src="/cms/js/adminUser.js"></script>
+
   <!-- 全局js -->
   <script src="/common/bootstrap/js/bootstrap.min.js"></script>
   <script src="/common/metismenu/metisMenu.min.js"></script>
   <script src="/common/slimscroll/jquery.slimscroll.min.js"></script>
-  <!-- layer弹出框js -->
-  <script src="/common/layer/layer.js"></script>
-  <!-- iCheck -->
-  <script src="/common/icheck/icheck.min.js"></script>
+
+
   <!-- 自定义js -->
   <script src="/cms/js/hplus.js"></script>
   <script src="/cms/js/contabs.js"></script>
   <script src="/cms/js/content.js"></script>
-
+  <script src="/cms/js/adminUser.js"></script>
+  <script src="/cms/js/adminUserList.js"></script>
 </myfooter>
 </body>
 </html>

@@ -42,6 +42,6 @@ public class Captcha {
             int index = random.nextInt(codeChar.length);
             captcha += codeChar[index];
         }
-        return captcha.toLowerCase();
+        return captcha;
     }
 }

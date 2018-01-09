@@ -59,10 +59,10 @@ window.actionEvents = {
 		status_start(index, row.userId);
 	},
 	'click .edit' : function(e, value, row, index) {
-		layer_show(row.userName, baselocation + '/administrator/list/' + row.userId + '/edit', 900, 650)
+		layer_show(row.userName,  '/admin/update?id=' + row.id , 900, 650)
 	},
 	'click .remove' : function(e, value, row, index) {
-		admin_delete(index, row.userId);
+		admin_delete(index, row.id);
 	},
 	'click .log' : function(e, value, row, index) {
 		layer_show(row.userName + '登录日志', baselocation + '/administrator/list/' + row.userId + '/log', 900, 650)
@@ -143,20 +143,23 @@ function admin_delete(index, value) {
 		btn : [ '确定', '取消' ] //按钮
 	}, function() {
 		$.ajax({
-			type : 'delete',
+			type : 'post',
 			dataType : 'json',
-			url : baselocation + '/administrator/list/' + value,
+			data:{
+				'id':value
+			},
+			url : '/admin/delete',
 			success : function(result) {
-				if (result.code == 1) {
+				if (result.status == 'SUCCESS') {
 					$('#table').bootstrapTable('hideRow', {
 						index : index
 					});
-					layer.msg('该管理员删除成功!', {
+					layer.msg('删除成功!', {
 						icon : 1,
 						time : 1000
 					});
 				} else {
-					layer.alert(result.message, {
+					layer.alert(result.errMsg, {
 						icon : 2
 					});
 				}

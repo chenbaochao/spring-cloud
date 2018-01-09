@@ -1,0 +1,121 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>更新管理员</title>
+  <link rel="stylesheet" href="/common/icheck/flat/green.css" />
+  <link rel="stylesheet" href="/common/bootstrap/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="/common/font-awesome/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="/cms/css/animate.css" />
+  <link rel="stylesheet" href="/cms/css/style.css" />
+</head>
+
+<body class="gray-bg">
+<div class="wrapper wrapper-content">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="ibox float-e-margins">
+        <div class="ibox-title">
+          <h5>更新管理员<small> 用户个人信息时应当遵循合法、正当、必要的原则，明示目的、方式和范围，并经用户同意。</small></h5>
+          <div class="ibox-tools"> <a class="collapse-link"><i class="fa fa-chevron-up"></i></a> <a class="close-link"><i class="fa fa-times"></i></a> </div>
+        </div>
+        <div class="ibox-content">
+          <form id="form" class="form-horizontal" action="/admin/update" data-method="post">
+            <div class="form-group">
+              <label class="col-sm-2 col-xs-offset-1 control-label">用户名：</label>
+              <div class="col-sm-6">
+                <input type="text"  class="form-control" name="username"  th:value="${admin.username}" disabled>
+              </div>
+            </div>
+            <div class="hr-line-dashed"></div>
+            <div class="form-group">
+              <label class="col-sm-2 col-xs-offset-1 control-label">真实姓名：</label>
+              <div class="col-sm-6">
+                <input type="text" maxlength="11" class="form-control" name="realName" th:value="${admin.realName}">
+              </div>
+            </div>
+            <div class="hr-line-dashed"></div>
+            <div class="form-group">
+              <label class="col-sm-2 col-xs-offset-1 control-label">电子邮箱：</label>
+              <div class="col-sm-6">
+                <input type="text" class="form-control" name="email" th:value="${admin.email}">
+              </div>
+            </div>
+            <div class="hr-line-dashed"></div>
+            <div class="form-group">
+              <label class="col-sm-2 col-xs-offset-1 control-label">移动电话：</label>
+              <div class="col-sm-6">
+                <input type="text" maxlength="11" class="form-control" name="telephone" th:value="${admin.telephone}">
+              </div>
+            </div>
+            <div class="hr-line-dashed"></div>
+            <div class="form-group">
+              <label class="col-sm-2 col-xs-offset-1 control-label">性别：</label>
+              <div class="col-sm-6 text-center">
+                <label class="radio-inline">
+                  <input type="radio"  name="sex" value="1" th:checked="${(admin.sex eq 1)?true:false}">
+                  男</label>
+                <label class="radio-inline">
+                  <input type="radio" name="sex" value="0" th:checked="${(admin.sex eq 0)?true:false}">
+                  女</label>
+              </div>
+            </div>
+            <div class="hr-line-dashed"></div>
+            <div class="form-group">
+              <label class="col-sm-2 col-xs-offset-1 control-label">状态：</label>
+              <div class="col-sm-6 text-center">
+                <label class="radio-inline">
+                  <input type="radio" name="status" value="1" th:checked="${(admin.status eq 1)?true:false}">
+                  开启</label>
+                <label class="radio-inline">
+                  <input type="radio" name="status" value="0" th:checked="${(admin.status eq 0)?true:false}">
+                  关闭</label>
+              </div>
+            </div>
+
+            <div class="hr-line-dashed"></div>
+            <div class="form-group">
+              <label class="col-sm-2 col-xs-offset-1 control-label">用户组：</label>
+              <div class="col-sm-6">
+                <select class="form-control" name="organizationId">
+                  <option value="">--请选择--</option>
+                    <option th:each="role:${roles}" th:text="${role.name}"  th:value="${role.id }" th:selected="${(admin.role.id eq role.id)?true:false}"></option>
+                </select>
+              </div>
+            </div>
+            <div class="hr-line-dashed"></div>
+            <div class="form-group">
+              <div class="col-sm-12 text-center">
+                <button class="btn btn-primary" type="submit">提交</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<myfooter>
+  <!-- 全局js -->
+  <script src="/common/jquery/jquery-3.2.0.min.js"></script>
+  <script src="/common/bootstrap/js/bootstrap.min.js"></script>
+  <script src="/common/metismenu/metisMenu.min.js"></script>
+  <script src="/common/slimscroll/jquery.slimscroll.min.js"></script>
+  <!-- layer弹出框js -->
+  <script src="/common/layer/layer.js"></script>
+  <!-- iCheck -->
+  <script src="/common/icheck/icheck.min.js"></script>
+  <!-- bootstrapvalidator-master前端验证框架 -->
+  <script src="/common/bootstrapvalidator/js/bootstrapValidator.min.js"></script>
+  <!-- 自定义js -->
+  <script src="/cms/js/hplus.js"></script>
+  <script src="/cms/js/contabs.js"></script>
+  <script src="/cms/js/content.js"></script>
+  <!-- iCheck --> 
+  <script src="/common/icheck/icheck.min.js"></script>
+  <!-- bootstrapvalidator-master前端验证框架 --> 
+  <script src="/common/bootstrapvalidator/js/bootstrapValidator.min.js"></script>
+  <!-- 自定义js --> 
+  <script src="/cms/js/adminUser.js"></script>
+</myfooter>
+</body>
+</html>
