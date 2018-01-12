@@ -1,0 +1,182 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>个人信息 - 猫宁Morning</title>
+  <link rel="stylesheet" href="/common/bootstrap-table/bootstrap-table.min.css" />
+  <link rel="stylesheet" href="/common/icheck/flat/green.css" />
+  <link rel="stylesheet" href="/common/bootstrap/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="/common/font-awesome/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="/cms/css/animate.css" />
+  <link rel="stylesheet" href="/cms/css/style.css" />
+  <script src="/common/jquery/jquery-3.2.0.min.js"></script>
+</head>
+<script th:inline = "javascript">
+    function queryParameters(parameter) {
+        parameter.adminId = [[${admin.id}]];
+        return parameter;
+    }
+</script>
+<body class="gray-bg">
+<div class="wrapper wrapper-content">
+  <div class="row">
+    <div class="col-sm-5">
+      <div class="ibox float-e-margins">
+        <div class="ibox-title">
+          <h5>个人信息</h5>
+          <div class="ibox-tools"> <a class="collapse-link"><i class="fa fa-chevron-up"></i></a> <a class="close-link"><i class="fa fa-times"></i></a> </div>
+        </div>
+        <div class="ibox-content form-horizontal">
+          <form id="form">
+            <div class="form-group">
+              <label class="col-sm-3 control-label">用户名：</label>
+              <div class="col-sm-6">
+                <input name="username" type="text" class="form-control form-disabled" disabled="disabled" th:value="${admin.username}">
+              </div>
+                <div class="col-sm-3">
+                  <button type="button" class="btn btn-warning pull-right" onclick="change_Password();">修改密码</button>
+                </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-3 control-label">姓名：</label>
+              <div class="col-sm-6">
+                <input name="realName" type="text" class="form-control form-disabled"  th:value="${admin.realName}">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-3 control-label">性别：</label>
+              <div class="col-sm-6">
+                <label class="radio-inline add-radio" >
+                  <input type="radio"  name="sex" value="1" th:checked="${(admin.sex eq 1)?true:false}">
+                  男</label>
+                <label class="radio-inline add-radio" >
+                  <input type="radio" name="sex" value="0" th:checked="${(admin.sex eq 0)?true:false}">
+                  女</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-3 control-label">年龄：</label>
+              <div class="col-sm-6">
+                <input name="age" type="text" class="form-control form-disabled" th:value="${admin.age}">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-3 control-label">电话：</label>
+              <div class="col-sm-6">
+                <input name="telephone" type="text" class="form-control form-disabled" th:value="${admin.telephone}">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-3 control-label ">电子邮箱：</label>
+              <div class="col-sm-6 stm-inp">
+                <input name="email" type="text" class="form-control form-disabled" th:value="${admin.email}">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-3 control-label">用户组：</label>
+              <div class="col-sm-6">
+                <input type="hidden" name="role.id" class="form-control disabled-form-control"  th:value="${admin.role.id }">
+                <input type="text" class="form-control disabled-form-control" disabled="disabled" th:value="${admin.role.name }">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-3 control-label">注册时间：</label>
+              <div class="col-sm-6">
+                <input type="text" class="form-control disabled-form-control" disabled="disabled" th:value="${admin.createTime}">
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-sm-8 col-sm-offset-3">
+                  <button type="button" class="btn btn-success" onclick="save_info();" >保存修改</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-7">
+      <div class="ibox float-e-margins">
+        <div class="ibox-title">
+          <h5>登陆记录</h5>
+          <div class="ibox-tools"> <a class="collapse-link"><i class="fa fa-chevron-up"></i></a> <a class="close-link"><i class="fa fa-times"></i></a> </div>
+        </div>
+        <div class="ibox-content">
+          <div class="row row-lg">
+            <div class="col-sm-12">
+              <div class="example-wrap">
+                <div class="example">
+                  <table id="table"
+                         data-toggle="table"
+                         data-height="600"
+                         data-search="false"
+                         data-show-refresh="true"
+                         data-show-toggle="true"
+                         data-show-export="true"
+                         data-url="/admin/getLoginLogs"
+                         data-content-type="application/x-www-form-urlencoded"
+                         data-pagination="true"
+                         data-query-params = "queryParameters"
+                         data-page-size="20"
+                         data-page-list="[20, 50, 100, 200]"
+                         data-side-pagination="server"
+                         data-striped="true">
+                    <thead>
+                      <tr>
+                        <th data-field="time"  data-halign="center" data-align="center" >登录时间</th>
+                        <th data-field="ip" data-halign="center" data-align="center" data-sortable="false">登录IP</th>
+                        <th data-field="location" data-halign="center" data-align="center" data-sortable="false">登陆地址(参考)</th>
+                      </tr>
+                    </thead>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="ibox-content form-horizontal" id="change_Pass" style="display: none;">
+  <div class="form-group">
+    <label class="col-sm-4 control-label">原密码：</label>
+    <div class="col-sm-6">
+      <input name="oldPassword" type="password" class="form-control" >
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-4 control-label">新密码：</label>
+    <div class="col-sm-6">
+      <input name="newPassword" type="password" class="form-control" >
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-4 control-label">确认密码：</label>
+    <div class="col-sm-6">
+      <input name="confirmPwd" type="password" class="form-control">
+    </div>
+  </div>
+</div>
+<myfooter>
+    <!-- layer弹出框js -->
+    <script src="/common/layer/layer.js"></script>
+    <script src="/common/particleground/js/jquery.particleground.min.js"></script>
+    <!-- Bootstrap table -->
+    <script src="/common/bootstrap-table/bootstrap-table.min.js"></script>
+    <script src="/common/bootstrap-table/extensions/export/bootstrap-table-export.js"></script>
+    <script src="/common/bootstrap-table/tableExport.js"></script>
+    <script src="/common/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
+
+    <!-- iCheck -->
+    <script src="/common/icheck/icheck.min.js"></script>
+    <!-- bootstrapvalidator-master前端验证框架 -->
+    <script src="/common/bootstrapvalidator/js/bootstrapValidator.min.js"></script>
+
+    <!-- 全局js -->
+    <script src="/common/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/common/metismenu/metisMenu.min.js"></script>
+    <script src="/common/slimscroll/jquery.slimscroll.min.js"></script>
+    <!-- 自定义js -->
+    <script src="/cms/js/adminUserInfo.js"></script>
+</myfooter>
+</body>
+</html>
