@@ -1,6 +1,7 @@
 package com.play001.cloud.cms.controller;
 
 import com.play001.cloud.cms.entity.Admin;
+import com.play001.cloud.cms.entity.AdminSessionData;
 import com.play001.cloud.cms.entity.Role;
 import com.play001.cloud.cms.service.AdminService;
 import com.play001.cloud.cms.service.MenuService;
@@ -71,6 +72,34 @@ public class AdminController {
         model.addAttribute("admin", admin);
         model.addAttribute("roles", roles);
         return "admin/update";
-
     }
+
+    /**
+     * 登陆日志界面
+     */
+    @RequestMapping(value = "/loginLog", method = RequestMethod.GET)
+    public String loginLog(Integer adminId, Model model)  {
+        model.addAttribute("adminId", adminId);
+        return "admin/login_log";
+    }
+
+    /**
+     * 个人信息界面
+     */
+    @RequestMapping(value = "/personalInfo", method = RequestMethod.GET)
+    public String info(Model model, HttpSession session){
+        AdminSessionData adminSessionData  = (AdminSessionData)session.getAttribute("admin");
+        model.addAttribute("admin",adminService.findById(adminSessionData.getId()));
+        return "admin/personal_info";
+    }
+    /**
+     * 修改头像界面
+     */
+    @RequestMapping(value = "/avatar", method = RequestMethod.GET)
+    public String avatar(HttpSession session, Model model){
+        AdminSessionData adminSessionData  = (AdminSessionData)session.getAttribute("admin");
+        model.addAttribute("admin",adminService.findById(adminSessionData.getId()));
+        return "admin/avatar";
+    }
+
 }
