@@ -3,6 +3,7 @@ package com.play001.cloud.cms.mapper;
 import com.play001.cloud.cms.entity.Role;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -10,6 +11,7 @@ import java.util.List;
  * 用户组
  */
 @Mapper
+@Repository
 public interface RoleMapper {
 
     /**
