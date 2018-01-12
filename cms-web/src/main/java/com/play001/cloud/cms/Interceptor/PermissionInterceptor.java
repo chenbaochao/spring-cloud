@@ -1,6 +1,7 @@
 package com.play001.cloud.cms.Interceptor;
 
 import com.play001.cloud.cms.entity.AdminSessionData;
+import com.play001.cloud.common.entity.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,6 +21,9 @@ import java.net.URLEncoder;
 public class PermissionInterceptor extends HandlerInterceptorAdapter{
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final String NOT_LOGIN_MESSAGE = new Response<Integer>().setErrMsg("你还没有登陆!").toJson();
+    private final String NO_PERMISSION_MESSAGE = new Response<Integer>().setErrMsg("你没有权限进行此操作!").toJson();
+
     public PermissionInterceptor() {
         super();
     }
@@ -67,6 +71,12 @@ public class PermissionInterceptor extends HandlerInterceptorAdapter{
              */
             if(handlerMethod.getBeanType().getAnnotation(RestController.class) != null){
                 logger.info("RestController方法");
+                response.setCharacterEncoding("UTF-8");
+                if(result.equals("Not Logged In")){
+                    response.getWriter().print(NOT_LOGIN_MESSAGE);
+                }else{
+                    response.getWriter().print(NO_PERMISSION_MESSAGE);
+                }
             }
             if(handlerMethod.getBeanType().getAnnotation(Controller.class) != null){
                 logger.info("Controller方法");
