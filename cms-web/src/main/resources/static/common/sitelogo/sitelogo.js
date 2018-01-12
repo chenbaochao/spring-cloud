@@ -24,7 +24,7 @@
 		this.$loading = $("#page-wrapper").find('.loading');
 
 		this.$avatarForm = this.$avatarModal.find('.avatar-form');
-		this.$avatarUpload = this.$avatarForm.find('.avatar-upload');
+		this.$avatarUpload = this.$avatarForm.find('.avatar-storage');
 		this.$avatarSrc = this.$avatarForm.find('.avatar-src');
 		this.$avatarData = this.$avatarForm.find('.avatar-data');
 		this.$avatarInput = this.$avatarForm.find('.avatar-input');
@@ -83,7 +83,7 @@
 		},
 
 		initIframe : function() {
-			var target = 'upload-iframe-' + (new Date()).getTime(),
+			var target = 'storage-iframe-' + (new Date()).getTime(),
 				$iframe = $('<iframe>').attr({
 					name : target,
 					src : ''
@@ -112,7 +112,7 @@
 
 						_this.submitDone(data);
 					} else {
-						_this.submitFail('Image upload failed!');
+						_this.submitFail('Image storage failed!');
 					}
 
 					_this.submitEnd();
@@ -269,27 +269,27 @@
 
 		submitDone : function(data) {
 			if ($.isPlainObject(data)) {
-				if (data.code == 1) {
-					var photoUrl = data.data;
+				if (data.status == 'SUCCESS') {
+					var imageId = data.message.id;
 					$.ajax({
-						type : "put",
-						url : baselocation + "/administrator/info/avatar",
+						type : "post",
+						url :  "/admin/updateAvatar",
 						data : {
-							'picImg' : photoUrl
+							'imageId' : imageId
 						},
 						success : function(result) {
-							if (result.code == 1) {
+							if (result.status == 'SUCCESS') {
 								window.parent.location.reload(); // 刷新父页面
 							} else {
-								this.alert(data.message);
+								this.alert(result.errMsg);
 							}
 						},
 						error : function(ex) {
-							this.alert(data.message);
+							this.alert('保存失败');
 						}
 					});
 				} else {
-					this.alert(data.message);
+					this.alert(data.errMsg);
 				}
 			} else {
 				this.alert('Failed to response');

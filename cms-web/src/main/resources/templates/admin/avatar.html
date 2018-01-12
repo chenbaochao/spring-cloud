@@ -1,15 +1,16 @@
-<%@ page language="java" import="java.util.*" contentType="text/html; charset=utf-8"%>
-<%@ include file="/WEB-INF/layouts/base.jsp"%>
 <!DOCTYPE HTML>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 <title>修改头像 - 猫宁Morning</title>
-<link rel="stylesheet" href="${ctxsta}/common/bootstrap/css/bootstrap.min.css" />
-<link rel="stylesheet" href="${ctxsta}/cms/css/animate.css" />
-<link rel="stylesheet" href="${ctxsta}/cms/css/style.css" />
-<link rel="stylesheet" href="${ctxsta}/common/cropper/css/cropper.min.css" />
-<link rel="stylesheet" href="${ctxsta}/common/sitelogo/sitelogo.css" />
-<script> baselocation='${ctx}';</script>
+  <link rel="stylesheet" href="/common/bootstrap/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="/cms/css/animate.css" />
+  <link rel="stylesheet" href="/cms/css/style.css" />
+  <link rel="stylesheet" href="/common/cropper/css/cropper.min.css" />
+  <link rel="stylesheet" href="/common/sitelogo/sitelogo.css" />
+
+  <link rel="stylesheet" href="/common/icheck/flat/green.css" />
+  <link rel="stylesheet" href="/common/font-awesome/css/font-awesome.min.css" />
+  <script src="/common/jquery/jquery-3.2.0.min.js"></script>
 </head>
 <body class="gray-bg">
 <div class="middle-box text-center lockscreen animated fadeInDown">
@@ -18,7 +19,7 @@
       <div class="avatar">
         <div class="row">
           <div id="crop-avatar" class="col-md-12">
-            <div class="avatar-view" title="点击修改头像"> <img src="${ctximg}/${user.picImg}" alt="头像加载中..."> </div>
+            <div class="avatar-view" title="点击修改头像"> <img th:src="${admin.avatar}" alt="头像加载中..."> </div>
           </div>
         </div>
       </div>
@@ -28,7 +29,7 @@
 <div class="modal fade" id="avatar-modal" aria-hidden="true" aria-labelledby="avatar-modal-label" role="dialog" tabindex="-1">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
-      <form class="avatar-form" action="${ctx}/uploads/avatar" method="post">
+      <form class="avatar-form" action="/uploadImage" method="post">
       
         <div class="modal-header">
           <button class="close" data-dismiss="modal" type="button">&times;</button>
@@ -41,7 +42,7 @@
               <input class="avatar-data" name="avatar_data" type="hidden">
               <label for="avatarInput">图片上传</label>
               <a href="javascript:;" class="file">选择文件
-              <input class="avatar-input" id="avatarInput" name="avatar_file" type="file">
+              <input class="avatar-input" id="avatarInput" name="upFile" type="file">
               </a> </div>
             <div class="row">
               <div class="col-md-9">
@@ -73,10 +74,26 @@
   </div>
 </div>
 <div class="loading" aria-label="Loading" role="img" tabindex="-1"></div>
- <script src="${ctxsta}/common/jquery/jquery-2.1.4.min.js"></script> 
- <script src="${ctxsta}/common/bootstrap/js/bootstrap.min.js"></script>
+  <!-- layer弹出框js -->
+  <script src="/common/layer/layer.js"></script>
+  <script src="/common/particleground/js/jquery.particleground.min.js"></script>
+  <!-- Bootstrap table -->
+  <script src="/common/bootstrap-table/bootstrap-table.min.js"></script>
+  <script src="/common/bootstrap-table/extensions/export/bootstrap-table-export.js"></script>
+  <script src="/common/bootstrap-table/tableExport.js"></script>
+  <script src="/common/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
+
+  <!-- iCheck -->
+  <script src="/common/icheck/icheck.min.js"></script>
+  <!-- bootstrapvalidator-master前端验证框架 -->
+  <script src="/common/bootstrapvalidator/js/bootstrapValidator.min.js"></script>
+
+  <!-- 全局js -->
+  <script src="/common/bootstrap/js/bootstrap.min.js"></script>
+  <script src="/common/metismenu/metisMenu.min.js"></script>
+  <script src="/common/slimscroll/jquery.slimscroll.min.js"></script>
  <!-- 头像 --> 
- <script src="${ctxsta}/common/cropper/js/cropper.min.js"></script> 
- <script src="${ctxsta}/common/sitelogo/sitelogo.js"></script> 
+ <script src="/common/cropper/js/cropper.min.js"></script>
+ <script src="/common/sitelogo/sitelogo.js"></script>
 </body>
 </html>
