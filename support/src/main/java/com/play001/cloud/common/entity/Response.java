@@ -9,9 +9,9 @@ import com.google.gson.Gson;
 public class Response<T> {
     public static  final String  SUCCESS = "SUCCESS";
     public static  final String  ERROR = "ERROR";
-    protected String status;
-    protected String errMsg;
-    T message;
+    private String status;
+    private String errMsg;
+    private T message;
 
 
     public Response() {}
@@ -29,38 +29,36 @@ public class Response<T> {
      * 传递了数据,默认操作成功
      * 注意当泛型T为String类型时,会产生歧义,
      * 为Response(String status)和Response(T message)编译器不知道调用哪一个
-     * @param message
      */
     public Response(T message) {
         this.status = SUCCESS;
         this.message = message;
     }
 
-    public T getMessage() {
-        return message;
-    }
 
-    public void setMessage(T message) {
+    public Response<T> setMessage(T message) {
         this.status = SUCCESS;
         this.message = message;
+        return this;
     }
 
+    public Response<T> setStatus(String status) {
+        this.status = status;
+        return this;
+    }
+
+    public Response<T> setErrMsg(String errMsg) {
+        this.status = ERROR;
+        this.errMsg = errMsg;
+        return this;
+    }
     public String getStatus() {
         return status;
     }
-
-    public void setStatus(String status) {
-        this.status = status;
+    public T getMessage() {
+        return message;
     }
-
-    public String getErrMsg() {
-        return errMsg;
-    }
-
-    public void setErrMsg(String errMsg) {
-        this.errMsg = errMsg;
-    }
-
+    public String getErrMsg() { return errMsg; }
     public String toJson(){
         return new Gson().toJson(this);
     }
