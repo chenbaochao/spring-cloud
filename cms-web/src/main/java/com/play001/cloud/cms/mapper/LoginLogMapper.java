@@ -1,10 +1,7 @@
 package com.play001.cloud.cms.mapper;
 
 import com.play001.cloud.cms.entity.LoginLog;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -30,4 +27,11 @@ public interface LoginLogMapper {
      */
     @Select("select count(id) from cms_admin_login_log where admin_id = #{adminId}")
     Integer count(Integer adminId);
+
+
+    /**
+     * 删除指定adminId的登陆信息
+     */
+    @Delete("delete from cms_admin_login_log where admin_id = #{adminId}")
+    void deleteByAdminId(Integer adminId);
 }

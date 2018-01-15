@@ -1,11 +1,10 @@
-package com.play001.cloud.cms.controller.api;
+package com.play001.cloud.cms.controller.rest;
 
 
 import com.play001.cloud.cms.entity.Admin;
 import com.play001.cloud.cms.entity.AdminSessionData;
 import com.play001.cloud.cms.service.AdminService;
 import com.play001.cloud.cms.service.LoginLogService;
-import com.play001.cloud.cms.service.MenuService;
 import com.play001.cloud.common.entity.IException;
 import com.play001.cloud.common.entity.Response;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,21 +13,14 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.net.PasswordAuthentication;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Objects;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicReference;
 
 @RestController
 @RequestMapping("/admin")
-public class AdminApi {
+public class AdminRestController {
 
     @Autowired
     private AdminService adminService;

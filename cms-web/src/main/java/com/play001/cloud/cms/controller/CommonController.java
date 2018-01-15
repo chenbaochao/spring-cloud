@@ -15,7 +15,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 @Controller
-public class IndexController {
+public class CommonController {
 
     @Autowired
     private AdminService adminService;

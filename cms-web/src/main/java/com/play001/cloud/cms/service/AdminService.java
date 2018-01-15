@@ -12,7 +12,10 @@ import com.play001.cloud.cms.util.CommonUtil;
 import com.play001.cloud.common.entity.IException;
 import com.play001.cloud.common.entity.Image;
 import com.play001.cloud.common.entity.Response;
+import com.play001.cloud.common.enums.StorageTypeEnum;
 import com.play001.cloud.common.util.DateUtil;
+import com.play001.cloud.common.util.storage.IBaseStorageUtil;
+import com.play001.cloud.common.util.storage.StorageFactory;
 import com.sun.org.apache.regexp.internal.RE;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.tomcat.util.security.MD5Encoder;
@@ -26,6 +29,7 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,6 +49,8 @@ public class AdminService {
     private LoginLogMapper loginLogMapper;
     @Autowired
     private ImageMapper imageMapper;
+    @Autowired
+    private StorageFactory storageFactory;
 
     @Transactional(rollbackFor = Exception.class)
     public Response<Integer>  create(Admin admin ) throws IException {
@@ -173,8 +179,7 @@ public class AdminService {
      * 删除
      * @param id 管理员ID
      */
-    //@Transactional(rollbackFor = Exception.class)
-    public void delete(Integer id) throws IException {
+    public boolean delete(Integer id) throws IException {
         if(id  == 1) throw new IException("无法删除ROOT用户");
         //2.获取事务定义
         DefaultTransactionDefinition def = new DefaultTransactionDefinition();
@@ -188,13 +193,16 @@ public class AdminService {
             //删除权限信息
             permissionMapper.deletePermission(id);
             //删除登陆日志记录
-
+            loginLogMapper.deleteByAdminId(id);
             //提交
             transactionManager.commit(status);
+            return true
+                    ;
         }catch (Exception e){
             e.printStackTrace();
             //回滚
             transactionManager.rollback(status);
+            return false;
         }
 
     }
@@ -243,13 +251,29 @@ public class AdminService {
         if(imageId == null) {
             return response.setErrMsg("参数错误");
         }
-        Image image = imageMapper.findById(imageId);
-        if(image == null){
+        Admin admin = adminMapper.findById(adminId);
+
+        Image newImage = imageMapper.findById(imageId);
+        if(newImage == null){
             return response.setErrMsg("图片不存在");
         }
-        adminMapper.updateAvatar(image.getUrl(), adminId);
+        adminMapper.updateAvatar(newImage.getUrl(), adminId);
         //设置图片为已使用
         imageMapper.setUsed(imageId);
+        //删除旧头像,删除失败不处理
+        Image oldImage = imageMapper.findByUrl(admin.getAvatar());
+        try {
+            if(oldImage != null){
+                imageMapper.delete(oldImage.getId());
+                IBaseStorageUtil storageUtil = storageFactory.getStorageUtil(StorageTypeEnum.valueOf(oldImage.getStorageName()));
+                if(storageUtil != null){
+                    storageUtil.delete(oldImage.getPath());
+                }
+
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         return response.setStatus(Response.SUCCESS);
     }
 }

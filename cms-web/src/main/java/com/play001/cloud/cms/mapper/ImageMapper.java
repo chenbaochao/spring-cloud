@@ -27,5 +27,17 @@ public interface ImageMapper {
     @Update("update support_image_log set used = 1 where id = #{id}")
     void setUsed(Long id);
 
+    /**
+     * 通过URL查找图片
+     */
+    @Select("select id, url, path, used, storage_name as storageName, create_time as createTime from support_image_log where url = #{url}")
+    Image findByUrl(String url);
+
+
+    /**
+     * 删除图片数据
+     */
+    @Delete("delete from support_image_log where id = #{id}")
+    Integer delete(Long id);
 
 }

@@ -1,4 +1,4 @@
-package com.play001.cloud.cms.controller.api;
+package com.play001.cloud.cms.controller.rest;
 
 import com.play001.cloud.cms.service.ImageService;
 import com.play001.cloud.common.entity.Image;
@@ -14,7 +14,7 @@ import org.springframework.web.util.HtmlUtils;
  * 公用API
  */
 @RestController
-public class CommonApi {
+public class CommonRestController {
 
     @Autowired
     private ImageService imageService;
