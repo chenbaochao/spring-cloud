@@ -2,7 +2,7 @@ package com.play001.cloud.cms.HandleAdvice;
 
 
 import com.play001.cloud.cms.controller.AdminController;
-import com.play001.cloud.cms.controller.IndexController;
+import com.play001.cloud.cms.controller.CommonController;
 import com.play001.cloud.common.entity.IException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
  * 异常统一返回
  * 此拦截器针对的是@RestController注解
  */
-@ControllerAdvice(assignableTypes = {AdminController.class, IndexController.class})
+@ControllerAdvice(assignableTypes = {AdminController.class, CommonController.class})
 public class ControllerHandleAdvice {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
