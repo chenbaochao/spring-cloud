@@ -53,10 +53,10 @@ function actionFormatter(value, row, index) {
 
 window.actionEvents = {
 	'click .freeze' : function(e, value, row, index) {
-		status_stop(index, row.userId);
+		status_stop(index, row.id);
 	},
 	'click .normal' : function(e, value, row, index) {
-		status_start(index, row.userId);
+		status_start(index, row.id);
 	},
 	'click .edit' : function(e, value, row, index) {
 		layer_show(row.userName,  '/admin/update?id=' + row.id , 900, 650)
@@ -65,7 +65,7 @@ window.actionEvents = {
 		admin_delete(index, row.id);
 	},
 	'click .log' : function(e, value, row, index) {
-		layer_show(row.userName + '登录日志', baselocation + '/administrator/list/' + row.userId + '/log', 900, 650)
+		layer_show(row.username + '登录日志',  '/admin/loginLog?adminId='+row.id, 900, 650)
 	}
 };
 
@@ -73,15 +73,19 @@ window.actionEvents = {
  * 冻结管理员
  */
 function status_stop(index, value) {
+	console.log(value)
 	layer.confirm('确认要冻结该管理员吗？', {
 		btn : [ '确定', '取消' ] //按钮
 	}, function() {
 		$.ajax({
 			dataType : 'json',
 			type : 'put',
-			url : baselocation + '/administrator/list/' + value + '/audit',
+			data:{
+				'id':value
+			},
+			url :  '/admin/freeze'  ,
 			success : function(result) {
-				if (result.code == 1) {
+				if (result.status == 'SUCCESS') {
 					$('#table').bootstrapTable('updateRow', {
 						index : index,
 						row : {
@@ -93,7 +97,7 @@ function status_stop(index, value) {
 						time : 1000
 					});
 				} else {
-					layer.alert(result.message, {
+					layer.alert(result.errMsg, {
 						icon : 2
 					});
 				}
@@ -112,9 +116,12 @@ function status_start(index, value) {
 		$.ajax({
 			dataType : 'json',
 			type : 'put',
-			url : baselocation + '/administrator/list/' + value + '/audit',
+            data:{
+                'id':value
+            },
+			url :  '/admin/unFreeze',
 			success : function(result) {
-				if (result.code == 1) {
+				if (result.status == 'SUCCESS') {
 					$('#table').bootstrapTable('updateRow', {
 						index : index,
 						row : {
@@ -126,7 +133,7 @@ function status_start(index, value) {
 						time : 1000
 					});
 				} else {
-					layer.alert(result.message, {
+					layer.alert(result.errMsg, {
 						icon : 2
 					});
 				}

@@ -2,14 +2,14 @@
  * 进行格式转换
  */
 function statusFormatter(value) {
-	if (value == 1) {
+	if (value) {
 		return '<span class="label label-primary">显示</span>'
-	} else if (value == 0) {
+	} else {
 		return '<span class="label label-danger">隐藏</span>'
 	}
 }
 function actionFormatter(value, row, index) {
-	if (row.status == 1) {
+	if (row.status) {
 		return [
 			'<a class="freeze m-r-sm text-info" href="javascript:void(0)" title="隐藏">',
 			'<i class="glyphicon glyphicon-pause"></i>',
@@ -39,19 +39,19 @@ function actionFormatter(value, row, index) {
 window.actionEvents = {
 	'click .freeze' : function(e, value, row, index) {
 		var url = $('#table').attr('data-url');
-		status_stop(index, row.navigationBarId, url);
+		status_stop(index, row.id, url);
 	},
 	'click .normal' : function(e, value, row, index) {
 		var url = $('#table').attr('data-url');
-		status_start(index, row.navigationBarId, url);
+		status_start(index, row.id, url);
 	},
 	'click .edit' : function(e, value, row, index) {
 		var url = $('#table').attr('data-url');
-		layer_show(row.name, url + row.navigationBarId + '/edit', 900, 650)
+		layer_show(row.name, '/navigation/bar/update?id=' + row.id , 900, 650)
 	},
 	'click .remove' : function(e, value, row, index) {
 		var url = $('#table').attr('data-url');
-		admin_delete(index, row.navigationBarId, url);
+		admin_delete(index, row.id, url);
 	},
 };
 
@@ -64,10 +64,13 @@ function status_stop(index, value, url) {
 	}, function() {
 		$.ajax({
 			dataType : 'json',
-			type : 'put',
-			url : url + value + '/audit',
+			type : 'post',
+			data:{
+				id:value
+			},
+			url : '/navigation/bar/hidden',
 			success : function(result) {
-				if (result.code == 1) {
+				if (result.status == 'SUCCESS') {
 					$('#table').bootstrapTable('updateRow', {
 						index : index,
 						row : {
@@ -79,7 +82,7 @@ function status_stop(index, value, url) {
 						time : 1000
 					});
 				} else {
-					layer.alert(result.message, {
+					layer.alert(result.errMsg, {
 						icon : 2
 					});
 				}
@@ -96,11 +99,14 @@ function status_start(index, value, url) {
 		btn : [ '确定', '取消' ] //按钮
 	}, function() {
 		$.ajax({
-			dataType : 'json',
-			type : 'put',
-			url : url + value + '/audit',
+            dataType : 'json',
+            type : 'post',
+            data:{
+                id:value
+            },
+            url : '/navigation/bar/show',
 			success : function(result) {
-				if (result.code == 1) {
+				if (result.status == 'SUCCESS') {
 					$('#table').bootstrapTable('updateRow', {
 						index : index,
 						row : {
@@ -112,7 +118,7 @@ function status_start(index, value, url) {
 						time : 1000
 					});
 				} else {
-					layer.alert(result.message, {
+					layer.alert(result.errMsg, {
 						icon : 2
 					});
 				}
@@ -122,18 +128,21 @@ function status_start(index, value, url) {
 }
 
 /**
- * 删除导航
+ * 删除导航栏
  */
 function admin_delete(index, value, url) {
 	layer.confirm('确认要删除该导航栏吗？', {
 		btn : [ '确定', '取消' ] //按钮
 	}, function() {
 		$.ajax({
-			type : 'delete',
-			dataType : 'json',
-			url : url + value,
+            dataType : 'json',
+            type : 'post',
+            data:{
+                id:value
+            },
+            url : '/navigation/bar/delete',
 			success : function(result) {
-				if (result.code == 1) {
+				if (result.status == 'SUCCESS') {
 					$('#table').bootstrapTable('hideRow', {
 						index : index
 					});
@@ -142,7 +151,7 @@ function admin_delete(index, value, url) {
 						time : 1000
 					});
 				} else {
-					layer.alert(result.message, {
+					layer.alert(result.errMsg, {
 						icon : 2
 					});
 				}
@@ -224,16 +233,16 @@ $(function() {
 			// Get the BootstrapValidator instance
 			var bv = $form.data('bootstrapValidator');
 			
-			var method = $('#form').attr('data-method');
+			var url = $form.attr('action');
 			// Use Ajax to submit form data
-			if (method == 'put') {
+			if (url == '/navigation/bar/update') {
 				$.ajax({
 					data : $form.serialize(),
 					dataType : 'json',
-					type : 'put',
-					url : $form.attr('action'),
+					type : 'post',
+					url : url,
 					success : function(result) {
-						if (result.code == 1) {
+						if (result.status =='SUCCESS') {
 							parent.layer.msg("更新导航栏成功!", {
 								shade : 0.3,
 								time : 1500
@@ -241,21 +250,21 @@ $(function() {
 								window.parent.location.reload(); // 刷新父页面
 							});
 						} else {
-							layer.msg(result.message, {
+							layer.msg(result.errMsg, {
 								icon : 2,
 								time : 1000
 							});
 						}
 					}
 				})
-			} else if (method == 'post') {
+			} else {
 				$.ajax({
 					data : $form.serialize(),
 					dataType : 'json',
 					type : 'post',
-					url : $form.attr('action'),
+					url :url,
 					success : function(result) {
-						if (result.code == 1) {
+						if (result.status == 'SUCCESS') {
 							parent.layer.msg("创建导航栏成功!", {
 								shade : 0.3,
 								time : 1500
@@ -263,7 +272,7 @@ $(function() {
 								window.parent.location.reload(); // 刷新父页面
 							});
 						} else {
-							layer.msg(result.message, {
+							layer.msg(result.errMsg, {
 								icon : 2,
 								time : 1000
 							});

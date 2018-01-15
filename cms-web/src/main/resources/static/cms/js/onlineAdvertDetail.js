@@ -192,7 +192,7 @@ $(function() {
  * 图片上传
  */
 $(function() {
-	$('.upload-button').on("click", function() {
+	$('.storage-button').on("click", function() {
 		var formData = new FormData();
 		var formData = new FormData();
 		formData.append('advert_file', $('input[type="file"]')[0].files[0]);

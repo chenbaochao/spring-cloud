@@ -5,24 +5,21 @@ function timeFormatter(value) {
 	return new Date(value).Format("yyyy-MM-dd HH:mm:ss");
 }
 function statusFormatter(value) {
-	if (value == 1) {
+	if (value) {
 		return '<span class="label label-primary">显示</span>'
-	} else if (value == 0) {
+	} else{
 		return '<span class="label label-danger">隐藏</span>'
 	}
 }
 
 function actionFormatter(value, row, index) {
-	if (row.status == 1) {
+	if (row.status) {
 		return [
 			'<a class="freeze m-r-sm text-info" href="javascript:void(0)" title="隐藏">',
 			'<i class="glyphicon glyphicon-pause"></i>',
 			'</a>',
 			'<a class="edit m-r-sm text-warning" href="javascript:void(0)" title="编辑">',
 			'<i class="glyphicon glyphicon-edit"></i>',
-			'</a>',
-			'<a class="remove m-r-sm text-danger" href="javascript:void(0)" title="删除">',
-			'<i class="glyphicon glyphicon-remove"></i>',
 			'</a>',
 			'<a class="log m-r-sm text-primary" href="javascript:void(0)" title="导航栏">',
 			'<i class="glyphicon glyphicon-sort-by-attributes-alt"></i>',
@@ -36,9 +33,6 @@ function actionFormatter(value, row, index) {
 			'<a class="edit m-r-sm text-warning" href="javascript:void(0)" title="编辑">',
 			'<i class="glyphicon glyphicon-edit"></i>',
 			'</a>',
-			'<a class="remove m-r-sm text-danger" href="javascript:void(0)" title="删除">',
-			'<i class="glyphicon glyphicon-remove"></i>',
-			'</a>',
 			'<a class="log m-r-sm text-primary" href="javascript:void(0)" title="导航栏">',
 			'<i class="glyphicon glyphicon-sort-by-attributes-alt"></i>',
 			'</a>',
@@ -48,19 +42,19 @@ function actionFormatter(value, row, index) {
 
 window.actionEvents = {
 	'click .freeze' : function(e, value, row, index) {
-		status_stop(index, row.navigationId);
+		status_stop(index, row.id);
 	},
 	'click .normal' : function(e, value, row, index) {
-		status_start(index, row.navigationId);
+		status_start(index, row.id);
 	},
 	'click .edit' : function(e, value, row, index) {
-		layer_show(row.name, baselocation + '/online/navigation/' + row.navigationId + '/edit', 900, 650)
+		layer_show(row.name,  '/navigation/update?id=' + row.id, 900, 650)
 	},
 	'click .remove' : function(e, value, row, index) {
-		admin_delete(index, row.navigationId);
+		admin_delete(index, row.id);
 	},
 	'click .log' : function(e, value, row, index) {
-		window.location.href = baselocation + '/online/navigation/' + row.navigationId + '/bar/view';
+		window.location.href =  '/navigation/bar/list?navigationId=' + row.id ;
 	}
 };
 
@@ -73,22 +67,22 @@ function status_stop(index, value) {
 	}, function() {
 		$.ajax({
 			dataType : 'json',
-			type : 'put',
-			url : baselocation + '/online/navigation/' + value + '/audit',
+			type : 'post',
+			url :  '/navigation/hidden?id=' + value ,
 			success : function(result) {
-				if (result.code == 1) {
+				if (result.status == 'SUCCESS') {
 					$('#table').bootstrapTable('updateRow', {
 						index : index,
 						row : {
 							status : 0,
 						}
 					});
-					layer.msg('该导航隐藏成功!', {
+					layer.msg('导航隐藏成功!', {
 						icon : 5,
 						time : 1000
 					});
 				} else {
-					layer.alert(result.message, {
+					layer.alert(result.errMsg, {
 						icon : 2
 					});
 				}
@@ -106,22 +100,22 @@ function status_start(index, value) {
 	}, function() {
 		$.ajax({
 			dataType : 'json',
-			type : 'put',
-			url : baselocation + '/online/navigation/' + value + '/audit',
+			type : 'post',
+			url : '/navigation/show?id=' + value,
 			success : function(result) {
-				if (result.code == 1) {
+				if (result.status == 'SUCCESS') {
 					$('#table').bootstrapTable('updateRow', {
 						index : index,
 						row : {
 							status : 1,
 						}
 					});
-					layer.msg('该导航显示成功!', {
+					layer.msg('导航显示成功!', {
 						icon : 6,
 						time : 1000
 					});
 				} else {
-					layer.alert(result.message, {
+					layer.alert(result.errMsg, {
 						icon : 2
 					});
 				}
@@ -132,7 +126,7 @@ function status_start(index, value) {
 
 /**
  * 删除导航
- */
+
 function admin_delete(index, value) {
 	layer.confirm('确认要删除该导航吗？', {
 		btn : [ '确定', '取消' ] //按钮
@@ -140,9 +134,9 @@ function admin_delete(index, value) {
 		$.ajax({
 			type : 'delete',
 			dataType : 'json',
-			url : baselocation + '/online/navigation/' + value,
+			url :  '/online/navigation/' + value,
 			success : function(result) {
-				if (result.code == 1) {
+				if (result.status == 'SUCCESS') {
 					$('#table').bootstrapTable('hideRow', {
 						index : index
 					});
@@ -159,7 +153,7 @@ function admin_delete(index, value) {
 		})
 	});
 }
-
+ */
 /**
  * 多选框插件
  */
@@ -201,26 +195,6 @@ $(function() {
 					}
 				}
 			},
-			'code' : {
-				message : '导航标志验证失败',
-				validators : {
-					notEmpty : {
-						message : '导航标志不能为空'
-					}
-				}
-			},	
-			'showNumber' : {
-				message : '显示数量验证失败',
-				validators : {
-					notEmpty : {
-						message : '导航栏显示数量不能为空'
-					},
-		            regexp: {
-		                regexp: /^[0-9]*$/,
-		                message: '导航栏显示数量只能为数字'
-		            }
-				}
-			},				
 		}
 	})
 		.on('success.form.bv', function(e) {
@@ -235,14 +209,14 @@ $(function() {
 			
 			var method = $('#form').attr('data-method');
 			// Use Ajax to submit form data
-			if (method == 'put') {
+			if (method == 'post') {
 				$.ajax({
 					data : $form.serialize(),
 					dataType : 'json',
-					type : 'put',
+					type : 'post',
 					url : $form.attr('action'),
 					success : function(result) {
-						if (result.code == 1) {
+						if (result.status == 'SUCCESS') {
 							parent.layer.msg("更新导航成功!", {
 								shade : 0.3,
 								time : 1500
@@ -250,14 +224,16 @@ $(function() {
 								window.parent.location.reload(); // 刷新父页面
 							});
 						} else {
-							layer.msg(result.message, {
+							layer.msg(result.errMsg, {
 								icon : 2,
 								time : 1000
 							});
 						}
 					}
 				})
-			} else if (method == 'post') {
+			}
+			/*
+			if (method == 'post') {
 				$.ajax({
 					data : $form.serialize(),
 					dataType : 'json',
@@ -279,6 +255,6 @@ $(function() {
 						}
 					}
 				})
-			}
+			}*/
 		});
 })

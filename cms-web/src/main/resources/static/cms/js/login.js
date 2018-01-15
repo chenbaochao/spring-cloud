@@ -43,7 +43,7 @@ function showsectime() {
  * 验证码更改
  */
 $(function() {
-	$('#kaptchaImage').click(function() {
+	$('#captchaImage').click(function() {
 		$(this).attr('src', '/captcha?model=login&' + Math.floor(Math.random() * 100));
 	})
 });
@@ -80,18 +80,9 @@ $(function() {
 			success : function(result) {
 				console.info(result);
 				if (result.status == 'SUCCESS') {
-					window.location.href = '/admin/index';
-				} else
-					/*if (result.code == 10005) {
-					$("input[name='registerCode']").val("");
-					$("input[name='registerCode']").attr("placeholder", result.message);
-					$(".ver_btn").trigger("click");
-				} else if (result.code == 10002) {
-					$("input[name='loginPassword']").val("");
-					$("input[name='loginPassword']").attr("placeholder", result.message);
-					$(".ver_btn").trigger("click");
-				} else*/
-					{
+					window.top.location.href = '/admin/index';
+				} else{
+					$('#captchaImage').attr('src', '/captcha?model=login&' + Math.floor(Math.random() * 100));
 					layer.alert(result.errMsg, {
 						icon : 2
 					});

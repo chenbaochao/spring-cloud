@@ -28,7 +28,7 @@ $(function() {
 			validating : 'glyphicon glyphicon-refresh'
 		},
 		fields : {
-			'userName' : {
+			'username' : {
 				message : '用户名验证失败',
 				validators : {
 					notEmpty : {
@@ -81,17 +81,6 @@ $(function() {
 	})
 })
 
-/**
- * 修改信息,按钮点击事件
- */
-function modify() {
-	$('.form-disabled').attr("disabled", false);
-	$('#sex').hide();
-	$('.add-radio').show();
-	$('.form-group').find('.btn-success').css({
-		'display' : 'block'
-	});
-}
 
 /**
  * 保存信息,按钮点击事件
@@ -104,18 +93,16 @@ function save_info() {
 	$.ajax({
 		data : params,
 		dataType : "json",
-		type : "put",
-		url : baselocation + '/administrator/info/edit',
+		type : "post",
+		url :  '/admin/updatePersonalInfo',
 		success : function(result) {
-			if (result.code == 1) {
-				$('.form-disabled').attr("disabled", true);
-				$('#sex').show();
-				$('.add-radio').hide();
-				$('.form-group').find('.btn-success').css({
-					'display' : 'none'
-				});
+			if (result.status == 'SUCCESS') {
+                layer.msg('修改成功!', {
+                    icon : 6,
+                    time : 800
+                });
 			} else {
-				layer.alert(result.message, {
+				layer.alert(result.errMsg, {
 					title : '提示框',
 					icon : 0,
 				});
@@ -171,10 +158,10 @@ function change_Password() {
 			$.ajax({
 				data : params,
 				dataType : "json",
-				type : "put",
-				url : baselocation + '/administrator/info/edit/psw',
+				type : "post",
+				url : '/admin/updatePersonalPwd',
 				success : function(result) {
-					if (result.code == 1) {
+					if (result.status == 'SUCCESS') {
 						layer.alert("密码修改成功!", {
 							title : '提示框',
 							icon : 1,
@@ -184,7 +171,7 @@ function change_Password() {
 						$("input[name='newPassword']").val("");
 						$("input[name='nowPassword']").val("");
 					} else {
-						layer.alert(result.message, {
+						layer.alert(result.errMsg, {
 							title : '提示框',
 							icon : 0,
 						});
