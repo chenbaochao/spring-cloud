@@ -2,11 +2,13 @@ package com.play001.cloud.cms.service;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+import com.play001.cloud.cms.entity.UploadImageResponse;
 import com.play001.cloud.cms.mapper.ImageMapper;
 import com.play001.cloud.cms.util.CommonUtil;
 import com.play001.cloud.common.entity.IException;
 import com.play001.cloud.common.entity.Image;
 import com.play001.cloud.common.entity.Response;
+import com.play001.cloud.common.enums.StorageTypeEnum;
 import com.play001.cloud.common.util.storage.IBaseStorageUtil;
 import com.play001.cloud.common.util.storage.StorageFactory;
 import com.play001.cloud.common.util.DateUtil;
@@ -20,7 +22,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 @Service
@@ -38,10 +44,10 @@ public class ImageService {
      * 图片上传
      * 手动开启事务
      */
-    public Response<Image> upload(MultipartFile upFile, String avatarData){
-        Response<Image> response = new Response<>();
+    public UploadImageResponse upload(MultipartFile upFile, String avatarData){
+        UploadImageResponse response = new UploadImageResponse();
         if(upFile == null){
-            return response.setErrMsg("参数错误");
+            return response.setError("参数错误");
         }
         DefaultTransactionDefinition transactionDefinition = new DefaultTransactionDefinition();
         //获取事务级别
@@ -56,12 +62,12 @@ public class ImageService {
             //判断文件MIME type
             String type = upFile.getContentType();
             if(type == null || !type.toLowerCase().startsWith("image/")){
-                return response.setErrMsg("不支持的文件类型，仅支持图片!");
+                return response.setError("不支持的文件类型，仅支持图片!");
             }
             //获取文件后缀
             String fileExt = CommonUtil.getFileExt(upFile.getOriginalFilename());
             if(fileExt == null || !CommonUtil.checkFileExt(fileExt)){
-                return response.setErrMsg("不支持的文件类型");
+                return response.setError("不支持的文件类型");
             }
             StringBuilder uploadPath = new StringBuilder();
             //生成文件路径
@@ -78,19 +84,48 @@ public class ImageService {
             image.setUrl(storageUtil.getUrl()+uploadPath);
             //图片信息保存进数据库
             imageMapper.add(image);
-            //裁剪图片,获得新的输入流
-            InputStream imageInputStream = CommonUtil.cutImage(upFile, avatarData);
-
+            InputStream imageInputStream;
+            //如果有裁剪参数就裁剪图片
+            if(avatarData != null && avatarData.length() > 0){
+                //裁剪图片,获得新的输入流
+                imageInputStream = CommonUtil.cutImage(upFile, avatarData);
+            }else{
+                //将multipartfile转换为输入流
+                BufferedImage src = ImageIO.read(upFile.getInputStream());
+                ByteArrayOutputStream os = new ByteArrayOutputStream();
+                ImageIO.write(src,"jpg" , os);
+                imageInputStream = new ByteArrayInputStream(os.toByteArray());
+            }
             if(!storageUtil.upload(imageInputStream, uploadPath.toString())){
-                throw new IException("上传失败");
+                return response.setError("上传失败");
             }
             transactionManager.commit(status);
-            return response.setMessage(image);
+            response.setInitialPreview(image.getUrl());
+            response.getInitialPreviewConfig()[0].setCaption(upFile.getOriginalFilename());
+            response.getInitialPreviewConfig()[0].setKey(image.getId());
+            return response;
         } catch (Exception e){
             e.printStackTrace();
             transactionManager.rollback(status);
-            return response.setErrMsg("上传失败");
+            return response.setError("上传失败");
         }
 
+    }
+
+    /**
+     * 删除图片
+     */
+    public Map<String,String> delete(Long id) {
+        Map<String, String> response = new HashMap<>();
+        Image image;
+        if(id == null ||  (image = imageMapper.findById(id)) == null){
+            response.put("error", "图片不存在");
+            return response;
+        }
+
+        IBaseStorageUtil storageUtil = storageFactory.getStorageUtil(StorageTypeEnum.valueOf(image.getStorageName()));
+        storageUtil.delete(image.getPath());
+        response.put("error", "");
+        return response;
     }
 }

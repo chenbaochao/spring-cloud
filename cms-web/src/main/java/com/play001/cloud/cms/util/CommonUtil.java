@@ -80,7 +80,6 @@ public class CommonUtil {
      */
     public static InputStream cutImage(MultipartFile file, String avatarData){
         try {
-
             // 创建JSONObject对象
             JsonElement je = new JsonParser().parse(avatarData);
             // 用户经过剪辑后的图片的大小

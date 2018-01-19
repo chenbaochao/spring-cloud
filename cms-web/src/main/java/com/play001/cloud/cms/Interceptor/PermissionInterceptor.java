@@ -58,7 +58,7 @@ public class PermissionInterceptor extends HandlerInterceptorAdapter{
             }
         }
         //验证不通过
-        if(!result.equals("Pass")){
+        if(!result.equals("Pass") && false){
             /*
              * 判断是@restController还是controller
              * 如果是@restController则返回json格式的错误信息

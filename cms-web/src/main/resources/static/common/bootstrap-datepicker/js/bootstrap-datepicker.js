@@ -2012,7 +2012,7 @@
 	* ================== */
 
 	$(document).on(
-		'focus.datepicker.data-api click.datepicker.data-api',
+		'focus.datepicker.data-rest click.datepicker.data-rest',
 		'[data-provide="datepicker"]',
 		function(e){
 			var $this = $(this);

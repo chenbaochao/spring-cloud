@@ -74,14 +74,14 @@ $(function() {
 			var method = $('#form').attr('data-method');
 			var url = $form.attr('action');
 			// 更新
-			if ('/admin/update' == url) {
+			if ('/admin/update' === url) {
 				$.ajax({
 					data : $form.serialize(),
 					dataType : 'json',
 					type : 'post',
 					url : url,
 					success : function(result) {
-						if (result.status == 'SUCCESS') {
+						if (result.status === 'SUCCESS') {
 							parent.layer.msg("更新管理员成功!", {
 								shade : 0.3,
 								time : 1500
@@ -97,14 +97,14 @@ $(function() {
 					}
 				})
 
-			} else if ('/admin/create' == url) {
+			} else if ('/admin/create' === url) {
 				$.ajax({
 					data : $form.serialize(),
 					dataType : 'json',
 					type : 'post',
 					url : url,
 					success : function(result) {
-						if (result.status == 'SUCCESS') {
+						if (result.status === 'SUCCESS') {
 							parent.layer.msg("创建管理员成功!", {
 								shade : 0.3,
 								time : 1500

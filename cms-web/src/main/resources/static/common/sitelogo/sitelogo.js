@@ -269,8 +269,9 @@
 
 		submitDone : function(data) {
 			if ($.isPlainObject(data)) {
-				if (data.status == 'SUCCESS') {
-					var imageId = data.message.id;
+				data = 1;
+				if (data.error === null || data.error === '') {
+					var imageId = data.initialPreviewConfig[0].key;
 					$.ajax({
 						type : "post",
 						url :  "/admin/updateAvatar",
@@ -278,10 +279,10 @@
 							'imageId' : imageId
 						},
 						success : function(result) {
-							if (result.status == 'SUCCESS') {
+							if (result.error === null || result.error === '') {
 								window.parent.location.reload(); // 刷新父页面
 							} else {
-								this.alert(result.errMsg);
+								this.alert(result.error);
 							}
 						},
 						error : function(ex) {
@@ -289,7 +290,7 @@
 						}
 					});
 				} else {
-					this.alert(data.errMsg);
+					this.alert(data.error);
 				}
 			} else {
 				this.alert('Failed to response');
