@@ -13,10 +13,11 @@ public class CategoryService {
     @Autowired
     private CategoryMapper categoryMapper;
 
-    public Category findAllWithProduct(Integer id){
+    public Category findById(Integer id){
         return categoryMapper.findById(id);
     }
-    public List<Category> findAllWithProduct(){
-        return categoryMapper.findAllWithProduct();
+
+    public List<Category> findAll(){
+        return categoryMapper.findAll();
     }
 }

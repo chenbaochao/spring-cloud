@@ -1,6 +1,6 @@
 package com.play001.cloud.common.api.service;
 
-import com.play001.cloud.common.api.mapper.SectionMappr;
+import com.play001.cloud.common.api.mapper.SectionMapper;
 import com.play001.cloud.common.entity.Section;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,9 +11,19 @@ import java.util.List;
 public class SectionService {
 
     @Autowired
-    private SectionMappr sectionMappr;
+    private SectionMapper sectionMapper;
 
+    /**
+     * 首页栏目
+     */
     public List<Section> getIndexSections(){
-        return sectionMappr.getIndexSections();
+        return sectionMapper.getIndexSections();
+    }
+
+    /**
+     * 页面header快捷导航
+     */
+    public List<Section> getHeaderSections(){
+        return sectionMapper.getHeaderSections();
     }
 }

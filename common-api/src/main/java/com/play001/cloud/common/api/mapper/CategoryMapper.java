@@ -12,6 +12,6 @@ public interface CategoryMapper {
 
     Category findById(Integer id);
 
-    List<Category> findAllWithProduct();
+    List<Category> findAll();
 
 }

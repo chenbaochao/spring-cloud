@@ -20,6 +20,7 @@ public class CategoryEndPoint {
     @Autowired
     private CategoryService categoryService;
 
+
     @RequestMapping(value = "/findById", method = RequestMethod.GET)
     public Response<Category> findById(Integer categoryId) throws IException {
         if(categoryId == null || categoryId < 0) throw new IException("参数错误");
@@ -29,14 +30,14 @@ public class CategoryEndPoint {
             category.setName("全部商品");
             return new Response<>(category);
         }
-        return new Response<>(categoryService.findAllWithProduct(categoryId));
+        return new Response<>(categoryService.findById(categoryId));
     }
 
 
 
-    @RequestMapping(value = "/findAllWithProduct", method = RequestMethod.GET)
-    public Response<List<Category>> findAllWithProduct() throws IException {
-        return  new Response<>(categoryService.findAllWithProduct());
+    @RequestMapping(value = "/findAll", method = RequestMethod.GET)
+    public Response<List<Category>> findAll() throws IException {
+        return  new Response<>(categoryService.findAll());
     }
 
 

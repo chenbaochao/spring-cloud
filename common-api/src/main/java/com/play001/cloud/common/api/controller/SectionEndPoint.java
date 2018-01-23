@@ -16,9 +16,19 @@ public class SectionEndPoint {
 
     @Autowired
     private SectionService sectionService;
-
-    @RequestMapping(value = "/getSection", method = RequestMethod.GET)
-    public Response<List<Section>> getSection(){
+    /**
+     * 首页section
+     */
+    @RequestMapping(value = "/getIndexSections", method = RequestMethod.GET)
+    public Response<List<Section>> getIndexSections(){
         return  new Response<>(sectionService.getIndexSections());
     }
+    /**
+     * 页面header快捷导航
+     */
+    @RequestMapping(value = "/getHeaderSections", method = RequestMethod.GET)
+    public Response<List<Section>> getHeaderSections(){
+        return  new Response<>(sectionService.getHeaderSections());
+    }
+
 }

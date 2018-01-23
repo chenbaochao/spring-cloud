@@ -8,29 +8,30 @@
         <result property="sort" column="sort"/>
         <result property="status" column="status"/>
         <result property="showInNav" column="show_in_nav"/>
-        <result property="showInHot" column="show_in_hot"/>
-        <!-- 附带产品 -->
-        <collection property="products" select="findProduct" column="id" ofType="com.play001.cloud.common.entity.Product"/>
 
+        <!-- 附带产品
+        <collection property="products" select="findProduct" column="id" ofType="com.play001.cloud.common.entity.Product"/>
+        -->
     </resultMap>
 
-    <select id="findAllWithProduct" resultMap="categoryResult">
+    <select id="findAll" resultMap="categoryResult">
         SELECT
-       c.id, c.name, c.sort, c.status, c.show_in_nav, c.show_in_hot
+        c.id, c.name, c.sort, c.status, c.show_in_nav
         FROM os_category c
-        WHERE c.status = 1
         ORDER by c.sort
     </select>
 
-    <select id="findById" resultType="com.play001.cloud.common.entity.Category">
+    <select id="findById" resultMap="categoryResult">
         SELECT
-        c.id, c.name, c.sort, c.status, c.show_in_nav AS showInNav, c.show_in_hot as showInHot
+        c.id, c.name, c.sort, c.status, c.show_in_nav
         FROM os_category c
         WHERE c.id = #{id}
         LIMIT 1
     </select>
 
-    <!-- 搜索附带商品 -->
+
+
+    <!-- 搜索附带商品
     <select id="findProduct" resultType="com.play001.cloud.common.entity.Product">
         SELECT
         p.id, p.name, p.show_pic as showPic, p.title, p.show_price as showPrice
@@ -38,5 +39,5 @@
         WHERE p.category_id = #{id} AND p.is_show = 1
         ORDER by p.create_time DESC
         LIMIT 18
-    </select>
+    </select>-->
 </mapper>

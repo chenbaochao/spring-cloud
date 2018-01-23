@@ -4,21 +4,32 @@
 <mapper namespace="com.play001.cloud.common.api.mapper.CartMapper">
     <resultMap id="cartResult" type="com.play001.cloud.common.entity.ShopCart">
         <result property="id" column="id"/>
-        <result property="buyQuantity" column="buy_quantity"/>
+        <result property="buyNumber" column="buy_number"/>
         <!-- 产品信息 -->
         <association property="product" select="findProduct" column="product_id" />
         <!-- 产品规格-->
         <association property="spec" select="findSpec" column="product_spec_id" />
     </resultMap>
+    <resultMap id="productResult" type="com.play001.cloud.common.entity.Product">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="title" column="title"/>
+        <!-- 封面 -->
+        <association property="thumb" column="thumb_id" select="findImage" />
+    </resultMap>
+
+
+
 
     <select id="list" resultMap="cartResult">
         SELECT id, buy_quantity, product_id, product_spec_id, user_id
         FROM os_shop_cart
         WHERE user_id = #{userId}
     </select>
+
     <!-- 产品信息 -->
-    <select id="findProduct" resultType="com.play001.cloud.common.entity.Product">
-        select id, name, title, show_pic as showPic
+    <select id="findProduct" resultMap="productResult">
+        select id, name, title, thumb_id
         FROM os_product
         where id = #{product_id}
     </select>
@@ -27,5 +38,10 @@
         select id, name, price
         FROM os_product_specification
         where id = #{product_spec_id}
+    </select>
+    <!-- 查找图片 -->
+    <select id="findImage"  resultType="com.play001.cloud.common.entity.Image">
+        SELECT id, url, path, storage_name as storageName from support_image_log
+        where id = #{id}
     </select>
 </mapper>
