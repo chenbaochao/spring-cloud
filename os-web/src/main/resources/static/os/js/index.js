@@ -8,7 +8,36 @@ $(function() {
 	*/
     show_star_product(); // 明星单品
     show_hot_category(); // 热门分类
+    show_topBar();
+    show_footer();
+    show_header();
+    siteHeaderInit();
 });
+
+
+/**
+ * 必须在siteheader加载完成后启用
+ */
+function siteHeaderInit(){
+    /**
+     * 轮播top菜单导航
+     */
+    $('.site-category .category-item').mouseover(function() {
+        $(this).addClass('category-item-active').siblings().removeClass('category-item-active');
+        var index = $(this).index();
+        i = index;
+        $('.children').eq(index).css('display', 'block');
+    })
+    $('.site-category .category-item').mouseout(function() {
+        $(this).removeClass('category-item-active');
+        var i = $(this).index();
+        $('.children').eq(i).css('display', 'none');
+    })
+    /**
+     * 初始化搜索框
+     */
+    initSearch();
+}
 
 /**
  * 明星单品

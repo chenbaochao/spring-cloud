@@ -56,8 +56,9 @@ public class ProductServiceImpl {
      */
     public Pagination<Product> getPaginationByCategoryId(Integer categoryId, Integer sort, Integer pageNo) throws IException {
         //一页显示二十个
+
         final Integer pageSize = 20;
-        Long start = Long.valueOf((pageNo-1)*pageSize);
+        Long start = (long)((pageNo-1)*pageSize);
         Response<Pagination<Product>> response =  productService.listByCategoryId(categoryId, sort, start, pageSize);
         if(Response.ERROR.equals(response.getStatus())){
             throw new IException(response.getErrMsg());

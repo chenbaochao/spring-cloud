@@ -9,12 +9,12 @@
                     <div class="site-category">
                         <ul class="site-category-list clearfix">
                             <li class="category-item" th:each="item:${sections}" th:if="${item.products != null}">
-                                <a class="title" href="#" th:text="${item.name}">手机<i class="glyphicon glyphicon-chevron-right"></i></a>
+                                <a class="title" href="#" th:utext="${item.name}+'<i class=\'glyphicon glyphicon-chevron-right\'></i>'">手机<i class="glyphicon glyphicon-chevron-right"></i></a>
                                 <div th:class="'children clearfix children-col-'+${ (#lists.size(item.products)+5)/6}">
                                     <ul class="children-list children-list-col children-list-col-1" th:if="${#lists.size(item.products) gt 0}">
                                         <li th:each="productItem, status:${item.products}" th:if="${status.index lt 6 }">
                                             <a class="link" th:title="${productItem.title}"  th:href="'/product/detail/-'+${productItem.id}">
-                                                <img class="thumb" th:src="${productItem.thumb.url}" width="40" height="40" th:attr="alt=${productItem.title}">
+                                                <img class="thumb" th:src="${productItem?.thumb?.url}" width="40" height="40" th:alt="${productItem.title}">
                                                 <span class="text" th:text="${productItem.name}">产品名称</span>
                                             </a>
                                         </li>
@@ -22,7 +22,7 @@
                                     <ul class="children-list children-list-col children-list-col-2" th:if="${#lists.size(item.products) gt 6}">
                                         <li th:each="productItem, status:${item.products}" th:if="${status.index gt 5 && status.index lt 12 }">
                                             <a class="link" th:title="${productItem.title}"  th:href="'/product/detail/-'+${productItem.id}">
-                                                <img class="thumb" th:src="${productItem.thumb.url}" width="40" height="40" th:attr="alt=${productItem.title}">
+                                                <img class="thumb" th:src="${productItem?.thumb?.url}" width="40" height="40" th:alt="${productItem.title}">
                                                 <span class="text" th:text="${productItem.name}">产品名称</span>
                                             </a>
                                         </li>
@@ -30,7 +30,7 @@
                                     <ul class="children-list children-list-col children-list-col-3" th:if="${#lists.size(item.products) gt 12}">
                                         <li th:each="productItem, status:${item.products}" th:if="${status.index gt 11 && status.index lt 18 }">
                                             <a class="link" th:title="${productItem.title}"  th:href="'/product/detail/-'+${productItem.id}">
-                                                <img class="thumb" th:src="${productItem.thumb.url}" width="40" height="40" th:attr="alt=${productItem.title}">
+                                                <img class="thumb" th:src="${productItem?.thumb?.url}" width="40" height="40" th:alt="${productItem.title}">
                                                 <span class="text" th:text="${productItem.name}">产品名称</span>
                                             </a>
                                         </li>

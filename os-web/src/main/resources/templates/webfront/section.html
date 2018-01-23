@@ -32,14 +32,14 @@
                      <li class="brick-item brick-item-m" th:each="product:${category.products}">
                        <div class="figure figure-img">
                          <a target="_blank" th:title="${product.name}" th:href="|/product/detail-${product.id}|">
-                           <img th:src="${product.showPic}" width="160" height="160" th:alt="${product.name}">
+                           <img th:src="${product.thumb.url}" width="160" height="160" th:alt="${product.name}">
                          </a>
                        </div>
                        <h3 class="title">
                          <a target="_blank" th:title="${product.name}" th:href="|/product/detail-${product.id}|" th:text="${product.name}">小米1</a>
                        </h3>
                        <p class="price"> <span class="num" th:text="${product.showPrice}">1999</span>元 </p>
-                       <p class="rank" th:text="|已售${product.quantitySold}|"> 已售1232 </p>
+                       <p class="rank" th:text="|已售${product.soldNumber}|"> 已售1232 </p>
                          <div class="review-wrapper">
                            <a th:title="${product.name}" th:href="|/product/detail-${product.id}|">
                              <span class="review" th:text="${product.title}">商品title</span>

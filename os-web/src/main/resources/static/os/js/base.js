@@ -1,9 +1,7 @@
 $(function() {
 	//showsectime(); //网站计时器
 	//show_cart_umber(); // 购物车商品数量
-    show_topBar();
-    show_header();
-    show_footer();
+
 })
 
 /**
@@ -15,7 +13,6 @@ function show_topBar() {
         $.ajax({
             url : "/siteTopBar",
             type : 'get',
-            async: false,
             dataType : 'text',
             success : function(result) {
                 topBar.html(result);
@@ -35,14 +32,17 @@ function show_header() {
         $.ajax({
             url : "/siteHeader",
             type : 'get',
-            async: false,
+			async:false,
             dataType : 'text',
             success : function(result) {
                 siteHeader.html(result);
+                console.log('显示完成');
             }
         });
     }
 }
+
+
 
 /**
  * 获取并显示siteFooter
@@ -53,7 +53,6 @@ function show_footer() {
         $.ajax({
             url : "/siteFooter",
             type : 'get',
-            async: false,
             dataType : 'text',
             success : function(result) {
                 footer.html(result);
@@ -121,16 +120,16 @@ function isLogin(){
 /**
  * 搜索栏
  */
-$(function() {
-	$("#zySearch").zySearch({
-		"width" : "355",
-		"height" : "35",
-		"parentClass" : "pageTitle",
-		"callback" : function(keyword) {
+function initSearch(){
+    $("#zySearch").zySearch({
+        "width" : "355",
+        "height" : "35",
+        "parentClass" : "pageTitle",
+        "callback" : function(keyword) {
             if(keyword != null && keyword != '')  window.location.href = '/product/search?keyword='+encodeURI(keyword)+'&pageNo=1';
-		}
-	});
-})
+        }
+    });
+}
 
 /**
  * 回到顶部
@@ -162,22 +161,7 @@ $(function() {
 	$("a[href$='" + url + "']").parent().addClass("active").siblings().removeClass('active');
 });
 
-/**
- * 轮播top菜单导航
- */
-$(function() {
-	$('.site-category .category-item').mouseover(function() {
-		$(this).addClass('category-item-active').siblings().removeClass('category-item-active');
-		var index = $(this).index();
-		i = index;
-		$('.children').eq(index).css('display', 'block');
-	})
-	$('.site-category .category-item').mouseout(function() {
-		$(this).removeClass('category-item-active');
-		var i = $(this).index();
-		$('.children').eq(i).css('display', 'none');
-	})
-});
+
 
 /**
  * input 聚焦事件

@@ -1,6 +1,46 @@
 $(function() {
 	//show_new_product(); //新品推荐
+    show_topBar();
+    show_header();
+    show_footer();
+    siteHeaderInit();
+
 });
+
+
+/**
+ * 必须在siteheader加载完成后启用
+ */
+function siteHeaderInit(){
+    /**
+     * 导航分类栏显示及颜色变换
+     */
+    $('#J_navCategory').mouseover(function() {
+        $('.site-category').css('display', 'block');
+    })
+    $('#J_navCategory').mouseout(function() {
+        $('.site-category').css('display', 'none');
+    })
+
+    /**
+     * 轮播top菜单导航
+     */
+    $('.site-category .category-item').mouseover(function() {
+        $(this).addClass('category-item-active').siblings().removeClass('category-item-active');
+        var index = $(this).index();
+        i = index;
+        $('.children').eq(index).css('display', 'block');
+    })
+    $('.site-category .category-item').mouseout(function() {
+        $(this).removeClass('category-item-active');
+        var i = $(this).index();
+        $('.children').eq(i).css('display', 'none');
+    })
+    /**
+	 * 初始化搜索框
+     */
+    initSearch();
+}
 
 /**
  * 分页

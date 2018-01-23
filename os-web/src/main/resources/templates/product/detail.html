@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="/common/bootstrap/css/bootstrap.min.css" />
     <link rel="stylesheet" href="/os/css/base.css">
     <script src="/common/jquery/jquery.cookie.js"></script>
+    <script src="/os/js/base.js"></script>
 </head>
 <body>
 <div id="site-topBar"></div>
@@ -21,7 +22,7 @@
 <!--     分类导航栏 end       -->
 
 <!-- 商品详情 begin -->
-<div class="goods-detail" th:if="${product != null}">>
+<div class="goods-detail" th:if="${product != null}">
     <!-- 商品简介begin-->
     <div class="goods-detail-info  clearfix J_goodsDetail">
         <div class="container-fluid">
@@ -128,7 +129,7 @@
     <div class="goods-detail-param  J_itemBox">
         <div class="container-fluid">
             <ul class='param-list'>
-                <li class='goods-img'> <img alt="${pruduct.name}" src="https://i1.mifile.cn/a1/pms_1487831386.1667404!220x220.jpg" title="${pruduct.name}"> </li>
+                <li class='goods-img'> <img th:alt="${product.name}" th:src="${product.thumb.url}" th:title="${product.name}"> </li>
                 <li class="goods-tech-spec">
                     <dl>
                         <dd>
@@ -280,10 +281,9 @@
         <div class="row">
             <div class="span4">
                 <dl class="goods-sub-bar-info clearfix">
-                    <dt> <img alt="${pruduct.name}" src="${ctximg}/${product.picImg}"> </dt>
+                    <dt> <img th:alt="${product.name}" th:src="${product.thumb.url}"> </dt>
                     <dd> <strong th:text="${product.name}">小米5x</strong>
-                        <p> <em><span class="J_mi_goodsPrice" th:text="${product.showPrice}">1999</span>元</em
-                            <del><span class="J_mi_marketPrice" th:text="|${product.showPrice}元|">199元</span></del>
+                        <p> <em><span class="J_mi_goodsPrice" th:text="${product.showPrice}">1999</span>元</em>
                         </p>
                     </dd>
                 </dl>
@@ -378,6 +378,8 @@
             })
         }
     }
+
+
 </script>
 
 
@@ -387,6 +389,5 @@
 <script src="/common/bootstrap/js/bootstrap.min.js"></script>
 <script src="/os/js/zySearch.js"></script>
 <script src="/os/js/jump.js"></script>
-<script src="/os/js/base.js"></script>
 </body>
 </html>
