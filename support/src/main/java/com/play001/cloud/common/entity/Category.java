@@ -12,8 +12,6 @@ public class Category {
     //是否显示在分类中
     private byte status;
     //是否显示在导航栏
-    private byte showInHot;
-    //是否显示在导航栏
     private byte showInNav;
     //有时可能会需要
     private List<Product> products;
@@ -63,13 +61,5 @@ public class Category {
 
     public void setProducts(List<Product> products) {
         this.products = products;
-    }
-
-    public byte getShowInHot() {
-        return showInHot;
-    }
-
-    public void setShowInHot(byte showInHot) {
-        this.showInHot = showInHot;
     }
 }

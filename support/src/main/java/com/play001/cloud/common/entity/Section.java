@@ -7,10 +7,9 @@ import java.util.List;
  */
 public class Section {
     private Integer id;
-    private Integer status;
     private Integer sort;
-    private byte isHot;//是否显示热门
     private String name;
+    private Boolean status;
     private List<Category> categories;
     private List<Advert> advert;//广告
 
@@ -22,28 +21,12 @@ public class Section {
         this.id = id;
     }
 
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
     public Integer getSort() {
         return sort;
     }
 
     public void setSort(Integer sort) {
         this.sort = sort;
-    }
-
-    public byte getIsHot() {
-        return isHot;
-    }
-
-    public void setIsHot(byte isHot) {
-        this.isHot = isHot;
     }
 
     public String getName() {
@@ -70,4 +53,11 @@ public class Section {
         this.advert = advert;
     }
 
+    public Boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(Boolean status) {
+        this.status = status;
+    }
 }

@@ -16,7 +16,7 @@ public class ShopCart {
     @NotNull(message = "产品规格不能为空")
     private Specification spec;//产品规格
     @Min(value = 0, message = "购买数量必须大于0")
-    private Integer buyQuantity;//购买数量
+    private Integer buyNumber;//购买数量
     private User user;
 
     public User getUser() {
@@ -51,11 +51,11 @@ public class ShopCart {
         this.spec = spec;
     }
 
-    public Integer getBuyQuantity() {
-        return buyQuantity;
+    public Integer getBuyNumber() {
+        return buyNumber;
     }
 
-    public void setBuyQuantity(Integer buyQuantity) {
-        this.buyQuantity = buyQuantity;
+    public void setBuyNumber(Integer buyNumber) {
+        this.buyNumber = buyNumber;
     }
 }

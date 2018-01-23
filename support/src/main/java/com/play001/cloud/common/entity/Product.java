@@ -1,26 +1,40 @@
 package com.play001.cloud.common.entity;
 
+
+import org.hibernate.validator.constraints.NotBlank;
+
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
  * 产品
  */
 public class Product {
-    public static final Integer NOT_SHOW = 0;
-    public static final Integer SHOW = 1;
     private Long id;
+    @NotBlank(message = "产品名字不能为空")
     private String name;//商品名字
-    private Long showPrice;//展示价格
+    @Max(value = 999999, message = "产品价格不能大于999999")
+    private Double showPrice;//展示价格
+    @NotBlank(message = "商品简介不能为空")
     private String title;//商品简介
-    private String showPic;//封面
+    @NotNull(message = "商品封面不能为空")
+    private Image thumb;//封面
     private String introduction;//商品介绍
-    private byte isShow;//是否上架,0否,1是
-    private String createdTime;//创建时间
-    private Integer quantitySold;//卖出数量
-    private List<String> pics;//图片
+    @Max(value = 1, message = "商品状态错误")
+    @Min(value = 0, message = "商品状态错误")
+    private Integer status;//是否上架,0否,1是
+    private String createTime;//创建时间
+    private Integer soldNumber;//卖出数量
+    @NotNull(message = "相册不能为空")
+    private List<ProductImage> pics;//图片
+    @NotNull(message = "分类错误")
     private Category category;//分类
+
     private List<Parameter> parameters;//参数详情
     private List<String> labels;//商品标签
+    @NotNull(message = "商品类别/套餐数量需大于0")
     private List<Specification> specs;//商品类别,套餐
     private String remarks;//备注
 
@@ -40,11 +54,11 @@ public class Product {
         this.name = name;
     }
 
-    public Long getShowPrice() {
+    public Double getShowPrice() {
         return showPrice;
     }
 
-    public void setShowPrice(Long showPrice) {
+    public void setShowPrice(Double showPrice) {
         this.showPrice = showPrice;
     }
 
@@ -56,28 +70,28 @@ public class Product {
         this.introduction = introduction;
     }
 
-    public String getShowPic() {
-        return showPic;
+    public Image getThumb() {
+        return thumb;
     }
 
-    public void setShowPic(String showPic) {
-        this.showPic = showPic;
+    public void setThumb(Image thumb) {
+        this.thumb = thumb;
     }
 
-    public byte getIsShow() {
-        return isShow;
+    public Integer getStatus() {
+        return status;
     }
 
-    public void setIsShow(byte isShow) {
-        this.isShow = isShow;
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
-    public String getCreatedTime() {
-        return createdTime;
+    public String getCreateTime() {
+        return createTime;
     }
 
-    public void setCreatedTime(String createdTime) {
-        this.createdTime = createdTime;
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
     }
 
     public List<Parameter> getParameters() {
@@ -112,20 +126,20 @@ public class Product {
         this.specs = specs;
     }
 
-    public List<String> getPics() {
+    public List<ProductImage> getPics() {
         return pics;
     }
 
-    public void setPics(List<String> pics) {
+    public void setPics(List<ProductImage> pics) {
         this.pics = pics;
     }
 
-    public Integer getQuantitySold() {
-        return quantitySold;
+    public Integer getSoldNumber() {
+        return soldNumber;
     }
 
-    public void setQuantitySold(Integer quantitySold) {
-        this.quantitySold = quantitySold;
+    public void setSoldNumber(Integer soldNumber) {
+        this.soldNumber = soldNumber;
     }
 
     public Category getCategory() {
