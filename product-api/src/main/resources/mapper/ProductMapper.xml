@@ -5,30 +5,35 @@
     <resultMap id="productResult" type="com.play001.cloud.common.entity.Product">
         <result property="id" column="id"/>
         <result property="showPrice" column="show_price"/>
-        <result property="showPic" column="show_pic"/>
         <result property="title" column="title"/>
         <result property="introduction" column="introduction"/>
-        <result property="isShow" column="is_show"/>
-        <result property="createdTime" column="create_time"/>
-        <result property="quantitySold" column="quantity_sold"/>
+        <result property="status" column="status"/>
+        <result property="createTime" column="create_time"/>
+        <result property="soldNumber" column="sold_number"/>
+        <!-- 封面 -->
+        <association property="thumb" column="thumb_id" select="findImage"/>
         <!-- 产品分类 -->
-       <association property="category" select="findCategory" column="category_id" />
-       <!-- 产品参数 -->
+        <association property="category" select="findCategory" column="category_id" />
+        <!-- 产品参数 -->
         <collection property="parameters" select="findParameters" column="id" ofType="com.play001.cloud.common.entity.Parameter"/>
         <!-- 产品标签 -->
         <collection property="labels" select="findLabels" column="id" ofType="String" />
         <!-- 产品图片 -->
-        <collection property="pics" select="findPics" column="id" ofType="String" />
+        <collection property="pics" select="findPics" column="id" ofType="com.play001.cloud.common.entity.ProductImage" />
         <!-- 产品套餐 -->
         <collection property="specs" select="findSpecs" column="id" ofType="com.play001.cloud.common.entity.Specification"/>
 
-
+    </resultMap>
+    <resultMap id="productImageMap" type="com.play001.cloud.common.entity.ProductImage">
+        <result property="id" column="id"/>
+        <result property="sort" column="sort"/>
+        <association property="image" column="image_id" select="findImage"/>
     </resultMap>
 
     <select id="findById" resultMap="productResult">
         SELECT
-            p.id, p.name, p.category_id, p.quantity_sold, p.show_price, p.title, p.show_pic, pd.introduction, p.is_show, p.create_time, p.remarks
-        FROM os_product p, os_product_detail pd
+            p.id, p.name, p.category_id, p.sold_number, p.show_price, p.title, p.thumb_id, pd.introduction, p.status, p.create_time, p.remarks
+        FROM os_product p, os_product_introduction pd
         WHERE p.id = #{id} AND pd.product_id = #{id}
         LIMIT  1
     </select>
@@ -36,16 +41,16 @@
     <!-- 搜索简单实现 -->
     <select id="search" resultMap="productResult">
         SELECT
-        p.id, p.name, p.category_id, p.show_price, p.title, p.show_pic, pd.introduction, p.is_show, p.create_time, p.remarks
-        FROM os_product p, os_product_detail pd
-        WHERE p.page_title like concat('%', #{keyword}, '%')  AND pd.product_id = #{id}
+        p.id, p.name, p.category_id, p.show_price, p.title, p.thumb_id, pd.introduction, p.status, p.create_time, p.remarks
+        FROM os_product p, os_product_introduction pd
+        WHERE p.title like concat('%', #{keyword}, '%')  AND pd.product_id = #{id}
     </select>
 
     <!-- 分类+分页 -->
     <select id="listByCategoryId" resultMap="productResult">
         SELECT
-        p.id, p.name, p.category_id, p.show_price, p.title, p.show_pic, pd.introduction, p.is_show, p.create_time, p.remarks
-        FROM os_product p, os_product_detail pd
+        p.id, p.name, p.category_id, p.show_price, p.title, p.thumb_id, pd.introduction, p.status, p.create_time, p.remarks
+        FROM os_product p, os_product_introduction pd
         WHERE pd.product_id = p.id
         <!-- categoryId为0表示检索全部商品 -->
             <if test='categoryId != 0'>
@@ -55,7 +60,7 @@
                 ORDER BY p.create_time DESC
             </if>
             <if test='sort == 2'>
-                ORDER BY p.quantity_sold DESC
+                ORDER BY p.sold_number DESC
             </if>
             <if test='sort == 3'>
                 ORDER BY p.show_price
@@ -78,6 +83,11 @@
 
 
 
+    <!-- 查找图片 -->
+    <select id="findImage"  resultType="com.play001.cloud.common.entity.Image">
+        SELECT id, url, path, storage_name as storageName from support_image_log
+        where id = #{id}
+    </select>
 
     <!-- 商品参数-->
     <select id="findParameters" resultType="com.play001.cloud.common.entity.Parameter">
@@ -93,10 +103,11 @@
         FROM os_product_label
         WHERE product_id = #{id}
     </select>
-    <!-- 查找图片-->
-    <select id="findPics" resultType="String">
+
+    <!-- 相册查找-->
+    <select id="findPics" resultMap="productImageMap">
         SELECT
-        path
+        id, sort, image_id
         FROM os_product_image
         WHERE product_id = #{id}
     </select>
@@ -104,7 +115,7 @@
     <!-- 查找套餐-->
     <select id="findSpecs" resultType="com.play001.cloud.common.entity.Specification">
         SELECT
-        id, product_id as productId, name, quantity_sold as quantitySold, stock, price
+        id, product_id as productId, name, sold_number as soldNumber, stock, price
         FROM os_product_specification
         WHERE product_id = #{id}
     </select>
