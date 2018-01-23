@@ -1,4 +1,4 @@
-package com.play001.cloud.os.controller.api;
+package com.play001.cloud.os.controller.rest;
 
 import com.play001.cloud.common.entity.Response;
 import com.play001.cloud.os.service.impl.CartServiceImpl;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/cart")
-public class CartApi {
+public class CartRestController {
 
     @Autowired
     private CartServiceImpl cartService;

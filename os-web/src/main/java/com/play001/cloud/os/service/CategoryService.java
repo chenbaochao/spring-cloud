@@ -16,8 +16,8 @@ import java.util.List;
 @FeignClient(name = "ZUUL", fallbackFactory = DefaultFallbackFactory.class)
 public interface CategoryService {
 
-    @RequestMapping(value = "/common/category/findAllWithProduct", method = RequestMethod.GET)
-    Response<List<Category>> findAllWithProduct();
+    @RequestMapping(value = "/common/category/findAll", method = RequestMethod.GET)
+    Response<List<Category>> findAll();
 
     @RequestMapping(value = "/common/category/findById", method = RequestMethod.GET)
     Response<Category> findById(@RequestParam("categoryId") Integer categoryId);

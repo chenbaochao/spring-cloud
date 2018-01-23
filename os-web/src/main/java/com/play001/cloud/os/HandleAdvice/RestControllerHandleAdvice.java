@@ -3,7 +3,7 @@ package com.play001.cloud.os.HandleAdvice;
 
 import com.play001.cloud.common.entity.IException;
 import com.play001.cloud.common.entity.Response;
-import com.play001.cloud.os.controller.api.UserApi;
+import com.play001.cloud.os.controller.rest.UserRestController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
  * 异常统一返回
  * 此拦截器针对的是@RestController注解
  */
-@RestControllerAdvice(assignableTypes = {UserApi.class})
+@RestControllerAdvice(assignableTypes = {UserRestController.class})
 public class RestControllerHandleAdvice {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());

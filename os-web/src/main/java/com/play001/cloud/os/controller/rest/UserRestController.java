@@ -1,4 +1,4 @@
-package com.play001.cloud.os.controller.api;
+package com.play001.cloud.os.controller.rest;
 
 import com.play001.cloud.common.entity.Response;
 import com.play001.cloud.common.entity.User;
@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 
 @RequestMapping("/user")
 @RestController
-public class UserApi {
+public class UserRestController {
 
     @Autowired
     private UserServiceImpl userService;
@@ -23,6 +23,11 @@ public class UserApi {
     @Value("${credential.expiryDate}")
     private Long expiryDate;//登陆口令有效期
 
+
+    @RequestMapping(value = "/test", method = RequestMethod.GET)
+    public String test() {
+        return userService.test();
+    }
     /**
      * 登陆
      * @param key 用户名/手机/邮箱

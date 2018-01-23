@@ -1,9 +1,13 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <div class="site-topbar">
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
                 <div class="topbar-nav">
-                    <a rel="nofollow" href="/" target="${indexTop.target}">商城首页</a><span class="sep">|</span>
+                    <span th:each="navigationBar:${navigationBars}">
+                        <a rel="nofollow" th:href="${navigationBar.href}" th:target="${navigationBar.target}" th:text="${navigationBar.name}">商城首页</a>
+                        <span class="sep" style="display: inline">|</span>
+                    </span>
                 </div>
                 <div class="topbar-cart" id="J_miniCartTrigger" style="display: none">
                     <a class="cart-mini" id="J_miniCartBtn" href="${ctx}/cart/list">

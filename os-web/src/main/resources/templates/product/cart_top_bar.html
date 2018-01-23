@@ -4,10 +4,10 @@
       <li th:each="cart:${carts}">
         <div class="cart-item clearfix first">
           <a class="thumb" th:href="'/product/detail-'+${cart.product.id}">
-            <img th:alt="${cart.product.name}" th:src="${cart.product.showPic}" width="60" height="60">
+            <img th:alt="${cart.product.name}" th:src="${cart.product.thumb.url}" width="60" height="60">
           </a>
           <a class="name" th:href="'/product/detail-'+${cart.product.id}" th:text="${cart.product.name}+' '+${cart.spec.name}"></a>
-          <span class="price" th:text="${cart.spec.price}+'元×'+${cart.buyQuantity}"></span>
+          <span class="price" th:text="${cart.spec.price}+'元×'+${cart.buyNumber}"></span>
           <a class="btn-del J_delItem" href="javascript: void(0);">
             <i class="glyphicon glyphicon-remove" th:onclick="|cart_delete(this, ${cart.id})|"></i>
           </a>

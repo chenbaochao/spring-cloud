@@ -15,8 +15,8 @@ public class CategoryServiceImpl {
     @Autowired
     private CategoryService categoryService;
 
-    public List<Category> findAllWithProduct() throws IException {
-        Response<List<Category>> response = categoryService.findAllWithProduct();
+    public List<Category> findAll() throws IException {
+        Response<List<Category>> response = categoryService.findAll();
         if(Response.ERROR.equals(response.getStatus())) throw new IException(response.getStatus());
         return response.getMessage();
     }

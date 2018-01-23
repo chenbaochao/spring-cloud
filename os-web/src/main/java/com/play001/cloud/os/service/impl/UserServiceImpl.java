@@ -23,6 +23,9 @@ public class UserServiceImpl {
         return response;
     }
 
+    public String  test(){
+        return userService.test();
+    }
 
     public void setCaptcha(HttpServletResponse response) throws Exception {
         Response<byte[]> responseMsg = userService.getCaptcha();

@@ -68,7 +68,7 @@
                 </div>
                 <div class="col col-img">
                   <a th:href="'/product/detial-'+${cart.product.id}" target="_blank">
-                    <img th:alt="${cart.product.name}" th:src="${cart.product.showPic}" width="80" height="80">
+                    <img th:alt="${cart.product.name}" th:src="${cart.product.thumb.url}" width="80" height="80">
                   </a>
                 </div>
                 <div class="col col-name">
@@ -78,11 +78,11 @@
                 <div class="col col-num">
                   <div class="change-goods-num clearfix J_changeGoodsNum">
                     <a href="javascript:void(0)" class="J_minus"><i class="iconfont"></i></a>
-                    <input tyep="text" name="2163000001_0_buy" th:value="${cart.buyQuantity}" data-num="1" data-buylimit="50" autocomplete="off" class="goods-num J_goodsNum" >
+                    <input tyep="text" name="2163000001_0_buy" th:value="${cart.buyNumber}" data-num="1" data-buylimit="50" autocomplete="off" class="goods-num J_goodsNum" >
                     <a href="javascript:void(0)" class="J_plus"><i class="iconfont"></i></a>
                   </div>
                 </div>
-                <div class="col col-total" th:text="${cart.spec.price * cart.buyQuantity}"> 79元 <p class="pre-info">  </p> </div>
+                <div class="col col-total" th:text="${cart.spec.price * cart.buyNumber}"> 79元 <p class="pre-info">  </p> </div>
                 <div class="col col-action">
                   <a id="2163000001_0_buy" data-msg="确定删除吗？" href="javascript:void(0);" title="删除" class="del J_delGoods"><i class="iconfont"></i></a>
                 </div>

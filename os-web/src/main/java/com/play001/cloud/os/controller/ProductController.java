@@ -34,9 +34,6 @@ public class ProductController {
      * 分类列出产品
      * @param categoryId 产品目录ID
      * @param sort 排序方式,1.新品,2.销量,3.价格up,4.价格down
-     * @param pageNo
-     * @return
-     * @throws IException
      */
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public String list(Integer categoryId, Integer sort, Integer pageNo, Model model) throws IException {
@@ -44,7 +41,7 @@ public class ProductController {
         sort = (sort != null && sort > 0 && sort < 5)?sort:1;
         pageNo = (pageNo != null && pageNo > 0)?pageNo:1;
         model.addAttribute("pagination", productService.getPaginationByCategoryId(categoryId, sort, pageNo));
-        model.addAttribute("categories", categoryService.findAllWithProduct());
+        model.addAttribute("categories", categoryService.findAll());
         model.addAttribute("sort", sort);
         model.addAttribute("category", categoryService.findById(categoryId));
         model.addAttribute("url","/product/list?categoryId="+categoryId+"&sort="+sort+"&pageNo=");

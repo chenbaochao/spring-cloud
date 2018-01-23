@@ -52,8 +52,8 @@ public class CartController {
         //计算总件数和总价格
         int totalNumber = 0, totalPrice = 0;
         for (ShopCart cart : carts){
-            totalNumber+=cart.getBuyQuantity();
-            totalPrice+=cart.getBuyQuantity()+cart.getSpec().getPrice();
+            totalNumber+=cart.getBuyNumber();
+            totalPrice+=cart.getBuyNumber()+cart.getSpec().getPrice();
         }
         model.addAttribute("carts", carts);
         model.addAttribute("totalNumber", totalNumber);

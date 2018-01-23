@@ -19,6 +19,8 @@ public interface UserService {
                                 @RequestParam("password") String password,
                                 @RequestParam("expiryDate") Long expiryDate);
 
+    @RequestMapping(value = "/user/test", method = RequestMethod.GET)
+    String test();
     /**
      * 获取验证码数据
      */
