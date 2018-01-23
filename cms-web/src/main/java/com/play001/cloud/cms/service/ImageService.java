@@ -1,11 +1,7 @@
 package com.play001.cloud.cms.service;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
-import com.play001.cloud.cms.entity.UploadImageResponse;
 import com.play001.cloud.cms.mapper.ImageMapper;
 import com.play001.cloud.cms.util.CommonUtil;
-import com.play001.cloud.common.entity.IException;
 import com.play001.cloud.common.entity.Image;
 import com.play001.cloud.common.entity.Response;
 import com.play001.cloud.common.enums.StorageTypeEnum;
@@ -44,10 +40,10 @@ public class ImageService {
      * 图片上传
      * 手动开启事务
      */
-    public UploadImageResponse upload(MultipartFile upFile, String avatarData){
-        UploadImageResponse response = new UploadImageResponse();
+    public Response<Image> upload(MultipartFile upFile, String avatarData){
+        Response<Image> response = new Response<>();
         if(upFile == null){
-            return response.setError("参数错误");
+            return response.setErrMsg("参数错误");
         }
         DefaultTransactionDefinition transactionDefinition = new DefaultTransactionDefinition();
         //获取事务级别
@@ -62,12 +58,12 @@ public class ImageService {
             //判断文件MIME type
             String type = upFile.getContentType();
             if(type == null || !type.toLowerCase().startsWith("image/")){
-                return response.setError("不支持的文件类型，仅支持图片!");
+                return response.setErrMsg("不支持的文件类型，仅支持图片!");
             }
             //获取文件后缀
             String fileExt = CommonUtil.getFileExt(upFile.getOriginalFilename());
             if(fileExt == null || !CommonUtil.checkFileExt(fileExt)){
-                return response.setError("不支持的文件类型");
+                return response.setErrMsg("不支持的文件类型");
             }
             StringBuilder uploadPath = new StringBuilder();
             //生成文件路径
@@ -97,17 +93,15 @@ public class ImageService {
                 imageInputStream = new ByteArrayInputStream(os.toByteArray());
             }
             if(!storageUtil.upload(imageInputStream, uploadPath.toString())){
-                return response.setError("上传失败");
+                return response.setErrMsg("上传失败");
             }
             transactionManager.commit(status);
-            response.setInitialPreview(image.getUrl());
-            response.getInitialPreviewConfig()[0].setCaption(upFile.getOriginalFilename());
-            response.getInitialPreviewConfig()[0].setKey(image.getId());
+            response.setMessage(image);
             return response;
         } catch (Exception e){
             e.printStackTrace();
             transactionManager.rollback(status);
-            return response.setError("上传失败");
+            return response.setErrMsg("上传失败");
         }
 
     }

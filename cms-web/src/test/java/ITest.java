@@ -1,3 +1,4 @@
+import com.play001.cloud.cms.controller.rest.CommonRestController;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.tomcat.util.security.MD5Encoder;
 import org.junit.Test;
@@ -6,6 +7,8 @@ public class ITest {
 
     @Test
     public void Itest(){
-        System.out.println(DigestUtils.md5Hex("123456"));
+
+        String rootPath = CommonRestController.class.getClassLoader().getResource("").getPath();
+        System.out.println(rootPath);
     }
 }
