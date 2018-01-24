@@ -30,7 +30,7 @@ $(function () {
     $('#submit').click(function(){
         var data = initData();
         $.ajax({
-            url:'../product/add',
+            url:'../product/create',
             method:'post',
             dataType:"json",
             contentType:'application/json',
@@ -167,6 +167,7 @@ function initUeditor(){
         }
     }
     ue = UE.getEditor('editor',{
+
         toolbars:[
             [
                 'anchor', //锚点

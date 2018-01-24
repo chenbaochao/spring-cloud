@@ -86,7 +86,8 @@ public class AdminService {
         }
         /* 转换为小写,session里面存储的已经是小写的验证码了 */
         captchaCode = captchaCode.toLowerCase();
-        String trueCode = session.getAttribute("loginCaptchaCode").toString();
+        String trueCode = (String) session.getAttribute("loginCaptchaCode");
+
         //if(trueCode == null || !trueCode.equals(captchaCode)) throw new IException("验证码错误");
         //验证码通过后必须将让验证码失效,否者会有漏洞
         session.setAttribute("loginCaptchaCode", null);

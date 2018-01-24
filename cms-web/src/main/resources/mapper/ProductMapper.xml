@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.play001.cloud.cms.mapper.ProductMapper">
+    <resultMap id="productResult" type="com.play001.cloud.common.entity.Product">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="showPrice" column="show_price"/>
+        <result property="status" column="status"/>
+        <result property="soldNumber" column="sold_number"/>
+        <result property="createTime" column="create_time"/>
+        <!-- 目录 -->
+        <association property="category" select="findCategory" column="category_id" />
+    </resultMap>
+
+
+    <select id="count" resultType="Long">
+        SELECT
+            count(id)
+        FROM os_product
+        <if test="categoryId != 0">
+            where category_id = #{categoryId}
+        </if>
+    </select>
+
+    <select id="getList" resultMap="productResult" >
+        SELECT
+            id, name, show_price, status, sold_number, create_time, category_id
+        FROM os_product
+        <if test="categoryId != 0">
+            where category_id = #{categoryId}
+        </if>
+        <include refid="common_order_if"/>
+        LIMIT #{offset}, #{limit}
+    </select>
+
+
+
+    <!-- 查找栏目 -->
+    <select id="findCategory" resultType="com.play001.cloud.common.entity.Category" >
+        select id, name from os_category where id = #{category_id}
+    </select>
+
+    <sql id="common_order_if">
+
+        <if test="sort == null">
+            order by id
+        </if>
+        <if test="sort == 'status'">
+            order by status
+        </if>
+       <if test="sort == 'id'">
+           order by id
+       </if>
+        <if test="sort == 'price'">
+            order by price
+        </if>
+        <if test="sort == 'soldNumber'">
+            order by sold_number
+        </if>
+        <if test="sort == 'createTime'">
+            order by create_time
+        </if>
+        <if test="sort == 'category.id'">
+            order by category_id
+        </if>
+        <if test="order == 'desc'">
+            desc
+        </if>
+
+    </sql>
+</mapper>

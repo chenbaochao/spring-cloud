@@ -10,6 +10,8 @@ import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Mapper
 @Repository
 public interface ProductMapper {
@@ -18,6 +20,12 @@ public interface ProductMapper {
             " value(#{name}, #{showPrice}, #{title}, #{status}, #{createTime}, #{remarks}, #{soldNumber}, #{category.id}, #{thumb.id} )")
     @Options(useGeneratedKeys = true, keyProperty = "id")
     void addProduct(Product product);
+
+    Long count(@Param("categoryId") Integer categoryId);
+
+    List<Product> getList(@Param("offset") Long offset, @Param("limit") Integer limit,
+                          @Param("sort") String sort, @Param("order") String order,
+                          @Param("categoryId") Integer categoryId);
 
     //添加产品规格
     @Insert("insert into os_product_specification(product_id, name, price, stock, sold_number)" +
@@ -45,4 +53,6 @@ public interface ProductMapper {
             " (select max_sort from (select IFNULL(max(sort)+1,1) max_sort from os_product_label where product_id  = #{productId})t ), " +
             " #{name})")
     void addLabel(@Param("productId")Long productId, @Param("name")String name);
+
+
 }
