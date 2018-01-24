@@ -13,7 +13,7 @@ public class NavigationBar {
     private Integer id;
     @NotBlank(message = "名称长度错误")
     private String name;
-    @NotBlank(message = "请选中打开方式")
+    @NotBlank(message = "请选择打开方式")
     private String target;
     @NotNull(message = "请输入排序序号")
     private Integer sort;
@@ -22,7 +22,7 @@ public class NavigationBar {
     @NotNull(message = "状态错误")
     private Boolean status;
     private String createTime;
-    @NotNull
+
     private String remarks;
     //导航
     @NotNull(message = "所属导航错误")

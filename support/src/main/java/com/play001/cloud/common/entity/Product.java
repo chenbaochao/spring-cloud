@@ -16,6 +16,8 @@ public class Product {
     @NotBlank(message = "产品名字不能为空")
     private String name;//商品名字
     @Max(value = 999999, message = "产品价格不能大于999999")
+    @Min(value = 0, message = "产品价格不能小于0")
+    @NotNull(message = "产品价格错误")
     private Double showPrice;//展示价格
     @NotBlank(message = "商品简介不能为空")
     private String title;//商品简介
@@ -24,6 +26,7 @@ public class Product {
     private String introduction;//商品介绍
     @Max(value = 1, message = "商品状态错误")
     @Min(value = 0, message = "商品状态错误")
+    @NotNull(message = "商品状态错误")
     private Integer status;//是否上架,0否,1是
     private String createTime;//创建时间
     private Integer soldNumber;//卖出数量

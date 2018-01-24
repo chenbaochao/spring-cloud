@@ -1,5 +1,11 @@
 package com.play001.cloud.common.entity;
 
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
+
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
@@ -7,12 +13,21 @@ import java.util.List;
  */
 public class Category {
     private Integer id;
+    @Length(min = 2, max = 20, message = "类目名称长度错误")
+    @NotBlank(message = "类目名称长度错误")
     private String name;
+    @NotNull(message = "排序错误")
     private Integer sort;
     //是否显示在分类中
-    private byte status;
-    //是否显示在导航栏
-    private byte showInNav;
+    @Max(value = 1, message = "状态只能为1或者0")
+    @Min(value = 0, message = "状态只能为1或者0")
+    @NotNull(message = "状态错误")
+    private Byte status;
+    //是否显示在导航栏首页顶部
+    @Max(value = 1, message = "是否顶部只能为1或者0")
+    @Min(value = 0, message = "是否顶部只能为1或者0")
+    @NotNull(message = "是否顶部只能为1或者0")
+    private Byte showInTop;
     //有时可能会需要
     private List<Product> products;
     public Integer getId() {
@@ -39,20 +54,20 @@ public class Category {
         this.sort = sort;
     }
 
-    public byte getStatus() {
+    public Byte getStatus() {
         return status;
     }
 
-    public void setStatus(byte status) {
+    public void setStatus(Byte status) {
         this.status = status;
     }
 
-    public byte getShowInNav() {
-        return showInNav;
+    public Byte getShowInTop() {
+        return showInTop;
     }
 
-    public void setShowInNav(byte showInNav) {
-        this.showInNav = showInNav;
+    public void setShowInTop(Byte showInTop) {
+        this.showInTop = showInTop;
     }
 
     public List<Product> getProducts() {
