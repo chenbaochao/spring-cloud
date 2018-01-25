@@ -45,8 +45,9 @@ public class ProductService {
             productMapper.addPic(productImage);
         }
         //保存标签
-        for(String label : product.getLabels()){
-            productMapper.addLabel(product.getId(), label);
+        for(Label label : product.getLabels()){
+            label.setProductId(product.getId());
+            productMapper.addLabel(label);
         }
         //保存产品介绍
         productMapper.addIntroduction(product.getId(), product.getIntroduction());
@@ -64,9 +65,24 @@ public class ProductService {
         if(categoryId == null ){
             categoryId = 0;
         }
+        //排序默认按照创建时间排序
+        switch (sort){
+            case "showPrice":
+            case "soldNumber":
+            case "createTime":
+            case "status":
+                break;
+            default:
+                sort = "createTime";
+
+        }
         Map<String, Object> data = new HashMap<>();
         data.put("total", productMapper.count(categoryId));
         data.put("rows", productMapper.getList(offset, limit, sort, order, categoryId));
         return data;
+    }
+
+    public Product findById(Long id){
+        return productMapper.findById(id);
     }
 }

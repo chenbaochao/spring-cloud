@@ -3,26 +3,67 @@ var ue;
 /**
  * 相册图片数组,包括图片ID和图片排序
  */
-var productImages = [];
+var productImages;
 /**
  * 封面图片
  */
-var thumbImage = {};
+var thumbImage;
 
-//临时dom数据
-var paraImpl;
-var specImpl;
-var labelImpl;
+//参数-dom数据
+var paraImpl = '<div class="form-group parameter">' +
+    '<input type="hidden" value="0" name="paraId" />' +
+    '<label class="col-sm-1 col-xs-offset-2 control-label">参数名：</label>' +
+    '<div class="col-sm-1">' +
+    '<input type="text" maxlength="18"  class="form-control" name="paraName" >' +
+    '</div>' +
+    '<label class="col-sm-1 col-xs-offset-1 control-label">参数值：</label>' +
+    '<div class="col-sm-1">' +
+    '<input type="text" maxlength="18"  class="form-control" name="paraValue" >' +
+    '</div>' +
+    '<a class="remove m-r-sm text-danger"  onclick="del(this)" title="删除">' +
+    '<i class="glyphicon glyphicon-remove" style="margin-top:8px;"></i>' +
+    '</a>' +
+    '</div>';
+//规格-dom数据
+var specImpl='<div class="form-group specification">' +
+    '<input type="hidden" name="specId" value="0" />'+
+    '<label class="col-sm-1 col-xs-offset-2 control-label">规格名：</label>' +
+    '<div class="col-sm-1">' +
+    '<input type="text" maxlength="18"  class="form-control" name="specName" >' +
+    '</div>' +
+    '<label class="col-sm-1 col-xs-offset-1 control-label">价格：</label>' +
+    '<div class="col-sm-1">' +
+    '<input type="number"  class="form-control" name="specPrice" >' +
+    '</div>' +
+    '<label class="col-sm-1 col-xs-offset-1 control-label">库存：</label>' +
+    '<div class="col-sm-1">' +
+    '<input type="number"  class="form-control" name="specStock" >' +
+    '</div>' +
+    '<a class="remove m-r-sm text-danger"  onclick="del(this)" title="删除">' +
+    '<i class="glyphicon glyphicon-remove" style="margin-top:8px;"></i>' +
+    '</a>' +
+    '</div>';
+//标签dom
+var labelImpl = '<div class="col-sm-2 labels">' +
+    '<div class="col-sm-8">' +
+    '<input type="hidden" name="labelId" value="0"/>'+
+    '<input type="text" maxlength="10"  class="form-control" name="labelName" >' +
+    '</div>' +
+    '<div class="col-sm-4">' +
+    '<a class="remove m-r-sm text-danger"  onclick="delLabel(this)" title="删除">' +
+    '<i class="glyphicon glyphicon-remove" style="margin-top:8px;"></i>' +
+    '</a>' +
+    '</div>' +
+    '</div>';
 $(function(){
+    thumbImage = product.thumb;
+    productImages = product.pics;
     //初始化编辑器
     initUeditor();
     //初始化封面上传组件
     initThumbUpload();
     //初始化相册上传组件
     initGalleryUpload();
-    paraImpl = $(".form-group.parameter").clone();
-    specImpl = $(".form-group.specification").clone();
-    labelImpl = $(".col-sm-2.labels").clone();
 })
 
 
@@ -48,10 +89,13 @@ $(function () {
 
 });
 
+/**
+ * 构建数据
+ */
 
-
-function initData(){
+function bulidData(){
     var data = {};
+    data.id = $('#id').val();
     data.name = $('#name').val();
     data.showPrice = $('#showPrice').val();
     data.title = $('#title').val();
@@ -63,7 +107,6 @@ function initData(){
     category.id = $('#category').val();
     data.category = category;
     var parameters = [];
-    //参数
     $('[name="paraName"]').each(function (i) {
         var para = {};
         para.name = $('[name="paraName"]')[i].value;
@@ -72,7 +115,6 @@ function initData(){
     });
     data.parameters = parameters;
     var specs = [];
-    //规格
     $('[name="specName"]').each(function (i) {
         var spec = {};
         spec.name = $('[name="specName"]')[i].value;
@@ -84,11 +126,9 @@ function initData(){
     //标签
     var labels = [];
     $('[name="label"]').each(function (i) {
-        if($('[name="label"]')[i].value !== null || $('[name="label"]')[i].value !== ''){
-            var label = {};
-            label.name = $('[name="label"]')[i].value;
-            labels.push(label);
-        }
+        var label = {};
+        label.name = $('[name="label"]')[i].value;
+        labels.push(label);
     });
     data.labels = labels;
     data.remarks =  $('#remarks').val();
@@ -98,6 +138,19 @@ function initData(){
  * 初始化相册上传组件
  */
 function initGalleryUpload(){
+    //构造初始化数据
+    var initialPreviewData = [];
+    var initialPreviewConfigData = [];
+    var pics = product.pics;
+    for(var i = 0;i < pics.length; i++){
+        initialPreviewData.push(pics[i].image.url);
+        //这里没有给删除的url,所以图片并没有被真正删除,需要在后台处理
+        var item = {};
+        item.key = pics[i].image.id;
+        initialPreviewConfigData.push(item);
+    }
+    console.log(initialPreviewData);
+    console.log(initialPreviewConfigData);
     //相册
     $("#galleryInput").fileinput({
         theme: 'fa',
@@ -110,8 +163,9 @@ function initGalleryUpload(){
         fileActionSettings:{
             //showDrag:false //设置不能拖动
         },
-        initialPreviewAsData: true
-
+        initialPreviewAsData: true,
+        initialPreview:initialPreviewData,
+        initialPreviewConfig:initialPreviewConfigData
     }).on('fileuploaded', function(event, data, previewId, index) {
         var response = data.response;
         var initialPreviewConfig = response.initialPreviewConfig;
@@ -157,7 +211,16 @@ function initThumbUpload(){
         fileActionSettings:{
             showDrag:false //设置不能拖动(拖动有BUG)
         },
-        initialPreviewAsData: true
+        initialPreviewAsData: true,
+        initialPreview:[
+            product.thumb.url
+        ],
+        initialPreviewConfig:[
+            {
+                caption:'当前封面',
+                key:product.thumb.id
+            }
+        ]
     }).on('fileuploaded', function(event, data, previewId, index) {
         var response = data.response;
         var initialPreviewConfig = response.initialPreviewConfig;
@@ -177,7 +240,6 @@ function initUeditor(){
         }
     }
     ue = UE.getEditor('editor',{
-
         toolbars:[
             [
                 'anchor', //锚点
@@ -258,6 +320,10 @@ function initUeditor(){
             ]
         ]
     });
+    UE.getEditor('editor').ready(function() {
+        //this是当前创建的编辑器实例
+        this.setContent(product.introduction);
+    })
 }
 
 
@@ -270,15 +336,8 @@ function addPara(){
 function addSpec(){
     $('.ibox-content.specification').append(specImpl.clone());
 }
-function addLabels(){
-    $('.form-group.labels').append(labelImpl.clone());
-}
 
 function del(e){
     var p1 = e.parentNode;
     e.parentNode.parentNode.removeChild(p1);
-}
-function delLabel(e){
-    var p1 = e.parentNode.parentNode;
-    p1.parentNode.removeChild(p1);
 }

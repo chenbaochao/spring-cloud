@@ -1,6 +1,7 @@
 package com.play001.cloud.cms.controller;
 
 import com.play001.cloud.cms.service.CategoryService;
+import com.play001.cloud.cms.service.ProductService;
 import com.play001.cloud.common.entity.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,11 +16,14 @@ public class ProductController {
 
     @Autowired
     private CategoryService categoryService;
+    @Autowired
+    private ProductService productService;
     /**
      * 添加
      */
     @RequestMapping(value = "/create", method = RequestMethod.GET)
-    public String create(){
+    public String create(Model model){
+        model.addAttribute("categories", categoryService.findAll());
         return "product/product_create";
     }
 
@@ -30,5 +34,16 @@ public class ProductController {
     public String list(Model model){
         model.addAttribute("categories", categoryService.findAll());
         return "product/product_list";
+    }
+    /**
+     * 更新
+     */
+    @RequestMapping(value = "/update", method = RequestMethod.GET)
+    public String update(Model model, Long id){
+        model.addAttribute("categories", categoryService.findAll());
+        Product product = productService.findById(id);
+        model.addAttribute("product", product);
+        model.addAttribute("productJson", product.toJson());
+        return "product/product_update";
     }
 }

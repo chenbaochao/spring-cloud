@@ -7,8 +7,17 @@ public class ITest {
 
     @Test
     public void Itest(){
+        String sort = "showPrice";
+        switch (sort){
+            case "showPrice":
+            case "soldNumber":
+            case "createTime":
+            case "status":
+                break;
+            default:
+                sort = "createTime";
 
-        String rootPath = CommonRestController.class.getClassLoader().getResource("").getPath();
-        System.out.println(rootPath);
+        }
+        System.out.println(sort);
     }
 }

@@ -4,13 +4,24 @@
 <mapper namespace="com.play001.cloud.cms.mapper.ProductMapper">
     <resultMap id="productResult" type="com.play001.cloud.common.entity.Product">
         <id property="id" column="id"/>
-        <result property="name" column="name"/>
         <result property="showPrice" column="show_price"/>
-        <result property="status" column="status"/>
         <result property="soldNumber" column="sold_number"/>
         <result property="createTime" column="create_time"/>
+        <!-- 封面 -->
+        <association property="thumb"  column="thumb_id" select="com.play001.cloud.cms.mapper.ImageMapper.findById"/>
         <!-- 目录 -->
-        <association property="category" select="findCategory" column="category_id" />
+        <association property="category"  column="category_id"  select="com.play001.cloud.cms.mapper.CategoryMapper.findById"/>
+        <!-- 介绍 -->
+        <association property="introduction" column="id" select="findIntroduction" />
+        <!-- 相册 -->
+        <collection property="pics" column = "id" select="findPicsByProductId" />
+        <!-- 参数 -->
+        <collection property="parameters" column = "id" select="findParasByProductId" />
+        <!-- 规格 -->
+        <collection property="specs" column = "id" select="findSpecsByProductId" />
+        <!-- 标签 -->
+        <collection property="labels" column = "id" select="findLabelsByProductId" />
+
     </resultMap>
 
 
@@ -36,10 +47,7 @@
 
 
 
-    <!-- 查找栏目 -->
-    <select id="findCategory" resultType="com.play001.cloud.common.entity.Category" >
-        select id, name from os_category where id = #{category_id}
-    </select>
+
 
     <sql id="common_order_if">
 
