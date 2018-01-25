@@ -1,6 +1,7 @@
 package com.play001.cloud.common.entity;
 
 
+import com.google.gson.Gson;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.constraints.Max;
@@ -36,7 +37,7 @@ public class Product {
     private Category category;//分类
 
     private List<Parameter> parameters;//参数详情
-    private List<String> labels;//商品标签
+    private List<Label> labels;//商品标签
     @NotNull(message = "商品类别/套餐数量需大于0")
     private List<Specification> specs;//商品类别,套餐
     private String remarks;//备注
@@ -105,11 +106,11 @@ public class Product {
         this.parameters = parameters;
     }
 
-    public List<String> getLabels() {
+    public List<Label> getLabels() {
         return labels;
     }
 
-    public void setLabels(List<String> labels) {
+    public void setLabels(List<Label> labels) {
         this.labels = labels;
     }
 
@@ -159,5 +160,9 @@ public class Product {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String toJson(){
+        return new Gson().toJson(this);
     }
 }
