@@ -4,16 +4,16 @@ package com.play001.cloud.common.entity;
  * 产品图片
  */
 public class ProductImage {
-    private Integer id;
+    private Long id;
     private Long productId;
     private Image image;
     private Integer sort;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
