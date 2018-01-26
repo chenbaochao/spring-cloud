@@ -94,7 +94,7 @@
                                         <div class="hr-line-dashed"></div>
                                         <div class="form-group">
                                             <label class="col-sm-4 col-xs-offset-1 control-label">备注：</label>
-                                            <div class="col-sm-6">
+                                            <div class="col-sm-4">
                                                 <input type="text" maxlength="18"  class="form-control" id="remarks" th:value="${product.remarks}">
                                             </div>
                                         </div>
@@ -153,7 +153,7 @@
                                     <div class="ibox-content">
                                         <div class="form-group labels">
                                             <div class="col-sm-1">
-                                                <button type="button" class="btn btn-default"  title="添加标签" onclick="addLabels()">
+                                                <button type="button" class="btn btn-default"  title="添加标签" onclick="addLabel()">
                                                     <i class="glyphicon glyphicon-plus"></i>
                                                 </button>
                                                 <label class="control-label">标签:</label>
@@ -194,11 +194,11 @@
                                 <div class="form-group parameter" th:each="para:${product.parameters}">
                                     <input type="hidden" th:value="${para.id}" name="paraId" />
                                     <label class="col-sm-1 col-xs-offset-2 control-label">参数名：</label>
-                                    <div class="col-sm-1">
+                                    <div class="col-sm-2">
                                         <input type="text" maxlength="18"  class="form-control" name="paraName" th:value="${para.name}" >
                                     </div>
                                     <label class="col-sm-1 col-xs-offset-1 control-label">参数值：</label>
-                                    <div class="col-sm-1">
+                                    <div class="col-sm-2">
                                         <input type="text" maxlength="18"  class="form-control" name="paraValue" th:value="${para.value}">
                                     </div>
                                     <a class="remove m-r-sm text-danger"  onclick="del(this)" title="删除">

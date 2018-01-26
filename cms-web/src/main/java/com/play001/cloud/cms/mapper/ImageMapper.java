@@ -28,6 +28,12 @@ public interface ImageMapper {
     void setUsed(Long id);
 
     /**
+     * 设置图片为未用
+     */
+    @Update("update support_image_log set used = 0 where id = #{id}")
+    void setUnused(Long id);
+
+    /**
      * 通过URL查找图片
      */
     @Select("select id, url, path, used, storage_name as storageName, create_time as createTime from support_image_log where url = #{url}")

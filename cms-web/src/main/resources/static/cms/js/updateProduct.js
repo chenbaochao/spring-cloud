@@ -9,52 +9,6 @@ var productImages;
  */
 var thumbImage;
 
-//参数-dom数据
-var paraImpl = '<div class="form-group parameter">' +
-    '<input type="hidden" value="0" name="paraId" />' +
-    '<label class="col-sm-1 col-xs-offset-2 control-label">参数名：</label>' +
-    '<div class="col-sm-1">' +
-    '<input type="text" maxlength="18"  class="form-control" name="paraName" >' +
-    '</div>' +
-    '<label class="col-sm-1 col-xs-offset-1 control-label">参数值：</label>' +
-    '<div class="col-sm-1">' +
-    '<input type="text" maxlength="18"  class="form-control" name="paraValue" >' +
-    '</div>' +
-    '<a class="remove m-r-sm text-danger"  onclick="del(this)" title="删除">' +
-    '<i class="glyphicon glyphicon-remove" style="margin-top:8px;"></i>' +
-    '</a>' +
-    '</div>';
-//规格-dom数据
-var specImpl='<div class="form-group specification">' +
-    '<input type="hidden" name="specId" value="0" />'+
-    '<label class="col-sm-1 col-xs-offset-2 control-label">规格名：</label>' +
-    '<div class="col-sm-1">' +
-    '<input type="text" maxlength="18"  class="form-control" name="specName" >' +
-    '</div>' +
-    '<label class="col-sm-1 col-xs-offset-1 control-label">价格：</label>' +
-    '<div class="col-sm-1">' +
-    '<input type="number"  class="form-control" name="specPrice" >' +
-    '</div>' +
-    '<label class="col-sm-1 col-xs-offset-1 control-label">库存：</label>' +
-    '<div class="col-sm-1">' +
-    '<input type="number"  class="form-control" name="specStock" >' +
-    '</div>' +
-    '<a class="remove m-r-sm text-danger"  onclick="del(this)" title="删除">' +
-    '<i class="glyphicon glyphicon-remove" style="margin-top:8px;"></i>' +
-    '</a>' +
-    '</div>';
-//标签dom
-var labelImpl = '<div class="col-sm-2 labels">' +
-    '<div class="col-sm-8">' +
-    '<input type="hidden" name="labelId" value="0"/>'+
-    '<input type="text" maxlength="10"  class="form-control" name="labelName" >' +
-    '</div>' +
-    '<div class="col-sm-4">' +
-    '<a class="remove m-r-sm text-danger"  onclick="delLabel(this)" title="删除">' +
-    '<i class="glyphicon glyphicon-remove" style="margin-top:8px;"></i>' +
-    '</a>' +
-    '</div>' +
-    '</div>';
 $(function(){
     thumbImage = product.thumb;
     productImages = product.pics;
@@ -66,21 +20,40 @@ $(function(){
     initGalleryUpload();
 })
 
-
+/**
+ * 按钮点击事件
+ */
 $(function () {
     $('#submit').click(function(){
-        var data = initData();
+        if(!checkData()) return ;
+        var data = bulidData();
         $.ajax({
-            url:'../product/create',
+            url:'../product/update',
             method:'post',
             dataType:"json",
             contentType:'application/json',
             data:JSON.stringify(data),
             success:function(response){
-
+                if(response.status === 'SUCCESS'){
+                    layer.msg("修改成功!", {
+                        shade : 0.3,
+                        icon : 1,
+                        time : 1500
+                    }, function() {
+                        window.location.reload(); // 刷新
+                    });
+                }else{
+                    layer.msg(response.errMsg, {
+                        icon : 2,
+                        time : 2000
+                    });
+                }
             },
             error:function () {
-
+                layer.msg('操作失败', {
+                    icon : 2,
+                    time : 2000
+                });
             }
         });
 
@@ -109,6 +82,7 @@ function bulidData(){
     var parameters = [];
     $('[name="paraName"]').each(function (i) {
         var para = {};
+        para.id = $('[name="paraId"]')[i].value;
         para.name = $('[name="paraName"]')[i].value;
         para.value = $('[name="paraValue"]')[i].value;
         parameters.push(para);
@@ -117,6 +91,7 @@ function bulidData(){
     var specs = [];
     $('[name="specName"]').each(function (i) {
         var spec = {};
+        spec.id = $('[name="specId"]')[i].value;
         spec.name = $('[name="specName"]')[i].value;
         spec.price = $('[name="specPrice"]')[i].value;
         spec.stock = $('[name="specStock"]')[i].value;
@@ -125,14 +100,36 @@ function bulidData(){
     data.specs = specs;
     //标签
     var labels = [];
-    $('[name="label"]').each(function (i) {
+    $('[name="labelId"]').each(function (i) {
         var label = {};
-        label.name = $('[name="label"]')[i].value;
+        label.id = $('[name="labelId"]')[i].value;
+        label.name = $('[name="labelName"]')[i].value;
         labels.push(label);
     });
     data.labels = labels;
     data.remarks =  $('#remarks').val();
     return data;
+}
+
+/**
+ * 数据校验
+ */
+function  checkData() {
+    var errMsg = null;
+    if(thumbImage.id === null) errMsg = '请上传封面';
+    if(productImages.length < 1) errMsg = '请上传相册';
+    if( $('#name').val() === null ||  $('#name').val().length < 2) errMsg = '产品名称长度需大于等于2';
+    if($('#showPrice').val() <= 0) errMsg = '显示价格需大于0';
+    if($('[name="specName"]').length === 0) errMsg = '请至少添加一种产品规格';
+    if(errMsg !== null){
+        layer.msg(errMsg, {
+            shade : 0.3,
+            time : 1500
+        });
+        return false;
+    }
+    return true;
+
 }
 /**
  * 初始化相册上传组件
@@ -146,11 +143,10 @@ function initGalleryUpload(){
         initialPreviewData.push(pics[i].image.url);
         //这里没有给删除的url,所以图片并没有被真正删除,需要在后台处理
         var item = {};
+        item.url = '../deleteSuccess';
         item.key = pics[i].image.id;
         initialPreviewConfigData.push(item);
     }
-    console.log(initialPreviewData);
-    console.log(initialPreviewConfigData);
     //相册
     $("#galleryInput").fileinput({
         theme: 'fa',
@@ -179,7 +175,7 @@ function initGalleryUpload(){
     }).on('filedeleted', function(jqXHR, key, response) {
         //删除图片数组中指定的信息
         for(var i = 0; i < productImages.length;i++){
-            if(productImages[i].id === key){
+            if(productImages[i].image.id === key){
                 productImages.splice(i, 1);
                 break;
             }
@@ -330,14 +326,67 @@ function initUeditor(){
 
 
 function addPara(){
-    $('.ibox-content.parameter').append(paraImpl.clone());
+    $('.ibox-content.parameter').append(paraImpl);
 }
 
 function addSpec(){
-    $('.ibox-content.specification').append(specImpl.clone());
+    $('.ibox-content.specification').append(specImpl);
 }
 
 function del(e){
     var p1 = e.parentNode;
     e.parentNode.parentNode.removeChild(p1);
 }
+function delLabel(e){
+    var p1 = e.parentNode.parentNode;
+    p1.parentNode.removeChild(p1);
+}
+function addLabel(){
+    $('.form-group.labels').append(labelImpl);
+}
+//参数-dom数据
+var paraImpl = '<div class="form-group parameter">' +
+    '<input type="hidden" value="0" name="paraId" />' +
+    '<label class="col-sm-1 col-xs-offset-2 control-label">参数名：</label>' +
+    '<div class="col-sm-2">' +
+    '<input type="text" maxlength="18"  class="form-control" name="paraName" >' +
+    '</div>' +
+    '<label class="col-sm-1 col-xs-offset-1 control-label">参数值：</label>' +
+    '<div class="col-sm-2">' +
+    '<input type="text" maxlength="18"  class="form-control" name="paraValue" >' +
+    '</div>' +
+    '<a class="remove m-r-sm text-danger"  onclick="del(this)" title="删除">' +
+    '<i class="glyphicon glyphicon-remove" style="margin-top:8px;"></i>' +
+    '</a>' +
+    '</div>';
+//规格-dom数据
+var specImpl='<div class="form-group specification">' +
+    '<input type="hidden" name="specId" value="0" />'+
+    '<label class="col-sm-1 col-xs-offset-2 control-label">规格名：</label>' +
+    '<div class="col-sm-2">' +
+    '<input type="text" maxlength="18"  class="form-control" name="specName" >' +
+    '</div>' +
+    '<label class="col-sm-1 col-xs-offset-1 control-label">价格：</label>' +
+    '<div class="col-sm-1">' +
+    '<input type="number"  class="form-control" name="specPrice" >' +
+    '</div>' +
+    '<label class="col-sm-1 col-xs-offset-1 control-label">库存：</label>' +
+    '<div class="col-sm-1">' +
+    '<input type="number"  class="form-control" name="specStock" >' +
+    '</div>' +
+    '<a class="remove m-r-sm text-danger"  onclick="del(this)" title="删除">' +
+    '<i class="glyphicon glyphicon-remove" style="margin-top:8px;"></i>' +
+    '</a>' +
+    '</div>';
+//标签dom
+var labelImpl = '<div class="col-sm-2 labels">' +
+    '<div class="col-sm-8">' +
+    '<input type="hidden" name="labelId" value="0"/>'+
+    '<input type="text" maxlength="10"  class="form-control" name="labelName" >' +
+    '</div>' +
+    '<div class="col-sm-4">' +
+    '<a class="remove m-r-sm text-danger"  onclick="delLabel(this)" title="删除">' +
+    '<i class="glyphicon glyphicon-remove" style="margin-top:8px;"></i>' +
+    '</a>' +
+    '</div>' +
+    '</div>';

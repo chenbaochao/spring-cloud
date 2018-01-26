@@ -4,12 +4,13 @@ import com.play001.cloud.cms.service.ProductService;
 import com.play001.cloud.common.entity.Product;
 import com.play001.cloud.common.entity.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import javax.validation.Valid;
 import java.util.Map;
 
 @RestController
@@ -23,7 +24,10 @@ public class ProductRestController {
      * 添加
      */
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public Response<Integer> create(@RequestBody Product product){
+    public Response<Integer> create(@Valid @RequestBody Product product, BindingResult bindingResult){
+        if(bindingResult.hasErrors()){
+            return new Response<Integer>().setErrMsg(bindingResult.getFieldError().getDefaultMessage());
+        }
         return productService.create(product);
     }
 
@@ -38,5 +42,15 @@ public class ProductRestController {
     @RequestMapping(value = "/getList", method = RequestMethod.GET)
     public Map<String, Object> getList(Long offset, Integer limit, String sort, String order, Integer categoryId){
         return productService.getList(offset, limit, sort, order, categoryId);
+    }
+    /**
+     * 修改产品
+     */
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    public Response<Integer> update(@Valid @RequestBody Product product, BindingResult bindingResult){
+        if(bindingResult.hasErrors()){
+            return new Response<Integer>().setErrMsg(bindingResult.getFieldError().getDefaultMessage());
+        }
+        return productService.update(product);
     }
 }

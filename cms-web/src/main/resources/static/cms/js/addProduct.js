@@ -25,9 +25,12 @@ $(function(){
     labelImpl = $(".col-sm-2.labels").clone();
 })
 
-
+/**
+ * 添加post
+ */
 $(function () {
     $('#submit').click(function(){
+        if(!checkData()) return ;
         var data = initData();
         $.ajax({
             url:'../product/create',
@@ -36,10 +39,25 @@ $(function () {
             contentType:'application/json',
             data:JSON.stringify(data),
             success:function(response){
-
+                if(response.status === 'SUCCESS'){
+                    layer.msg("添加成功!", {
+                        shade : 0.3,
+                        time : 1500
+                    }, function() {
+                        window.location.reload(); // 刷新
+                    });
+                }else{
+                    layer.msg(response.errMsg, {
+                        icon : 2,
+                        time : 1000
+                    });
+                }
             },
             error:function () {
-
+                layer.msg('操作失败', {
+                    icon : 2,
+                    time : 1000
+                });
             }
         });
 
@@ -94,6 +112,28 @@ function initData(){
     data.remarks =  $('#remarks').val();
     return data;
 }
+
+
+/**
+ * 数据校验
+ */
+function  checkData() {
+    var errMsg = null;
+    if(thumbImage.id === null) errMsg = '请上传封面';
+    if(productImages.length < 1) errMsg = '请上传相册';
+    if( $('#name').val() === null ||  $('#name').val().length < 2) errMsg = '产品名称长度需大于等于2';
+    if($('#showPrice').val() <= 0) errMsg = '显示价格需大于0';
+    if($('[name="specName"]').length === 0) errMsg = '请至少添加一种产品规格';
+    if(errMsg !== null){
+        layer.msg(errMsg, {
+            shade : 0.3,
+            time : 1500
+        });
+        return false;
+    }
+    return true;
+
+}
 /**
  * 初始化相册上传组件
  */
@@ -125,7 +165,7 @@ function initGalleryUpload(){
     }).on('filedeleted', function(jqXHR, key, response) {
         //删除图片数组中指定的信息
         for(var i = 0; i < productImages.length;i++){
-            if(productImages[i].id === key){
+            if(productImages[i].image.id === key){
                 productImages.splice(i, 1);
                 break;
             }
@@ -270,7 +310,7 @@ function addPara(){
 function addSpec(){
     $('.ibox-content.specification').append(specImpl.clone());
 }
-function addLabels(){
+function addLabel(){
     $('.form-group.labels').append(labelImpl.clone());
 }
 

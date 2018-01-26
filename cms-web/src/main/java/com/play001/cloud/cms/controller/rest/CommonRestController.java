@@ -91,4 +91,16 @@ public class CommonRestController {
         }
         return responseMap;
     }
+
+    /**
+     * 编辑产品时,删除相册旧图片时(已保存在数据库中图片)时不能直接删除图片,必须点击保存后在后台进行处理
+     * 但是前端框架必须需要返回成功信息,所以在这里假回复一下
+     * error 为空则表示成功
+     */
+    @RequestMapping(value = "/deleteSuccess")
+    public Map<String, String>  deleteSuccess(){
+        Map<String, String> response = new HashMap<>();
+        response.put("error","");
+        return response;
+    }
 }
