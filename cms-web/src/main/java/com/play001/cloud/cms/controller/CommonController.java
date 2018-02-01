@@ -1,8 +1,6 @@
 package com.play001.cloud.cms.controller;
 
-import com.play001.cloud.cms.service.AdminService;
 import com.play001.cloud.common.util.Captcha;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,8 +15,6 @@ import java.io.IOException;
 @Controller
 public class CommonController {
 
-    @Autowired
-    private AdminService adminService;
 
     /**
      * 验证码
@@ -28,7 +24,7 @@ public class CommonController {
     public void captcha(HttpServletResponse response, HttpSession session,String model) throws IOException {
         if(model != null && model.length() > 0){
             String captchaCode = Captcha.randCaptchaCode();
-            /** 需要注意的是这里存入的captchaCode是全小写的 */
+            /* 需要注意的是这里存入的captchaCode是全小写的 */
             session.setAttribute(model+"CaptchaCode", captchaCode.toLowerCase());
             BufferedImage bi = Captcha.createCaptchaImg(captchaCode);
             ImageIO.write(bi, "JPG", response.getOutputStream());

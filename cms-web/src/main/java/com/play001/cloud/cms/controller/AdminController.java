@@ -33,10 +33,10 @@ public class AdminController {
 
     @RequestMapping(value = "/index", method = RequestMethod.GET)
     public String index(Model model, HttpSession session ){
-        List<Menu> menus = menuService.getMenus();
-        model.addAttribute("menus", menus);
         AdminSessionData adminSessionData = (AdminSessionData)session.getAttribute("admin");
+        List<Menu> menus = menuService.getAdminMenus(adminSessionData.getId());
         model.addAttribute("admin", adminService.findById(adminSessionData.getId()));
+        model.addAttribute("menus", menus);
         return "webfront/main";
     }
 

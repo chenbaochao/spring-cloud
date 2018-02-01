@@ -63,6 +63,11 @@ public interface AdminMapper {
     @Delete("delete from cms_admin where id = #{id}")
     void delete(Integer id);
 
+    /**
+     * 删除了role后,将role下的用户设置role为未分组
+     */
+    @Update("update cms_admin set role_id = #{defaultRoleId} where role_id = #{roleId}")
+    void setRoleDefault(@Param("roleId") Integer roleId, @Param("defaultRoleId") int defaultRoleId);
 
     /**
      * findById

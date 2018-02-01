@@ -3,7 +3,9 @@ package com.play001.cloud.cms.controller.rest;
 import com.baidu.ueditor.ActionEnter;
 import com.play001.cloud.cms.entity.UploadImageResponse;
 import com.play001.cloud.cms.service.ImageService;
+import com.play001.cloud.cms.service.MenuService;
 import com.play001.cloud.common.entity.Image;
+import com.play001.cloud.common.entity.Menu;
 import com.play001.cloud.common.entity.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +16,7 @@ import org.springframework.web.util.HtmlUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -25,10 +28,12 @@ public class CommonRestController {
 
 
     private ImageService imageService;
+    private MenuService menuService;
 
     @Autowired
-    public void init(ImageService imageService){
+    public void init(ImageService imageService, MenuService menuService){
         this.imageService = imageService;
+        this.menuService = menuService;
     }
 
     /**
@@ -92,8 +97,13 @@ public class CommonRestController {
         return responseMap;
     }
 
+    @RequestMapping(value = "/test")
+    public List<Menu> test(){
+        List<Menu> menus=null;
+        return menus;
+    }
     /**
-     * 编辑产品时,删除相册旧图片时(已保存在数据库中图片)时不能直接删除图片,必须点击保存后在后台进行处理
+     * 编辑产品中,删除相册旧图片时(已保存在数据库中图片)时不能直接删除图片,必须点击保存后在后台进行处理
      * 但是前端框架必须需要返回成功信息,所以在这里假回复一下
      * error 为空则表示成功
      */
@@ -103,4 +113,5 @@ public class CommonRestController {
         response.put("error","");
         return response;
     }
+
 }

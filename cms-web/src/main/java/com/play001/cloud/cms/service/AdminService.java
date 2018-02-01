@@ -39,6 +39,7 @@ import java.util.Objects;
 @Service
 public class AdminService {
 
+    public static final int ADMIN_ROOT_ID = 1;
     @Autowired
     private AdminMapper adminMapper;
     @Autowired
@@ -55,6 +56,9 @@ public class AdminService {
     @Transactional(rollbackFor = Exception.class)
     public Response<Integer>  create(Admin admin ) throws IException {
         Response<Integer> response = new Response<>();
+        if(admin.getRole().getId().equals(RoleService.ROOT_ROLE_ID)){
+            return response.setErrMsg("不能创建root用户");
+        }
         //判断username是否重复
         if(adminMapper.findByUsername(admin.getUsername()) != null ){
             return response.setErrMsg("用户名重复");
@@ -181,7 +185,7 @@ public class AdminService {
      * @param id 管理员ID
      */
     public boolean delete(Integer id) throws IException {
-        if(id  == 1) throw new IException("无法删除ROOT用户");
+        if(id  == ADMIN_ROOT_ID) throw new IException("无法删除ROOT用户");
         //2.获取事务定义
         DefaultTransactionDefinition def = new DefaultTransactionDefinition();
         //3.设置事务隔离级别，开启新事务

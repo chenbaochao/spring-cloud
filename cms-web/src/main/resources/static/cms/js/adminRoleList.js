@@ -5,22 +5,23 @@ function timeFormatter(value) {
 	return new Date(value).Format("yyyy-MM-dd HH:mm:ss");
 }
 function statusFormatter(value) {
-	if (value == 1) {
+	if (value === 1) {
 		return '<span class="label label-primary">正常</span>'
-	} else if (value == 0) {
+	} else if (value === 0) {
 		return '<span class="label label-danger">冻结</span>'
 	}
 }
+
 function systemFormatter(value) {
-	if (value == 1) {
+	if (value === 1) {
 		return '<span class="label label-danger">是</span>'
-	} else if (value == 0) {
+	} else if (value === 0) {
 		return '<span class="label label-primary">否</span>'
 	}
 }
 
 function actionFormatter(value, row, index) {
-	if (row.status == 1) {
+	if (row.status === 1) {
 		return [
 			'<a class="freeze m-r-sm text-info" href="javascript:void(0)" title="冻结">',
 			'<i class="glyphicon glyphicon-pause"></i>',
@@ -55,19 +56,19 @@ function actionFormatter(value, row, index) {
 
 window.actionEvents = {
 	'click .freeze' : function(e, value, row, index) {
-		status_stop(index, row.roleId);
+		status_stop(index, row.id);
 	},
 	'click .normal' : function(e, value, row, index) {
-		status_start(index, row.roleId);
+		status_start(index, row.id);
 	},
 	'click .edit' : function(e, value, row, index) {
-		layer_show(row.roleName, baselocation + '/administrator/role/' + row.roleId + '/edit', 900, 650)
+		layer_show(row.roleName,  '/role/update?id=' + row.id , 900, 650)
 	},
 	'click .remove' : function(e, value, row, index) {
-		admin_delete(index, row.roleId);
+		admin_delete(index, row.id);
 	},
 	'click .log' : function(e, value, row, index) {
-		layer_show(row.roleName, baselocation + '/administrator/role/' + row.roleId + '/list', 1000, 650)
+		layer_show(row.roleName,  '/role/' + row.id + '/list', 1000, 650)
 	}
 };
 
@@ -81,9 +82,9 @@ function status_stop(index, value) {
 		$.ajax({
 			dataType : 'json',
 			type : 'put',
-			url : baselocation + '/administrator/role/' + value + '/audit',
+			url :  '/role/' + value + '/audit',
 			success : function(result) {
-				if (result.code == 1) {
+				if (result.code === 1) {
 					$('#table').bootstrapTable('updateRow', {
 						index : index,
 						row : {
@@ -114,9 +115,9 @@ function status_start(index, value) {
 		$.ajax({
 			dataType : 'json',
 			type : 'put',
-			url : baselocation + '/administrator/role/' + value + '/audit',
+			url : '/administrator/role/' + value + '/audit',
 			success : function(result) {
-				if (result.code == 1) {
+				if (result.code === 1) {
 					$('#table').bootstrapTable('updateRow', {
 						index : index,
 						row : {
@@ -128,7 +129,7 @@ function status_start(index, value) {
 						time : 1000
 					});
 				} else {
-					layer.alert(result.message, {
+					layer.alert(result.errMsg, {
 						icon : 2
 					});
 				}
@@ -147,7 +148,7 @@ function admin_delete(index, value) {
 		$.ajax({
 			type : 'delete',
 			dataType : 'json',
-			url : baselocation + '/administrator/role/' + value,
+			url :  '/administrator/role/' + value,
 			success : function(result) {
 				if (result.code == 1) {
 					$('#table').bootstrapTable('hideRow', {
