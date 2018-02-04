@@ -1,8 +1,11 @@
 import com.play001.cloud.cms.controller.rest.CommonRestController;
+import com.play001.cloud.cms.entity.Admin;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.tomcat.util.security.MD5Encoder;
 import org.junit.Test;
 
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectOutputStream;
 import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.List;
@@ -12,8 +15,6 @@ public class ITest {
     public int i = 1;
     @Test
     public void Itest(){
-       byte b = 1;
-       byte a = 2;
 
     }
     private int get(){

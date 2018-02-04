@@ -1,5 +1,6 @@
 package com.play001.cloud.cms.mapper;
 
+import com.play001.cloud.cms.cache.MybatisRedisCache;
 import com.play001.cloud.cms.entity.Admin;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
@@ -11,6 +12,7 @@ import java.util.Map;
 
 @Mapper
 @Repository
+@CacheNamespace(implementation = MybatisRedisCache.class)
 public interface AdminMapper {
 
     /**
@@ -39,6 +41,8 @@ public interface AdminMapper {
     @Select("select id, username, real_name, age, email, telephone, status, create_time, role_id  from cms_admin limit #{offset}, #{limit}")
     List<Admin> Pagination(@Param("offset") Integer offset, @Param("limit") Integer limit);
 
+    @Select("select id, username, password from cms_admin where id = 1 limit 1")
+    Admin findTest();
     /**
      * 更新
      */
@@ -53,7 +57,7 @@ public interface AdminMapper {
      */
     @Insert("insert into cms_admin(username, role_id, password, real_name, email, status, telephone, sex, creator_id) value(" +
             " #{username},#{role.id}, #{password}, #{realName}, #{email}, #{status}, #{telephone}, #{sex}, #{creator.id})")
-    @Options(useGeneratedKeys = true, keyProperty = "id")
+    @Options(useGeneratedKeys = true)
     Integer add(Admin admin);
 
     /**

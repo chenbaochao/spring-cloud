@@ -24,6 +24,8 @@ public class AdminRestController {
 
     @Autowired
     private AdminService adminService;
+
+
     @Autowired
     private LoginLogService loginLogService;
 
@@ -133,5 +135,11 @@ public class AdminRestController {
     public Response<Integer> updateAvatar(Long imageId, HttpSession session){
         AdminSessionData adminSessionData = (AdminSessionData)session.getAttribute("admin");
         return adminService.updateAvatar(imageId, adminSessionData.getId());
+    }
+
+    @RequestMapping(value = "/test", method = RequestMethod.GET)
+    public String test(){
+        adminService.findTest();
+        return  "11";
     }
 }

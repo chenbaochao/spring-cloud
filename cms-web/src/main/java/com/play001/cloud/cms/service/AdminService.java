@@ -140,6 +140,12 @@ public class AdminService {
         return adminMapper.findById(id);
     }
 
+    @Transactional
+    public Admin findTest() {
+        adminMapper.findTest();
+        return adminMapper.findTest();
+    }
+
     /**
      * 更新管理员.需要开启事务权限
      */
