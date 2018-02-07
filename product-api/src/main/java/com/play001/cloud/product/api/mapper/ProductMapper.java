@@ -1,12 +1,14 @@
 package com.play001.cloud.product.api.mapper;
 
-import com.play001.cloud.common.entity.Product;
+import com.play001.cloud.support.entity.Product;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Mapper
+@Repository
 public interface ProductMapper {
 
 
@@ -34,4 +36,6 @@ public interface ProductMapper {
                                    @Param("sort")Integer sort,
                                    @Param("start")Long start,
                                    @Param("quantity")Integer quantity);
+
+
 }
