@@ -1,13 +1,13 @@
-package com.play001.cloud.common.api.controller;
+package com.play001.cloud.support.api.controller;
 
-import com.play001.cloud.common.entity.IException;
-import com.play001.cloud.common.entity.Response;
-import com.play001.cloud.common.api.service.CategoryService;
+import com.play001.cloud.support.entity.IException;
+import com.play001.cloud.support.entity.ResponseEntity;
+import com.play001.cloud.support.api.service.CategoryService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import com.play001.cloud.common.entity.Category;
+import com.play001.cloud.support.entity.Category;
 import org.springframework.web.bind.annotation.RestController;
 
 
@@ -22,22 +22,22 @@ public class CategoryEndPoint {
 
 
     @RequestMapping(value = "/findById", method = RequestMethod.GET)
-    public Response<Category> findById(Integer categoryId) throws IException {
+    public ResponseEntity<Category> findById(Integer categoryId) throws IException {
         if(categoryId == null || categoryId < 0) throw new IException("参数错误");
         if(categoryId == 0){
             Category category = new Category();
             category.setId(0);
             category.setName("全部商品");
-            return new Response<>(category);
+            return new ResponseEntity<>(category);
         }
-        return new Response<>(categoryService.findById(categoryId));
+        return new ResponseEntity<>(categoryService.findById(categoryId));
     }
 
 
 
     @RequestMapping(value = "/findAll", method = RequestMethod.GET)
-    public Response<List<Category>> findAll() throws IException {
-        return  new Response<>(categoryService.findAll());
+    public ResponseEntity<List<Category>> findAll() throws IException {
+        return  new ResponseEntity<>(categoryService.findAll());
     }
 
 

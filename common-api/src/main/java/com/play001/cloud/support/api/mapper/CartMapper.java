@@ -1,7 +1,8 @@
-package com.play001.cloud.common.api.mapper;
+package com.play001.cloud.support.api.mapper;
 
-import com.play001.cloud.common.entity.ShopCart;
+import com.play001.cloud.support.entity.ShopCart;
 import org.apache.ibatis.annotations.*;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -9,6 +10,7 @@ import java.util.List;
  * 购物车
  */
 @Mapper
+@Repository
 public interface CartMapper {
 
     //加购

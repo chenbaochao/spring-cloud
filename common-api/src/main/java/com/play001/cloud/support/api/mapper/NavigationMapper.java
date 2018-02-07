@@ -1,8 +1,8 @@
-package com.play001.cloud.common.api.mapper;
+package com.play001.cloud.support.api.mapper;
 
 
-import com.play001.cloud.common.entity.Navigation;
-import com.play001.cloud.common.entity.NavigationBar;
+import com.play001.cloud.support.entity.Navigation;
+import com.play001.cloud.support.entity.NavigationBar;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;

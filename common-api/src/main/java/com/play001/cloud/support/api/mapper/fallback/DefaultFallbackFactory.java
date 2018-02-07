@@ -1,6 +1,6 @@
-package com.play001.cloud.common.api.mapper.fallback;
+package com.play001.cloud.support.api.mapper.fallback;
 
-import com.play001.cloud.common.entity.Response;
+import com.play001.cloud.support.entity.ResponseEntity;
 import feign.hystrix.FallbackFactory;
 
 /**
@@ -12,6 +12,6 @@ public class DefaultFallbackFactory implements FallbackFactory {
 
     @Override
     public Object create(Throwable throwable){
-        return new Response<>(Response.ERROR);
+        return new ResponseEntity<>(ResponseEntity.ERROR);
     }
 }

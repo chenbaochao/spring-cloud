@@ -1,8 +1,8 @@
-package com.play001.cloud.common.api.service;
+package com.play001.cloud.support.api.service;
 
-import com.play001.cloud.common.api.mapper.CartMapper;
-import com.play001.cloud.common.api.mapper.ProductMapper;
-import com.play001.cloud.common.entity.*;
+import com.play001.cloud.support.api.mapper.CartMapper;
+import com.play001.cloud.support.api.mapper.ProductMapper;
+import com.play001.cloud.support.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,9 +27,9 @@ public class CartService {
         user.setId(userId);
         shopCart.setUser(user);
         //获取产品信息
-        Response<Product> response = productMapper.findById(productId);
-        if(Response.ERROR.equals(response.getStatus())) throw new IException(response.getErrMsg());
-        Product product = response.getMessage();
+        ResponseEntity<Product> responseEntity = productMapper.findById(productId);
+        if(ResponseEntity.ERROR.equals(responseEntity.getStatus())) throw new IException(responseEntity.getErrMsg());
+        Product product = responseEntity.getMessage();
         shopCart.setProduct(product);
         //找到对应的产品规格
         boolean flag = false;//是否找到对应的产品规格

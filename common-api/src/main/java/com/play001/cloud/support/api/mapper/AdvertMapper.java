@@ -1,13 +1,15 @@
-package com.play001.cloud.common.api.mapper;
+package com.play001.cloud.support.api.mapper;
 
-import com.play001.cloud.common.entity.Advert;
+import com.play001.cloud.support.entity.Advert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Mapper
+@Repository
 public interface AdvertMapper {
 
 
