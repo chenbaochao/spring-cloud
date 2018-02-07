@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.play001.cloud.common.api.mapper.CategoryMapper">
-    <resultMap id="categoryResult" type="com.play001.cloud.common.entity.Category">
+<mapper namespace="com.play001.cloud.support.api.mapper.CategoryMapper">
+    <resultMap id="categoryResult" type="com.play001.cloud.support.entity.Category">
         <result property="id" column="id"/>
         <result property="name" column="name"/>
         <result property="sort" column="sort"/>
         <result property="status" column="status"/>
-        <result property="showInNav" column="show_in_nav"/>
+        <result property="showInTop" column="show_in_top"/>
 
         <!-- 附带产品
-        <collection property="products" select="findProduct" column="id" ofType="com.play001.cloud.common.entity.Product"/>
+        <collection property="products" select="findProduct" column="id" ofType="com.play001.cloud.supportt.entity.Product"/>
         -->
     </resultMap>
 
     <select id="findAll" resultMap="categoryResult">
         SELECT
-        c.id, c.name, c.sort, c.status, c.show_in_nav
+        c.id, c.name, c.sort, c.status, c.show_in_top
         FROM os_category c
         ORDER by c.sort
     </select>
 
     <select id="findById" resultMap="categoryResult">
         SELECT
-        c.id, c.name, c.sort, c.status, c.show_in_nav
+        c.id, c.name, c.sort, c.status, c.show_in_top
         FROM os_category c
         WHERE c.id = #{id}
         LIMIT 1
@@ -32,7 +32,7 @@
 
 
     <!-- 搜索附带商品
-    <select id="findProduct" resultType="com.play001.cloud.common.entity.Product">
+    <select id="findProduct" resultType="com.play001.cloud.supportt.entity.Product">
         SELECT
         p.id, p.name, p.show_pic as showPic, p.title, p.show_price as showPrice
         FROM os_product p

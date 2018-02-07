@@ -1,4 +1,3 @@
-import com.play001.cloud.common.entity.Response;
 import org.junit.Test;
 
 public class ITest {

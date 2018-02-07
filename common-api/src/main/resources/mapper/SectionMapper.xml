@@ -1,44 +1,28 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.play001.cloud.common.api.mapper.SectionMapper">
-    <resultMap id="sectionResult" type="com.play001.cloud.common.entity.Section">
+<mapper namespace="com.play001.cloud.support.api.mapper.SectionMapper">
+    <resultMap id="sectionResult" type="com.play001.cloud.support.entity.Section">
         <result property="id" column="id"/>
         <result property="name" column="name"/>
         <result property="sort" column="sort"/>
         <result property="status" column="status"/>
         <!-- 分类 -->
-        <collection property="categories" select="findCategory"  column="id" />
+        <collection property="categories" select="findCategory"  column="id"/>
         <!-- 广告 -->
-        <collection property="advert" select="findAdvert" column="id" ofType="com.play001.cloud.common.entity.Advert"/>
+        <collection property="advert" select="findAdvert" column="id" ofType="com.play001.cloud.support.entity.Advert"/>
     </resultMap>
 
-    <resultMap id="categoryResult" type="com.play001.cloud.common.entity.Category">
-        <result property="id" column="id"/>
-        <result property="name" column="name"/>
-        <!-- 附带产品 -->
-        <collection property="products" select="findProduct" column="id"/>
-    </resultMap>
-    <resultMap id="productResult" type="com.play001.cloud.common.entity.Product">
-        <result property="id" column="id"/>
-        <result property="name" column="name"/>
-        <result property="title" column="title"/>
-        <result property="showPrice" column="show_price"/>
-        <!-- 封面 -->
-        <association property="thumb" column="thumb_id" select="findImage" />
-    </resultMap>
-
-
-    <!--首页section -->
+    <!--首页轮播菜单section -->
     <select id="getHeaderSections" resultMap="sectionResult">
         select id, name
-        from os_section
+        from os_section os
         where status = 1
         AND section_category_id = 1
         ORDER BY sort
     </select>
 
-    <!--首页section -->
+    <!--首页栏目section -->
     <select id="getIndexSections" resultMap="sectionResult">
         select id, name
         from os_section
@@ -47,8 +31,11 @@
         ORDER BY sort
     </select>
 
+
+
+
     <!-- section下的产品分类 -->
-    <select id="findCategory" resultMap="categoryResult" parameterType="String">
+    <select id="findCategory" resultType="com.play001.cloud.support.entity.Category">
         SELECT
             c.id, c.name
         FROM os_category c, os_section_detail s
@@ -56,24 +43,16 @@
         ORDER by c.sort
     </select>
 
-    <!-- 搜索附带商品 -->
-    <select id="findProduct" resultMap="productResult">
-        SELECT
-        p.id, p.name, p.thumb_id, p.title, p.show_price, remarks
-        FROM os_product p
-        WHERE p.category_id = #{id} AND p.status = 1
-        ORDER by p.create_time DESC
-        LIMIT 8
-    </select>
+
     <!-- 栏目广告 -->
-    <select id="findAdvert" resultType="com.play001.cloud.common.entity.Advert">
+    <select id="findAdvert" resultType="com.play001.cloud.support.entity.Advert">
         SELECT id, title, href, show_pic as showPic
         FROM os_advert_detail
         WHERE section_id = #{id}
     </select>
 
     <!-- 查找图片 -->
-    <select id="findImage"  resultType="com.play001.cloud.common.entity.Image">
+    <select id="findImage"  resultType="com.play001.cloud.support.entity.Image">
         SELECT id, url, path, storage_name as storageName from support_image_log
         where id = #{id}
     </select>

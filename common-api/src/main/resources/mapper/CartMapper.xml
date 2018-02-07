@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.play001.cloud.common.api.mapper.CartMapper">
-    <resultMap id="cartResult" type="com.play001.cloud.common.entity.ShopCart">
+<mapper namespace="com.play001.cloud.support.api.mapper.CartMapper">
+    <resultMap id="cartResult" type="com.play001.cloud.support.entity.ShopCart">
         <result property="id" column="id"/>
         <result property="buyNumber" column="buy_number"/>
         <!-- 产品信息 -->
@@ -10,7 +10,7 @@
         <!-- 产品规格-->
         <association property="spec" select="findSpec" column="product_spec_id" />
     </resultMap>
-    <resultMap id="productResult" type="com.play001.cloud.common.entity.Product">
+    <resultMap id="productResult" type="com.play001.cloud.support.entity.Product">
         <result property="id" column="id"/>
         <result property="name" column="name"/>
         <result property="title" column="title"/>
@@ -34,13 +34,13 @@
         where id = #{product_id}
     </select>
     <!-- 产品规格-->
-    <select id="findSpec" resultType="com.play001.cloud.common.entity.Specification">
+    <select id="findSpec" resultType="com.play001.cloud.support.entity.Specification">
         select id, name, price
         FROM os_product_specification
         where id = #{product_spec_id}
     </select>
     <!-- 查找图片 -->
-    <select id="findImage"  resultType="com.play001.cloud.common.entity.Image">
+    <select id="findImage"  resultType="com.play001.cloud.support.entity.Image">
         SELECT id, url, path, storage_name as storageName from support_image_log
         where id = #{id}
     </select>
