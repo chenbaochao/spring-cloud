@@ -2,23 +2,20 @@ package com.play001.cloud.cms.service;
 
 import com.play001.cloud.cms.entity.AdminSessionData;
 import com.play001.cloud.cms.entity.LoginLog;
-import com.play001.cloud.cms.entity.Role;
 import com.play001.cloud.cms.mapper.AdminMapper;
 import com.play001.cloud.cms.entity.Admin;
 import com.play001.cloud.cms.mapper.ImageMapper;
 import com.play001.cloud.cms.mapper.LoginLogMapper;
 import com.play001.cloud.cms.mapper.PermissionMapper;
 import com.play001.cloud.cms.util.CommonUtil;
-import com.play001.cloud.common.entity.IException;
-import com.play001.cloud.common.entity.Image;
-import com.play001.cloud.common.entity.Response;
-import com.play001.cloud.common.enums.StorageTypeEnum;
-import com.play001.cloud.common.util.DateUtil;
-import com.play001.cloud.common.util.storage.IBaseStorageUtil;
-import com.play001.cloud.common.util.storage.StorageFactory;
-import com.sun.org.apache.regexp.internal.RE;
+import com.play001.cloud.support.entity.IException;
+import com.play001.cloud.support.entity.Image;
+import com.play001.cloud.support.entity.ResponseEntity;
+import com.play001.cloud.support.enums.StorageTypeEnum;
+import com.play001.cloud.support.util.DateUtil;
+import com.play001.cloud.cms.util.storage.IBaseStorageUtil;
+import com.play001.cloud.cms.util.storage.StorageFactory;
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.tomcat.util.security.MD5Encoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.stereotype.Service;
@@ -29,7 +26,6 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,14 +50,14 @@ public class AdminService {
     private StorageFactory storageFactory;
 
     @Transactional(rollbackFor = Exception.class)
-    public Response<Integer>  create(Admin admin ) throws IException {
-        Response<Integer> response = new Response<>();
+    public ResponseEntity<Integer> create(Admin admin ) throws IException {
+        ResponseEntity<Integer> responseEntity = new ResponseEntity<>();
         if(admin.getRole().getId().equals(RoleService.ROOT_ROLE_ID)){
-            return response.setErrMsg("不能创建root用户");
+            return responseEntity.setErrMsg("不能创建root用户");
         }
         //判断username是否重复
         if(adminMapper.findByUsername(admin.getUsername()) != null ){
-            return response.setErrMsg("用户名重复");
+            return responseEntity.setErrMsg("用户名重复");
         }
         //md5加密
         admin.setPassword(DigestUtils.md5Hex(admin.getPassword()));
@@ -70,7 +66,7 @@ public class AdminService {
         adminMapper.add(admin);
         //根据用户组设置权限
         permissionMapper.add(admin.getId(), admin.getRole().getId());
-        return response.setStatus(Response.SUCCESS);
+        return responseEntity.setStatus(ResponseEntity.SUCCESS);
     }
 
     //设置用户状态,启用或冻结=1/0
@@ -80,13 +76,13 @@ public class AdminService {
     /**
      * 登陆
      */
-    public Response<Integer> login(String username, String password, String captchaCode, HttpServletRequest request) throws IException {
+    public ResponseEntity<Integer> login(String username, String password, String captchaCode, HttpServletRequest request) throws IException {
         HttpSession session = request.getSession();
-        Response<Integer> response = new Response<>();
+        ResponseEntity<Integer> responseEntity = new ResponseEntity<>();
         if(username == null || username.length() < 1 ||
                 password == null || password.length() < 1 ||
                 captchaCode == null || captchaCode.length() < 1){
-            return response.setErrMsg("参数错误!");
+            return responseEntity.setErrMsg("参数错误!");
         }
         /* 转换为小写,session里面存储的已经是小写的验证码了 */
         captchaCode = captchaCode.toLowerCase();
@@ -99,13 +95,13 @@ public class AdminService {
         password = DigestUtils.md5Hex(password);
         Admin admin = adminMapper.findByUsername(username);
         if(admin == null){
-            return response.setErrMsg("账户不存在!");
+            return responseEntity.setErrMsg("账户不存在!");
         }
         if(admin.getStatus().equals((byte)0)){
-            return response.setErrMsg("账户被冻结!");
+            return responseEntity.setErrMsg("账户被冻结!");
         }
         if(!admin.getPassword().equals(password)) {
-            return response.setErrMsg("用户名或密码错误!");
+            return responseEntity.setErrMsg("用户名或密码错误!");
         }
         //将登陆信息写进login_log
         LoginLog loginLog = new LoginLog();
@@ -133,7 +129,7 @@ public class AdminService {
         adminSessionData.setPermission((HashMap<String, Boolean>) adminPermission);
         session.setAttribute("admin", adminSessionData);
 
-        return response.setStatus(Response.SUCCESS);
+        return responseEntity.setStatus(ResponseEntity.SUCCESS);
     }
 
     public Admin findById(Integer id){
@@ -150,19 +146,19 @@ public class AdminService {
      * 更新管理员.需要开启事务权限
      */
     @Transactional(rollbackFor = Exception.class)
-    public Response<Integer> update(Admin admin, HttpSession session) throws IException {
-        Response<Integer> response = new Response<>();
+    public ResponseEntity<Integer> update(Admin admin, HttpSession session) throws IException {
+        ResponseEntity<Integer> responseEntity = new ResponseEntity<>();
         if(admin.getId() == null){
-            return response.setErrMsg("参数错误");
+            return responseEntity.setErrMsg("参数错误");
         }
         AdminSessionData adminSessionData = (AdminSessionData) session.getAttribute("admin");
         if(1 == admin.getId() && adminSessionData.getId() != 1){
-            return response.setErrMsg("ROOT用户无法被别人修改");
+            return responseEntity.setErrMsg("ROOT用户无法被别人修改");
         }
         //判断是否需要更新权限(根据roleId是否发生变化),先删除该用户所有权限,然后再加入新的权限
         Admin oldAdmin = adminMapper.findById(admin.getId());
         if(oldAdmin == null){
-            return response.setErrMsg("用户不存在");
+            return responseEntity.setErrMsg("用户不存在");
         }
         //不一致,需要更新权限
         if(!oldAdmin.getRole().getId().equals(admin.getRole().getId())){
@@ -173,7 +169,7 @@ public class AdminService {
         }
         //更新基本信息
         adminMapper.update(admin);
-        return response.setStatus(Response.SUCCESS);
+        return responseEntity.setStatus(ResponseEntity.SUCCESS);
     }
     /**
      * 分页
@@ -223,33 +219,33 @@ public class AdminService {
      * 修改的内容包括姓名,性别,年龄,电话,电子邮箱
      */
 
-    public Response<Integer> updatePersonalInfo(Admin admin, HttpSession session){
-        Response<Integer> response = new Response<>();
+    public ResponseEntity<Integer> updatePersonalInfo(Admin admin, HttpSession session){
+        ResponseEntity<Integer> responseEntity = new ResponseEntity<>();
         AdminSessionData adminSessionData = (AdminSessionData)session.getAttribute("admin");
         admin.setId(adminSessionData.getId());
         //自己修改自己的信息,status必然为1
         admin.setStatus((byte)1);
         admin.setRole(adminSessionData.getRole());
         adminMapper.update(admin);
-        return response.setStatus(Response.SUCCESS);
+        return responseEntity.setStatus(ResponseEntity.SUCCESS);
     }
 
     /**
      * 修改个人密码
      */
-    public Response<Integer> updatePersonalPwd(String oldPassword,String newPassword, HttpSession session){
-        Response<Integer> response = new Response<>();
+    public ResponseEntity<Integer> updatePersonalPwd(String oldPassword, String newPassword, HttpSession session){
+        ResponseEntity<Integer> responseEntity = new ResponseEntity<>();
         AdminSessionData adminSessionData = (AdminSessionData)session.getAttribute("admin");
         Admin admin = adminMapper.findById(adminSessionData.getId());
         newPassword = DigestUtils.md5Hex(newPassword);
         oldPassword = DigestUtils.md5Hex(oldPassword);
 
         if(!Objects.equals(admin.getPassword(), oldPassword)){
-            return response.setErrMsg("原密码错误");
+            return responseEntity.setErrMsg("原密码错误");
         }
         //更新密码
         adminMapper.updatePassword(adminSessionData.getId(), newPassword);
-        return response.setStatus(Response.SUCCESS);
+        return responseEntity.setStatus(ResponseEntity.SUCCESS);
     }
 
     /**
@@ -257,16 +253,16 @@ public class AdminService {
      * @param imageId 图片ID
      */
     @Transactional
-    public Response<Integer> updateAvatar(Long imageId, Integer adminId){
-        Response<Integer> response = new Response<>();
+    public ResponseEntity<Integer> updateAvatar(Long imageId, Integer adminId){
+        ResponseEntity<Integer> responseEntity = new ResponseEntity<>();
         if(imageId == null) {
-            return response.setErrMsg("参数错误");
+            return responseEntity.setErrMsg("参数错误");
         }
         Admin admin = adminMapper.findById(adminId);
 
         Image newImage = imageMapper.findById(imageId);
         if(newImage == null){
-            return response.setErrMsg("图片不存在");
+            return responseEntity.setErrMsg("图片不存在");
         }
         adminMapper.updateAvatar(newImage.getUrl(), adminId);
         //设置图片为已使用
@@ -285,6 +281,6 @@ public class AdminService {
         }catch (Exception e){
             e.printStackTrace();
         }
-        return response.setStatus(Response.SUCCESS);
+        return responseEntity.setStatus(ResponseEntity.SUCCESS);
     }
 }

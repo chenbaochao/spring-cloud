@@ -1,8 +1,8 @@
 package com.play001.cloud.cms.controller.rest;
 
 import com.play001.cloud.cms.service.ProductService;
-import com.play001.cloud.common.entity.Product;
-import com.play001.cloud.common.entity.Response;
+import com.play001.cloud.support.entity.Product;
+import com.play001.cloud.support.entity.ResponseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,9 +24,9 @@ public class ProductRestController {
      * 添加
      */
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public Response<Integer> create(@Valid @RequestBody Product product, BindingResult bindingResult){
+    public ResponseEntity<Integer> create(@Valid @RequestBody Product product, BindingResult bindingResult){
         if(bindingResult.hasErrors()){
-            return new Response<Integer>().setErrMsg(bindingResult.getFieldError().getDefaultMessage());
+            return new ResponseEntity<Integer>().setErrMsg(bindingResult.getFieldError().getDefaultMessage());
         }
         return productService.create(product);
     }
@@ -47,9 +47,9 @@ public class ProductRestController {
      * 修改产品
      */
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public Response<Integer> update(@Valid @RequestBody Product product, BindingResult bindingResult){
+    public ResponseEntity<Integer> update(@Valid @RequestBody Product product, BindingResult bindingResult){
         if(bindingResult.hasErrors()){
-            return new Response<Integer>().setErrMsg(bindingResult.getFieldError().getDefaultMessage());
+            return new ResponseEntity<Integer>().setErrMsg(bindingResult.getFieldError().getDefaultMessage());
         }
         return productService.update(product);
     }

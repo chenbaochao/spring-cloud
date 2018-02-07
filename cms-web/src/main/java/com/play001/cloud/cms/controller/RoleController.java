@@ -4,11 +4,10 @@ import com.google.gson.Gson;
 import com.play001.cloud.cms.entity.Role;
 import com.play001.cloud.cms.service.MenuService;
 import com.play001.cloud.cms.service.RoleService;
-import com.play001.cloud.common.entity.Menu;
+import com.play001.cloud.support.entity.Menu;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 

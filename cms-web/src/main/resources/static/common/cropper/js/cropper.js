@@ -345,7 +345,7 @@ function getOrientation(arrayBuffer) {
   var offset = void 0;
   var i = void 0;
 
-  // Only handle JPEG image (start by 0xFFD8)
+  // Only handler JPEG image (start by 0xFFD8)
   if (dataView.getUint8(0) === 0xFF && dataView.getUint8(1) === 0xD8) {
     offset = 2;
 

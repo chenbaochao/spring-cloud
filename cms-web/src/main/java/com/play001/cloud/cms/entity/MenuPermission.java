@@ -1,6 +1,6 @@
 package com.play001.cloud.cms.entity;
 
-import com.play001.cloud.common.entity.Menu;
+import com.play001.cloud.support.entity.Menu;
 
 //菜单权限
 public class MenuPermission {

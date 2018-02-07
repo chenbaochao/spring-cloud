@@ -1,8 +1,7 @@
 package com.play001.cloud.cms.controller;
 
 import com.play001.cloud.cms.service.CategoryService;
-import com.play001.cloud.common.entity.Category;
-import com.play001.cloud.common.entity.IException;
+import com.play001.cloud.support.entity.IException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

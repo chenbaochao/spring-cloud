@@ -1,6 +1,6 @@
-package com.play001.cloud.common.util.storage;
+package com.play001.cloud.cms.util.storage;
 
-import com.play001.cloud.common.enums.StorageTypeEnum;
+import com.play001.cloud.support.enums.StorageTypeEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

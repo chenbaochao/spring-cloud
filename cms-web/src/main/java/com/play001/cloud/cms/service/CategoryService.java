@@ -1,9 +1,9 @@
 package com.play001.cloud.cms.service;
 
 import com.play001.cloud.cms.mapper.CategoryMapper;
-import com.play001.cloud.common.entity.Category;
-import com.play001.cloud.common.entity.IException;
-import com.play001.cloud.common.entity.Response;
+import com.play001.cloud.support.entity.Category;
+import com.play001.cloud.support.entity.IException;
+import com.play001.cloud.support.entity.ResponseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,25 +23,25 @@ public class CategoryService {
     /**
      * 设置状态
      */
-    public Response<Integer> setStatus(Integer id, Byte status){
-        Response<Integer> response = new Response<>();
+    public ResponseEntity<Integer> setStatus(Integer id, Byte status){
+        ResponseEntity<Integer> responseEntity = new ResponseEntity<>();
         if(id == null || status == null ||
                 status < 0 || status > 1){
-            return response.setErrMsg("参数错误");
+            return responseEntity.setErrMsg("参数错误");
         }
         categoryMapper.setStatus(id, status);
-        return response.setStatus(Response.SUCCESS);
+        return responseEntity.setStatus(ResponseEntity.SUCCESS);
     }
     /**
      * 删除
      */
-    public Response<Integer> delete(Integer id){
-        Response<Integer> response = new Response<>();
+    public ResponseEntity<Integer> delete(Integer id){
+        ResponseEntity<Integer> responseEntity = new ResponseEntity<>();
         if(id == null){
-            return response.setErrMsg("参数错误");
+            return responseEntity.setErrMsg("参数错误");
         }
         categoryMapper.delete(id);
-        return response.setStatus(Response.SUCCESS);
+        return responseEntity.setStatus(ResponseEntity.SUCCESS);
     }
     /**
      * findById
@@ -59,19 +59,19 @@ public class CategoryService {
     /**
      * update
      */
-    public Response<Integer> update(Category category){
-        Response<Integer> response = new Response<>();
+    public ResponseEntity<Integer> update(Category category){
+        ResponseEntity<Integer> responseEntity = new ResponseEntity<>();
         if(category.getId() == null){
-            return response.setErrMsg("参数错误");
+            return responseEntity.setErrMsg("参数错误");
         }
         categoryMapper.update(category);
-        return response.setStatus(Response.SUCCESS);
+        return responseEntity.setStatus(ResponseEntity.SUCCESS);
     }
     /**
      * create
      */
-    public Response<Integer> create(Category category){
+    public ResponseEntity<Integer> create(Category category){
         categoryMapper.create(category);
-        return new Response<Integer>().setStatus(Response.SUCCESS);
+        return new ResponseEntity<Integer>().setStatus(ResponseEntity.SUCCESS);
     }
 }

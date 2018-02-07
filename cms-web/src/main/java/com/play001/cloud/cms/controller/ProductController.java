@@ -2,11 +2,10 @@ package com.play001.cloud.cms.controller;
 
 import com.play001.cloud.cms.service.CategoryService;
 import com.play001.cloud.cms.service.ProductService;
-import com.play001.cloud.common.entity.Product;
+import com.play001.cloud.support.entity.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 

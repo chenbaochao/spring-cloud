@@ -6,8 +6,8 @@ import com.play001.cloud.cms.entity.Role;
 import com.play001.cloud.cms.service.AdminService;
 import com.play001.cloud.cms.service.MenuService;
 import com.play001.cloud.cms.service.RoleService;
-import com.play001.cloud.common.entity.IException;
-import com.play001.cloud.common.entity.Menu;
+import com.play001.cloud.support.entity.IException;
+import com.play001.cloud.support.entity.Menu;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,7 +18,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
-import java.util.Objects;
 
 @Controller
 @RequestMapping(value="/admin")

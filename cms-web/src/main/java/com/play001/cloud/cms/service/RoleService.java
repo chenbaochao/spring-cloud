@@ -3,10 +3,9 @@ package com.play001.cloud.cms.service;
 import com.play001.cloud.cms.entity.MenuPermission;
 import com.play001.cloud.cms.entity.Role;
 import com.play001.cloud.cms.mapper.AdminMapper;
-import com.play001.cloud.cms.mapper.LoginLogMapper;
 import com.play001.cloud.cms.mapper.RoleMapper;
-import com.play001.cloud.common.entity.IException;
-import com.play001.cloud.common.entity.Response;
+import com.play001.cloud.support.entity.IException;
+import com.play001.cloud.support.entity.ResponseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.stereotype.Service;
@@ -44,8 +43,8 @@ public class RoleService {
         return roleMapper.findById(id);
     }
     //新增
-    public Response<Integer> create(Role role){
-        Response<Integer> response = new Response<>();
+    public ResponseEntity<Integer> create(Role role){
+        ResponseEntity<Integer> responseEntity = new ResponseEntity<>();
         //开启事务
         DefaultTransactionDefinition transactionDefinition = new DefaultTransactionDefinition();
         transactionDefinition.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
@@ -59,21 +58,21 @@ public class RoleService {
                 roleMapper.addPermission(role.getId(),permission.getMenu().getId(), (byte)1);
             }
             transactionManager.commit(status);
-            return response.setStatus(Response.SUCCESS);
+            return responseEntity.setStatus(ResponseEntity.SUCCESS);
         }catch (Exception e){
             e.printStackTrace();
             transactionManager.rollback(status);
-            return response.setErrMsg("保存失败");
+            return responseEntity.setErrMsg("保存失败");
         }
     }
     //更新
-    public Response<Integer> update(Role newRole) {
-        Response<Integer> response = new Response<>();
+    public ResponseEntity<Integer> update(Role newRole) {
+        ResponseEntity<Integer> responseEntity = new ResponseEntity<>();
         if(newRole.getId() == null){
-            return response.setErrMsg("参数错误");
+            return responseEntity.setErrMsg("参数错误");
         }
         if(newRole.getId().equals(ROOT_ROLE_ID) || newRole.getId().equals(DEFAULT_ROLE_ID)){
-            return response.setErrMsg("此分组不能被修改");
+            return responseEntity.setErrMsg("此分组不能被修改");
         }
         DefaultTransactionDefinition transactionDefinition = new DefaultTransactionDefinition();
         transactionDefinition.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
@@ -105,22 +104,22 @@ public class RoleService {
                 }
             }
             transactionManager.commit(status);
-            return response.setStatus(Response.SUCCESS);
+            return responseEntity.setStatus(ResponseEntity.SUCCESS);
         }catch (IException e){
             transactionManager.rollback(status);
-            return response.setErrMsg(e.getMessage());
+            return responseEntity.setErrMsg(e.getMessage());
         }catch (Exception e){
             transactionManager.rollback(status);
-            return response.setErrMsg("操作失败");
+            return responseEntity.setErrMsg("操作失败");
         }
     }
-    public Response<Integer> delete(Integer id){
-        Response<Integer> response = new Response<>();
+    public ResponseEntity<Integer> delete(Integer id){
+        ResponseEntity<Integer> responseEntity = new ResponseEntity<>();
         if(id == null){
-            return response.setErrMsg("参数错误");
+            return responseEntity.setErrMsg("参数错误");
         }
         if(id.equals(ROOT_ROLE_ID) || id.equals(DEFAULT_ROLE_ID)){
-            return response.setErrMsg("无法删除此角色");
+            return responseEntity.setErrMsg("无法删除此角色");
         }
         DefaultTransactionDefinition transactionDefinition = new DefaultTransactionDefinition();
         transactionDefinition.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
@@ -130,10 +129,10 @@ public class RoleService {
             roleMapper.deletePermissions(id);
             //将此分组下的管理员角色置为未分组
             adminMapper.setRoleDefault(id, DEFAULT_ROLE_ID);
-            return response.setStatus(Response.SUCCESS);
+            return responseEntity.setStatus(ResponseEntity.SUCCESS);
         }catch (Exception e){
             transactionManager.rollback(status);
-            return response.setErrMsg("操作失败");
+            return responseEntity.setErrMsg("操作失败");
         }
     }
 }

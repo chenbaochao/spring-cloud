@@ -1,6 +1,6 @@
 package com.play001.cloud.cms.controller;
 
-import com.play001.cloud.common.util.Captcha;
+import com.play001.cloud.support.util.Captcha;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,6 +34,6 @@ public class CommonController {
     public String message(Model model, String message){
         message = message == null?"":message;
         model.addAttribute("message", message);
-        return "common/message";
+        return "support/message";
     }
 }

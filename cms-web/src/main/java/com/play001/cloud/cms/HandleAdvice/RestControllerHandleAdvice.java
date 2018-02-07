@@ -1,8 +1,8 @@
 package com.play001.cloud.cms.HandleAdvice;
 
 
-import com.play001.cloud.common.entity.IException;
-import com.play001.cloud.common.entity.Response;
+import com.play001.cloud.support.entity.IException;
+import com.play001.cloud.support.entity.ResponseEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -22,15 +22,15 @@ public class RestControllerHandleAdvice {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @ExceptionHandler
-    public Response<Integer> handler(HttpServletRequest request, HttpServletResponse response, Exception e){
+    public ResponseEntity<Integer> handler(HttpServletRequest request, HttpServletResponse response, Exception e){
         e.printStackTrace();
         logger.info("拦截到异常:"+e.getMessage());
-        Response<Integer> responseMsg = new Response<>(Response.ERROR);
+        ResponseEntity<Integer> responseEntityMsg = new ResponseEntity<>(ResponseEntity.ERROR);
         if(e instanceof IException){
-            responseMsg.setErrMsg(e.getMessage());
+            responseEntityMsg.setErrMsg(e.getMessage());
         }else{
-            responseMsg.setErrMsg("操作失败");
+            responseEntityMsg.setErrMsg("操作失败");
         }
-        return responseMsg;
+        return responseEntityMsg;
     }
 }

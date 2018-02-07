@@ -3,8 +3,7 @@ package com.play001.cloud.cms.controller;
 
 import com.play001.cloud.cms.service.NavigationBarService;
 import com.play001.cloud.cms.service.NavigationService;
-import com.play001.cloud.common.entity.Navigation;
-import com.play001.cloud.common.entity.NavigationBar;
+import com.play001.cloud.support.entity.NavigationBar;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

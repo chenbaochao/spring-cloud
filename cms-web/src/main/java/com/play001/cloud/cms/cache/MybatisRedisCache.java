@@ -1,6 +1,6 @@
 package com.play001.cloud.cms.cache;
 
-import com.play001.cloud.cms.SpringContextUtils;
+import com.play001.cloud.support.util.SpringContextUtils;
 import org.apache.ibatis.cache.Cache;
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -73,6 +73,7 @@ public class MybatisRedisCache implements Cache{
         @SuppressWarnings("unchecked")
         RedisResource(){
             redisTemplate = SpringContextUtils.getContext().getBean("redisTemplate", RedisTemplate.class);
+            redisTemplate.multi();
         }
         public RedisTemplate<Object, Object> getRedisTemplate(){
             return redisTemplate;

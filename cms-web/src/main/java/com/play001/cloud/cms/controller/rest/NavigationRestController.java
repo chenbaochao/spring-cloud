@@ -2,9 +2,9 @@ package com.play001.cloud.cms.controller.rest;
 
 import com.play001.cloud.cms.service.NavigationBarService;
 import com.play001.cloud.cms.service.NavigationService;
-import com.play001.cloud.common.entity.Navigation;
-import com.play001.cloud.common.entity.NavigationBar;
-import com.play001.cloud.common.entity.Response;
+import com.play001.cloud.support.entity.Navigation;
+import com.play001.cloud.support.entity.NavigationBar;
+import com.play001.cloud.support.entity.ResponseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -35,23 +35,23 @@ public class NavigationRestController {
      * 隐藏导航
      */
     @RequestMapping(value = "/hidden", method = RequestMethod.POST)
-    public Response<Integer> hidden(Integer id){
+    public ResponseEntity<Integer> hidden(Integer id){
         return navigationService.setStatus(id, false);
     }
     /**
      * 显示导航
      */
     @RequestMapping(value = "/show", method = RequestMethod.POST)
-    public Response<Integer> show(Integer id){
+    public ResponseEntity<Integer> show(Integer id){
         return navigationService.setStatus(id, true);
     }
     /**
      * 更新导航
      */
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public Response<Integer> update(@Validated  Navigation navigation, BindingResult bindingResult){
+    public ResponseEntity<Integer> update(@Validated  Navigation navigation, BindingResult bindingResult){
         if(bindingResult.hasErrors()){
-            return new Response<Integer>().setErrMsg(bindingResult.getFieldError().getDefaultMessage());
+            return new ResponseEntity<Integer>().setErrMsg(bindingResult.getFieldError().getDefaultMessage());
         }
         return navigationService.update(navigation);
     }
@@ -67,23 +67,23 @@ public class NavigationRestController {
      * 隐藏导航栏
      */
     @RequestMapping(value = "/bar/hidden", method = RequestMethod.POST)
-    public Response<Integer> hiddenBar(Integer id){
+    public ResponseEntity<Integer> hiddenBar(Integer id){
         return navigationBarService.setStatus(id, false);
     }
     /**
      * 隐藏导航栏
      */
     @RequestMapping(value = "/bar/show", method = RequestMethod.POST)
-    public Response<Integer> showBar(Integer id){
+    public ResponseEntity<Integer> showBar(Integer id){
         return navigationBarService.setStatus(id, true);
     }
     /**
      * 更新导航栏
      */
     @RequestMapping(value = "/bar/update", method = RequestMethod.POST)
-    public Response<Integer> updateBar(@Validated NavigationBar navigationBar, BindingResult bindingResult){
+    public ResponseEntity<Integer> updateBar(@Validated NavigationBar navigationBar, BindingResult bindingResult){
         if(bindingResult.hasErrors()){
-            return new Response<Integer>().setErrMsg(bindingResult.getFieldError().getDefaultMessage());
+            return new ResponseEntity<Integer>().setErrMsg(bindingResult.getFieldError().getDefaultMessage());
         }
         return navigationBarService.update(navigationBar);
     }
@@ -91,16 +91,16 @@ public class NavigationRestController {
      * 删除导航栏
      */
     @RequestMapping(value = "/bar/delete", method = RequestMethod.POST)
-    public Response<Integer>deleteBar(Integer id){
+    public ResponseEntity<Integer> deleteBar(Integer id){
         return navigationBarService.delete(id);
     }
     /**
      * 创建导航栏
      */
     @RequestMapping(value = "/bar/create", method = RequestMethod.POST)
-    public Response<Integer> createBar(@Validated NavigationBar navigationBar, BindingResult bindingResult){
+    public ResponseEntity<Integer> createBar(@Validated NavigationBar navigationBar, BindingResult bindingResult){
         if(bindingResult.hasErrors()){
-            return new Response<Integer>().setErrMsg(bindingResult.getFieldError().getDefaultMessage());
+            return new ResponseEntity<Integer>().setErrMsg(bindingResult.getFieldError().getDefaultMessage());
         }
         return navigationBarService.create(navigationBar);
     }

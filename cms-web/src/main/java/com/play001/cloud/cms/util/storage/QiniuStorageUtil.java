@@ -1,8 +1,9 @@
-package com.play001.cloud.common.util.storage;
+package com.play001.cloud.cms.util.storage;
 
-import com.play001.cloud.common.enums.StorageTypeEnum;
+import com.play001.cloud.support.enums.StorageTypeEnum;
 import com.qiniu.common.QiniuException;
 import com.qiniu.common.Zone;
+import com.qiniu.http.Response;
 import com.qiniu.storage.BucketManager;
 import com.qiniu.storage.Configuration;
 import com.qiniu.storage.UploadManager;
@@ -89,7 +90,7 @@ public class QiniuStorageUtil implements IBaseStorageUtil {
     @Override
     public Boolean delete(String path){
         try {
-            bucketManager.delete(bucket, path);
+            Response response = bucketManager.delete(bucket, path);
             return true;
         } catch (QiniuException ex) {
             //如果遇到异常，说明删除失败

@@ -3,7 +3,7 @@ package com.play001.cloud.cms.HandleAdvice;
 
 import com.play001.cloud.cms.controller.AdminController;
 import com.play001.cloud.cms.controller.CommonController;
-import com.play001.cloud.common.entity.IException;
+import com.play001.cloud.support.entity.IException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ui.Model;

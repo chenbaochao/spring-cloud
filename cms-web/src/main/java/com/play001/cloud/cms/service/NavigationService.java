@@ -2,9 +2,12 @@ package com.play001.cloud.cms.service;
 
 
 import com.play001.cloud.cms.mapper.NavigationMapper;
-import com.play001.cloud.common.entity.Navigation;
-import com.play001.cloud.common.entity.Response;
+import com.play001.cloud.support.entity.Navigation;
+import com.play001.cloud.support.entity.RedisMessage;
+import com.play001.cloud.support.entity.ResponseEntity;
+import com.play001.cloud.support.enums.RedisMessageEnum;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -16,7 +19,8 @@ public class NavigationService {
 
     @Autowired
     private NavigationMapper navigationMapper;
-
+    @Autowired
+    private RedisTemplate redisTemplate;
     /**
      * 获取所有的导航
      */
@@ -30,21 +34,23 @@ public class NavigationService {
     /**
      * 设置导航状态
      */
-    public Response<Integer> setStatus(Integer id, Boolean status){
+    public ResponseEntity<Integer> setStatus(Integer id, Boolean status){
         if(status != null && id != null){
             navigationMapper.setStatus(id, status);
-            return new Response<Integer>().setStatus(Response.SUCCESS);
+            return new ResponseEntity<Integer>().setStatus(ResponseEntity.SUCCESS);
         }
-        return new Response<Integer>().setErrMsg("参数错误");
+        redisTemplate.convertAndSend(RedisMessage.CHANNEL, new RedisMessage(RedisMessageEnum.NAVIGATION_CHANGE));
+        return new ResponseEntity<Integer>().setErrMsg("参数错误");
     }
 
     /**
      * 更新导航栏
      * 只更新name, remarks, status
      */
-    public Response<Integer> update(Navigation navigation){
+    public ResponseEntity<Integer> update(Navigation navigation){
         navigationMapper.update(navigation);
-        return new Response<Integer>().setStatus(Response.SUCCESS);
+        redisTemplate.convertAndSend(RedisMessage.CHANNEL, new RedisMessage(RedisMessageEnum.NAVIGATION_CHANGE));
+        return new ResponseEntity<Integer>().setStatus(ResponseEntity.SUCCESS);
     }
 
     //查找

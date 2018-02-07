@@ -1088,7 +1088,7 @@
                   var c, Colspan = 0;
                   var r, Rowspan = 0;
 
-                  // handle rowspans from previous rows
+                  // handler rowspans from previous rows
                   if (typeof rowspans[rowIndex] != 'undefined' && rowspans[rowIndex].length > 0) {
                     for (c = 0; c <= colIndex; c++) {
                       if (typeof rowspans[rowIndex][c] != 'undefined') {
@@ -1111,7 +1111,7 @@
                   // output content of current cell
                   cellcallback(this, rowIndex, colIndex);
 
-                  // handle colspan of current cell
+                  // handler colspan of current cell
                   for (c = 0; c < Colspan - 1; c++)
                     cellcallback(null, rowIndex, colIndex + c);
 
@@ -1131,7 +1131,7 @@
               }
             }
           });
-          // handle rowspans from previous rows
+          // handler rowspans from previous rows
           if (typeof rowspans[rowIndex] != 'undefined' && rowspans[rowIndex].length > 0) {
             for (var c = 0; c <= rowspans[rowIndex].length; c++) {
               if (typeof rowspans[rowIndex][c] != 'undefined') {

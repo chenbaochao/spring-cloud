@@ -1,5 +1,6 @@
 package com.play001.cloud.cms;
 
+import com.play001.cloud.support.util.SpringContextUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
@@ -12,14 +13,7 @@ import org.springframework.context.annotation.ComponentScan;
 public class Application {
 
     public static void main(String[] args) {
-        Logger logger = LoggerFactory.getLogger(Application.class);
         SpringApplication.run(Application.class, args);
-    }
-
-
-    @Bean
-    public SpringContextUtils init() {
-        return new SpringContextUtils();
     }
 
      /*

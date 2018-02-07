@@ -1,7 +1,6 @@
 package com.play001.cloud.cms.mapper;
 
-import com.play001.cloud.common.entity.Navigation;
-import com.play001.cloud.common.entity.NavigationBar;
+import com.play001.cloud.support.entity.NavigationBar;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 

@@ -5,9 +5,12 @@ import com.play001.cloud.cms.entity.Admin;
 import com.play001.cloud.cms.entity.AdminSessionData;
 import com.play001.cloud.cms.service.AdminService;
 import com.play001.cloud.cms.service.LoginLogService;
-import com.play001.cloud.common.entity.IException;
-import com.play001.cloud.common.entity.Response;
+import com.play001.cloud.support.entity.IException;
+import com.play001.cloud.support.entity.RedisMessage;
+import com.play001.cloud.support.entity.ResponseEntity;
+import com.play001.cloud.support.enums.RedisMessageEnum;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,8 +27,8 @@ public class AdminRestController {
 
     @Autowired
     private AdminService adminService;
-
-
+    @Autowired
+    private RedisTemplate redisTemplate;
     @Autowired
     private LoginLogService loginLogService;
 
@@ -33,7 +36,7 @@ public class AdminRestController {
      * 创建管理员
      */
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public Response<Integer> create(@Validated Admin admin, BindingResult result, HttpSession session) throws IException {
+    public ResponseEntity<Integer> create(@Validated Admin admin, BindingResult result, HttpSession session) throws IException {
         if(result.hasErrors()) throw new IException(result.getFieldError().getDefaultMessage());
         if(1 == admin.getRole().getId()) throw new IException("不能创建ROOT用户!");
         Admin creator = new Admin();
@@ -42,14 +45,14 @@ public class AdminRestController {
         creator.setId(adminSessionData.getId());
         admin.setCreator(creator);
         adminService.create(admin);
-        return new Response<>(Response.SUCCESS);
+        return new ResponseEntity<>(ResponseEntity.SUCCESS);
     }
 
     /**
      * 登陆
      */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public Response<Integer> login(String username, String password, String captchaCode, HttpServletRequest request) throws IException {
+    public ResponseEntity<Integer> login(String username, String password, String captchaCode, HttpServletRequest request) throws IException {
         return  adminService.login(username, password, captchaCode, request);
     }
 
@@ -67,17 +70,17 @@ public class AdminRestController {
      * @param id 要删除的管理员ID, 不能为1,
      */
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
-    public Response<Integer> delete(Integer id) throws IException {
+    public ResponseEntity<Integer> delete(Integer id) throws IException {
         if(id == null) throw new IException("ID不能为空");
         adminService.delete(id);
-        return new Response<>(Response.SUCCESS);
+        return new ResponseEntity<>(ResponseEntity.SUCCESS);
     }
 
     /**
      * 更新管理员
      */
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public Response<Integer> update(Admin admin, HttpSession session) throws IException {
+    public ResponseEntity<Integer> update(Admin admin, HttpSession session) throws IException {
         return adminService.update(admin, session);
     }
 
@@ -85,19 +88,19 @@ public class AdminRestController {
      * 冻结管理员
      */
     @RequestMapping(value = "/freeze", method = RequestMethod.PUT)
-    public Response<Integer> freeze(Integer id) throws IException {
+    public ResponseEntity<Integer> freeze(Integer id) throws IException {
         if(id == null) throw new IException("参数错误");
         adminService.setStatus(id, (byte)0);
-        return new Response<>(Response.SUCCESS);
+        return new ResponseEntity<>(ResponseEntity.SUCCESS);
     }
     /**
      * 启用管理员
      */
     @RequestMapping(value = "/unFreeze", method = RequestMethod.PUT)
-    public Response<Integer> unFreeze(Integer id) throws IException {
+    public ResponseEntity<Integer> unFreeze(Integer id) throws IException {
         if(id == null) throw new IException("参数错误");
         adminService.setStatus(id, (byte)1);
-        return new Response<>(Response.SUCCESS);
+        return new ResponseEntity<>(ResponseEntity.SUCCESS);
     }
 
     /**
@@ -114,9 +117,9 @@ public class AdminRestController {
      * 修改个人信息
      */
     @RequestMapping(value = "/updatePersonalInfo", method = RequestMethod.POST)
-    public Response<Integer> updatePersonalInfo(@Validated Admin admin, BindingResult result, HttpSession session){
+    public ResponseEntity<Integer> updatePersonalInfo(@Validated Admin admin, BindingResult result, HttpSession session){
         if(result.hasErrors()){
-            return new Response<Integer>().setErrMsg(result.getFieldError().getDefaultMessage());
+            return new ResponseEntity<Integer>().setErrMsg(result.getFieldError().getDefaultMessage());
         }
         return adminService.updatePersonalInfo(admin, session);
     }
@@ -124,7 +127,7 @@ public class AdminRestController {
      * 修改密码
      */
     @RequestMapping(value = "/updatePersonalPwd", method = RequestMethod.POST)
-    public Response<Integer> updatePersonalPwd(String oldPassword,String newPassword, HttpSession session){
+    public ResponseEntity<Integer> updatePersonalPwd(String oldPassword, String newPassword, HttpSession session){
         return adminService.updatePersonalPwd(oldPassword, newPassword, session);
     }
 
@@ -132,14 +135,15 @@ public class AdminRestController {
      * 修改头像
      */
     @RequestMapping(value = "/updateAvatar", method = RequestMethod.POST)
-    public Response<Integer> updateAvatar(Long imageId, HttpSession session){
+    public ResponseEntity<Integer> updateAvatar(Long imageId, HttpSession session){
         AdminSessionData adminSessionData = (AdminSessionData)session.getAttribute("admin");
         return adminService.updateAvatar(imageId, adminSessionData.getId());
     }
 
     @RequestMapping(value = "/test", method = RequestMethod.GET)
     public String test(){
-        adminService.findTest();
+        RedisMessage redisMessage = new RedisMessage(RedisMessageEnum.ADVERT_CHANGE);
+        redisTemplate.convertAndSend(RedisMessage.CHANNEL, redisMessage);
         return  "11";
     }
 }

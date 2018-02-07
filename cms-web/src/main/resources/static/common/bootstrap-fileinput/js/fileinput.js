@@ -689,7 +689,7 @@
                 'href="{downloadUrl}" download="{caption}" target="_blank">{downloadIcon}</a>';
             tActionZoom = '<button type="button" class="kv-file-zoom {zoomClass}" ' +
                 'title="{zoomTitle}">{zoomIcon}</button>';
-            tActionDrag = '<span class="file-drag-handle {dragClass}" title="{dragTitle}">{dragIcon}</span>';
+            tActionDrag = '<span class="file-drag-handler {dragClass}" title="{dragTitle}">{dragIcon}</span>';
             tIndicator = '<div class="file-upload-indicator" title="{indicatorTitle}">{indicator}</div>';
             tTagBef = '<div class="file-preview-frame {frameClass}" id="{previewId}" data-fileindex="{fileindex}"' +
                 ' data-template="{template}"';
@@ -1471,7 +1471,7 @@
             }
             //noinspection JSUnusedGlobalSymbols
             settings = {
-                handle: '.drag-handle-init',
+                handle: '.drag-handler-init',
                 dataIdAttr: 'data-preview-id',
                 scroll: false,
                 draggable: selector,
@@ -2876,7 +2876,7 @@
                 config = self.fileActionSettings;
             $thumb.removeClass('file-preview-success file-preview-error file-preview-loading');
             if (status === 'Success') {
-                $thumb.find('.file-drag-handle').remove();
+                $thumb.find('.file-drag-handler').remove();
             }
             $indicator.html(config[icon]);
             $indicator.attr('title', config[msg]);
@@ -3369,7 +3369,7 @@
                 });
             }
             if (showDrag && isInit) {
-                css = 'drag-handle-init ' + config.dragClass;
+                css = 'drag-handler-init ' + config.dragClass;
                 btnDrag = self._getLayoutTemplate('actionDrag').setTokens({
                     'dragClass': css,
                     'dragTitle': config.dragTitle,

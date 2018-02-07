@@ -1,12 +1,14 @@
 package com.play001.cloud.cms.service;
 
 import com.play001.cloud.cms.mapper.*;
-import com.play001.cloud.common.entity.*;
-import com.play001.cloud.common.enums.StorageTypeEnum;
-import com.play001.cloud.common.util.DateUtil;
-import com.play001.cloud.common.util.storage.IBaseStorageUtil;
-import com.play001.cloud.common.util.storage.StorageFactory;
+import com.play001.cloud.support.entity.*;
+import com.play001.cloud.support.enums.RedisMessageEnum;
+import com.play001.cloud.support.enums.StorageTypeEnum;
+import com.play001.cloud.support.util.DateUtil;
+import com.play001.cloud.cms.util.storage.IBaseStorageUtil;
+import com.play001.cloud.cms.util.storage.StorageFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.TransactionDefinition;
@@ -35,15 +37,17 @@ public class ProductService {
     private DataSourceTransactionManager transactionManager;
     @Autowired
     private StorageFactory storageFactory;
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     /**
      * 修改商品
      */
-    public Response<Integer> update(Product newProduct){
+    public ResponseEntity<Integer> update(Product newProduct){
 
-        Response<Integer> response = new Response<>();
+        ResponseEntity<Integer> responseEntity = new ResponseEntity<>();
         if(newProduct.getId() == null){
-            return response.setErrMsg("参数错误");
+            return responseEntity.setErrMsg("参数错误");
         }
         //待删除的图片,事务执行完成后从云端删除
         List<Image> deleteImages = new LinkedList<>();
@@ -161,11 +165,13 @@ public class ProductService {
                     productSpecMapper.update(specification);
                 }
             }
+            //通知其它微服务
+            redisTemplate.convertAndSend(RedisMessage.CHANNEL, new RedisMessage(RedisMessageEnum.PRODUCT_CHANGE, newProduct.getId()));
             transactionManager.commit(status);
         }catch (Exception e){
             e.printStackTrace();
             transactionManager.rollback(status);
-            return response.setErrMsg("删除失败");
+            return responseEntity.setErrMsg("删除失败");
         }
         //删除图片文件和数据
         IBaseStorageUtil storageUtil;
@@ -184,13 +190,13 @@ public class ProductService {
             }
         }
 
-        return response.setStatus(Response.SUCCESS);
+        return responseEntity.setStatus(ResponseEntity.SUCCESS);
     }
     /**
      * 添加商品
      */
     @Transactional
-    public Response<Integer> create(Product product){
+    public ResponseEntity<Integer> create(Product product){
 
         product.setCreateTime(DateUtil.getTime());
         product.setSoldNumber(0);
@@ -222,7 +228,7 @@ public class ProductService {
         }
         //保存产品介绍
         productMapper.addIntroduction(product.getId(), product.getIntroduction());
-        return new Response<Integer>().setStatus(Response.SUCCESS);
+        return new ResponseEntity<Integer>().setStatus(ResponseEntity.SUCCESS);
     }
 
     /**

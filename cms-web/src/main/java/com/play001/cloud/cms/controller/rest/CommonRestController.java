@@ -4,9 +4,9 @@ import com.baidu.ueditor.ActionEnter;
 import com.play001.cloud.cms.entity.UploadImageResponse;
 import com.play001.cloud.cms.service.ImageService;
 import com.play001.cloud.cms.service.MenuService;
-import com.play001.cloud.common.entity.Image;
-import com.play001.cloud.common.entity.Menu;
-import com.play001.cloud.common.entity.Response;
+import com.play001.cloud.support.entity.Image;
+import com.play001.cloud.support.entity.Menu;
+import com.play001.cloud.support.entity.ResponseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -43,13 +43,13 @@ public class CommonRestController {
     @RequestMapping(value = "/uploadImage", method = RequestMethod.POST)
     public UploadImageResponse uploadImage(MultipartFile upFile , String avatar_data){
         UploadImageResponse response = new UploadImageResponse();
-        Response<Image> responseImage =  imageService.upload(upFile, HtmlUtils.htmlUnescape(avatar_data));
+        ResponseEntity<Image> responseEntityImage =  imageService.upload(upFile, HtmlUtils.htmlUnescape(avatar_data));
         //将返回数据转换为bootsrap-fileinput框架所固定的格式
-        if(Objects.equals(responseImage.getStatus(), Response.ERROR)){
-            response.setError(responseImage.getErrMsg());
+        if(Objects.equals(responseEntityImage.getStatus(), ResponseEntity.ERROR)){
+            response.setError(responseEntityImage.getErrMsg());
         }else{
-            response.setInitialPreview(responseImage.getMessage().getUrl());
-            Image image = responseImage.getMessage();
+            response.setInitialPreview(responseEntityImage.getMessage().getUrl());
+            Image image = responseEntityImage.getMessage();
             response.setInitialPreview(image.getUrl());
             response.getInitialPreviewConfig()[0].setCaption(upFile.getOriginalFilename());
             response.getInitialPreviewConfig()[0].setKey(image.getId());
@@ -82,16 +82,16 @@ public class CommonRestController {
      */
     @RequestMapping(value = "/ueditor/uploadImage", method = RequestMethod.POST)
     public Map<String, String> ueditorUploadImage(MultipartFile upFile){
-        Response<Image> response = imageService.upload(upFile, null);
+        ResponseEntity<Image> responseEntity = imageService.upload(upFile, null);
         Map<String, String> responseMap = new HashMap<>();
         //将返回数据转换为Ueditor框架所固定的格式
-        if(Objects.equals(response.getStatus(), Response.ERROR)){
+        if(Objects.equals(responseEntity.getStatus(), ResponseEntity.ERROR)){
             responseMap.put("state", "ERROR");
         }else{
             responseMap.put("state", "SUCCESS");
-            responseMap.put("url", response.getMessage().getUrl());
+            responseMap.put("url", responseEntity.getMessage().getUrl());
             responseMap.put("size", String.valueOf(upFile.getSize()));
-            responseMap.put("original", response.getMessage().getUrl());
+            responseMap.put("original", responseEntity.getMessage().getUrl());
             responseMap.put("type", upFile.getContentType());
         }
         return responseMap;

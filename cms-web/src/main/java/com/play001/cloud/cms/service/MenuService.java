@@ -1,7 +1,7 @@
 package com.play001.cloud.cms.service;
 
 import com.play001.cloud.cms.mapper.MenuMapper;
-import com.play001.cloud.common.entity.Menu;
+import com.play001.cloud.support.entity.Menu;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

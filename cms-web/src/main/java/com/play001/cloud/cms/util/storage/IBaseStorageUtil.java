@@ -1,6 +1,6 @@
-package com.play001.cloud.common.util.storage;
+package com.play001.cloud.cms.util.storage;
 
-import com.play001.cloud.common.enums.StorageTypeEnum;
+import com.play001.cloud.support.enums.StorageTypeEnum;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.InputStream;
