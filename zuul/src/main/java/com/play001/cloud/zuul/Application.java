@@ -10,7 +10,6 @@ import org.springframework.context.annotation.Bean;
 
 @EnableZuulProxy
 @SpringBootApplication
-@RibbonClient(configuration = RibbonConfig.class)
 public class Application {
 
     public static void main(String []args){

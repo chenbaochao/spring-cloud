@@ -1,13 +1,11 @@
 package com.play001.cloud.zuul;
 
-import com.play001.cloud.zuul.entity.Response;
-import com.sun.xml.internal.messaging.saaj.util.ByteInputStream;
+import com.play001.cloud.zuul.entity.ResponseEntity;
 import org.springframework.cloud.netflix.zuul.filters.route.ZuulFallbackProvider;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.ClientHttpResponse;
-import org.springframework.stereotype.Component;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -37,15 +35,15 @@ public class DefaultFallback implements ZuulFallbackProvider {
 
             /**
              * 设置返回默认信息
-             * @return
-             * @throws IOException
              */
             @Override
             public InputStream getBody() throws IOException {
-                Response<String> response = new Response<>();
-                response.setStatus(Response.ERROR);
-                response.setErrMsg("请求失败");
-                return new ByteArrayInputStream(response.toJson().getBytes());
+                ResponseEntity<String> responseEntity = new ResponseEntity<>();
+                responseEntity.setStatus(ResponseEntity.ERROR);
+                responseEntity.setErrMsg("请求失败");
+                String str = responseEntity.toJson();
+                System.out.println(str);
+                return new ByteArrayInputStream(str.getBytes());
             }
 
             @Override
