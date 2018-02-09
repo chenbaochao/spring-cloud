@@ -1,6 +1,6 @@
 package com.play001.cloud.user.api.mapper;
 
-import com.play001.cloud.common.entity.User;
+import com.play001.cloud.support.entity.user.User;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;

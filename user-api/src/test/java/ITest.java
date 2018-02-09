@@ -1,5 +1,5 @@
 
-import com.play001.cloud.common.entity.User;
+import com.play001.cloud.support.entity.user.User;
 import org.junit.Test;
 
 

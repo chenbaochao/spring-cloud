@@ -1,11 +1,11 @@
 package com.play001.cloud.user.api.service;
 
 
-import com.play001.cloud.common.entity.Response;
-import com.play001.cloud.common.entity.User;
-import com.play001.cloud.common.util.JwtUtil;
+import com.play001.cloud.support.entity.ResponseEntity;
+import com.play001.cloud.support.entity.user.User;
+import com.play001.cloud.support.util.JwtUtil;
 import com.play001.cloud.user.api.mapper.UserMapper;
-import com.play001.cloud.common.util.Captcha;
+import com.play001.cloud.support.util.Captcha;
 import com.play001.cloud.user.api.util.TimeUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -73,7 +73,7 @@ public class UserService {
     /**
      * 获取验证码
      */
-    public  Response<byte[]> createCaptcha() throws IOException {
+    public ResponseEntity<byte[]> createCaptcha() throws IOException {
         String code = Captcha.randCaptchaCode();
         String uuid = UUID.randomUUID().toString();
         //将验证码保存进redis,并设置验证码的有效期为10分钟
@@ -94,10 +94,10 @@ public class UserService {
         //复制验证码cookie到data
         System.arraycopy(cookieByte, 0,  data, imageByte.length, 36);
 
-        Response<byte[]> response = new Response<>(Response.SUCCESS);
-        response.setMessage(data);
+        ResponseEntity<byte[]> responseEntity = new ResponseEntity<>(ResponseEntity.SUCCESS);
+        responseEntity.setMessage(data);
 
-        return response;
+        return responseEntity;
     }
     public User getInfo(Long id){
         return userMapper.findById(id);
