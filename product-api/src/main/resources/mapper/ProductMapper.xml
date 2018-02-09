@@ -2,7 +2,7 @@
 <!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.play001.cloud.product.api.mapper.ProductMapper">
-    <resultMap id="productResult" type="com.play001.cloud.support.entity.Product">
+    <resultMap id="productResult" type="com.play001.cloud.support.entity.product.Product">
         <result property="id" column="id"/>
         <result property="showPrice" column="show_price"/>
         <result property="title" column="title"/>
@@ -11,20 +11,20 @@
         <result property="createTime" column="create_time"/>
         <result property="soldNumber" column="sold_number"/>
         <!-- 封面 -->
-        <association property="thumb" column="thumb_id" select="findImage"/>
+        <association property="thumb" column="thumb_id" select="com.play001.cloud.support.mapper.ImageMapper.findById"/>
         <!-- 产品分类 -->
         <association property="category" select="findCategory" column="category_id" />
         <!-- 产品参数 -->
-        <collection property="parameters" select="findParameters" column="id" ofType="com.play001.cloud.support.entity.Parameter"/>
+        <collection property="parameters" select="findParameters" column="id" ofType="com.play001.cloud.support.entity.product.Parameter"/>
         <!-- 产品标签 -->
-        <collection property="labels" select="findLabels" column="id" ofType="com.play001.cloud.support.entity.Label" />
+        <collection property="labels" select="findLabels" column="id" ofType="com.play001.cloud.support.entity.product.Label" />
         <!-- 产品图片 -->
-        <collection property="pics" select="findPics" column="id" ofType="com.play001.cloud.support.entity.ProductImage" />
+        <collection property="pics" select="findPics" column="id" ofType="com.play001.cloud.support.entity.product.ProductImage" />
         <!-- 产品套餐 -->
-        <collection property="specs" select="findSpecs" column="id" ofType="com.play001.cloud.support.entity.Specification"/>
+        <collection property="specs" select="findSpecs" column="id" ofType="com.play001.cloud.support.entity.product.Specification"/>
 
     </resultMap>
-    <resultMap id="productImageMap" type="com.play001.cloud.support.entity.ProductImage">
+    <resultMap id="productImageMap" type="com.play001.cloud.support.entity.product.ProductImage">
         <result property="id" column="id"/>
         <result property="sort" column="sort"/>
         <association property="image" column="image_id" select="findImage"/>
@@ -49,7 +49,7 @@
     <!-- 分类+分页 -->
     <select id="listByCategoryId" resultMap="productResult">
         SELECT
-        p.id, p.name, p.category_id, p.show_price, p.title, p.thumb_id, pd.introduction, p.status, p.create_time, p.remarks
+        p.id, p.name, p.category_id, p.show_price, p.title, p.thumb_id,  p.status,  p.remarks, p.sold_number
         FROM os_product p, os_product_introduction pd
         WHERE pd.product_id = p.id
         <!-- categoryId为0表示检索全部商品 -->
@@ -88,14 +88,14 @@
     </select>
 
     <!-- 商品参数-->
-    <select id="findParameters" resultType="com.play001.cloud.support.entity.Parameter">
+    <select id="findParameters" resultType="com.play001.cloud.support.entity.product.Parameter">
         SELECT
             id, product_id as productId, name, value, sort
         FROM os_product_parameter
         WHERE product_id = #{id}
     </select>
     <!-- 查找标签-->
-    <select id="findLabels" resultType="com.play001.cloud.support.entity.Label">
+    <select id="findLabels" resultType="com.play001.cloud.support.entity.product.Label">
         SELECT
              name
         FROM os_product_label
@@ -112,7 +112,7 @@
     </select>
 
     <!-- 查找套餐-->
-    <select id="findSpecs" resultType="com.play001.cloud.support.entity.Specification">
+    <select id="findSpecs" resultType="com.play001.cloud.support.entity.product.Specification">
         SELECT
         id, product_id as productId, name, sold_number as soldNumber, stock, price
         FROM os_product_specification

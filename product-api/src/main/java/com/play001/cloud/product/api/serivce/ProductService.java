@@ -4,6 +4,7 @@ package com.play001.cloud.product.api.serivce;
 import com.play001.cloud.product.api.enums.SortEnum;
 import com.play001.cloud.support.entity.*;
 import com.play001.cloud.product.api.mapper.ProductMapper;
+import com.play001.cloud.support.entity.product.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;

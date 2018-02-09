@@ -4,6 +4,7 @@ package com.play001.cloud.product.api.controller;
 import com.play001.cloud.support.entity.*;
 import com.play001.cloud.product.api.serivce.RecommendService;
 import com.play001.cloud.product.api.serivce.ProductService;
+import com.play001.cloud.support.entity.product.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
