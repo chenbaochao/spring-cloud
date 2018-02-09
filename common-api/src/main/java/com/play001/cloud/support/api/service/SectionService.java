@@ -27,7 +27,7 @@ public class SectionService {
         //请求product-api,查找产品
         for(Section section:sections){
             List<Category> categories = section.getCategories();
-            ResponseEntity<List<Category>> result = productMapper.getByCategory(categories, 18);
+            ResponseEntity<List<Category>> result = productMapper.getByCategory(categories, 8);
             if(result.getStatus().equals(ResponseEntity.ERROR)){
                 return responseEntity.setErrMsg("查找产品失败");
             }

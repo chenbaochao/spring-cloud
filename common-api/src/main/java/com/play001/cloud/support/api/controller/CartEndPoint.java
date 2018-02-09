@@ -1,8 +1,8 @@
 package com.play001.cloud.support.api.controller;
 
 import com.play001.cloud.support.entity.ResponseEntity;
-import com.play001.cloud.support.entity.ShopCart;
-import com.play001.cloud.support.entity.UserCredential;
+import com.play001.cloud.support.entity.user.ShopCart;
+import com.play001.cloud.support.entity.user.UserCredential;
 import com.play001.cloud.support.entity.IException;
 import com.play001.cloud.support.interceptor.UserPermissionVerify;
 import com.play001.cloud.support.util.JwtUtil;
@@ -10,6 +10,7 @@ import com.play001.cloud.support.api.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.xml.ws.Response;
 import java.io.IOException;
 import java.util.List;
 
@@ -35,9 +36,8 @@ public class CartEndPoint {
     public ResponseEntity<Integer> add(Long productId, Long productSpecId, @RequestHeader("userJwt") String userJwt) throws IException, IOException {
         if(productId == null) throw new IException("产品Id为空");
         if(productSpecId == null) throw new IException("产品规格Id为空");
-        UserCredential credential = JwtUtil.getCredentialByJwt(userJwt);
-        cartService.add(productId, productSpecId, credential.getUserId());
-        return new ResponseEntity<Integer>(ResponseEntity.SUCCESS);
+        cartService.add(userJwt, productId, productSpecId);
+        return new ResponseEntity<>(ResponseEntity.SUCCESS);
     }
 
     /**
@@ -45,19 +45,25 @@ public class CartEndPoint {
      */
     @UserPermissionVerify
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public ResponseEntity<List<ShopCart>> list(@RequestHeader("userJwt") String userJwt) throws IOException {
-        UserCredential userCredential = JwtUtil.getCredentialByJwt(userJwt);
+    public ResponseEntity<List<ShopCart>> list(@RequestHeader("userJwt") String userJwt) throws IOException, IException {
         ResponseEntity<List<ShopCart>> responseEntity = new ResponseEntity<>();
-        responseEntity.setMessage(cartService.list(userCredential.getUserId()));
+        responseEntity.setMessage(cartService.list(userJwt));
         return responseEntity;
     }
+
     @UserPermissionVerify
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     public ResponseEntity<Integer> delete(Long cartId, @RequestHeader("userJwt") String userJwt) throws IOException {
         if(cartId != null && cartId > 0){
-            UserCredential userCredential = JwtUtil.getCredentialByJwt(userJwt);
-            cartService.delete(cartId, userCredential.getUserId());
+            cartService.delete(cartId, userJwt);
         }
         return new ResponseEntity<>(ResponseEntity.SUCCESS);
     }
+
+    @UserPermissionVerify
+    @RequestMapping(value = "/findById", method = RequestMethod.GET)
+    public ResponseEntity<ShopCart> findById(Long id, @RequestHeader("userJwt") String userJwt){
+        return cartService.findById(id, userJwt);
+    }
+
 }
