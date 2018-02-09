@@ -2,6 +2,7 @@ package com.play001.cloud.cms.service;
 
 import com.play001.cloud.cms.mapper.*;
 import com.play001.cloud.support.entity.*;
+import com.play001.cloud.support.entity.product.*;
 import com.play001.cloud.support.enums.RedisMessageEnum;
 import com.play001.cloud.support.enums.StorageTypeEnum;
 import com.play001.cloud.support.util.DateUtil;

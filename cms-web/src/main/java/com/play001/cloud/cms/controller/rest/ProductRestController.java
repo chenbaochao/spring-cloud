@@ -1,7 +1,7 @@
 package com.play001.cloud.cms.controller.rest;
 
 import com.play001.cloud.cms.service.ProductService;
-import com.play001.cloud.support.entity.Product;
+import com.play001.cloud.support.entity.product.Product;
 import com.play001.cloud.support.entity.ResponseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;

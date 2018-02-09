@@ -2,7 +2,7 @@ package com.play001.cloud.cms.controller;
 
 import com.play001.cloud.cms.service.CategoryService;
 import com.play001.cloud.cms.service.ProductService;
-import com.play001.cloud.support.entity.Product;
+import com.play001.cloud.support.entity.product.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

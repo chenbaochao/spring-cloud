@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.play001.cloud.cms.mapper.ProductMapper">
-    <resultMap id="productResult" type="com.play001.cloud.support.entity.Product">
+    <resultMap id="productResult" type="com.play001.cloud.support.entity.product.Product">
         <id property="id" column="id"/>
         <result property="showPrice" column="show_price"/>
         <result property="soldNumber" column="sold_number"/>
