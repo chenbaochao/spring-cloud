@@ -1,4 +1,4 @@
-package com.play001.cloud.support.entity;
+package com.play001.cloud.support.entity.product;
 
 import java.io.Serializable;
 

@@ -6,8 +6,8 @@ public class Image  implements Serializable {
     private Long id;
     private String url;
     private String path;
-    //状态 false/true = 未使用/已使用
-    private Boolean used;
+    //引用次数,为0表示未使用,可以删除
+    private Long count;
     //存储工具名称
     private String storageName;
     private String createTime;
@@ -44,12 +44,12 @@ public class Image  implements Serializable {
         this.path = path;
     }
 
-    public Boolean getUsed() {
-        return used;
+    public Long getCount() {
+        return count;
     }
 
-    public void setUsed(Boolean used) {
-        this.used = used;
+    public void setCount(Long count) {
+        this.count = count;
     }
 
     public String getStorageName() {

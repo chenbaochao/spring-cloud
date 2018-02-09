@@ -1,7 +1,9 @@
-package com.play001.cloud.support.entity;
+package com.play001.cloud.support.entity.product;
 
 
 import com.google.gson.Gson;
+import com.play001.cloud.support.entity.Category;
+import com.play001.cloud.support.entity.Image;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.constraints.Max;

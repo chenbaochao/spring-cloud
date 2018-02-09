@@ -16,14 +16,7 @@
         <version>1.5.2.RELEASE</version>
     </parent>
 
-<!--
-    <parent>
-        <groupId>com.play001.cloud</groupId>
-        <artifactId>parent</artifactId>
-        <version>1.0</version>
-        <relativePath>../parent</relativePath>
-    </parent>
--->
+
     <dependencies>
 
 
@@ -36,7 +29,11 @@
             <artifactId>gson</artifactId>
             <version>2.8.2</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis</artifactId>
+            <version>3.4.5</version>
+        </dependency>
         <dependency>
             <groupId>com.auth0</groupId>
             <artifactId>java-jwt</artifactId>

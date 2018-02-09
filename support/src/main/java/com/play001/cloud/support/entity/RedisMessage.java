@@ -21,10 +21,18 @@ public class RedisMessage implements Serializable {
      */
     private Long time;
 
+    public RedisMessage() {
+    }
+
     public RedisMessage(RedisMessageEnum msgType) {
+        this.msgType = msgType;
+    }
+
+    public RedisMessage(RedisMessageEnum msgType, Long productId) {
         this.msgType = msgType;
         this.id = UUID.randomUUID().toString();
         this.time = System.currentTimeMillis();
+        this.productId = productId;
     }
     public RedisMessageEnum getMsgType() {
         return msgType;

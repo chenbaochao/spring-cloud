@@ -1,4 +1,4 @@
-package com.play001.cloud.support.entity;
+package com.play001.cloud.support.entity.user;
 
 
 import com.google.gson.Gson;

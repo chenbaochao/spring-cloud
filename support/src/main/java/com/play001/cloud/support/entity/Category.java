@@ -1,5 +1,6 @@
 package com.play001.cloud.support.entity;
 
+import com.play001.cloud.support.entity.product.Product;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 

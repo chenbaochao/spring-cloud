@@ -1,20 +1,23 @@
 package com.play001.cloud.support.util;
 
 import com.google.gson.Gson;
-import com.play001.cloud.support.entity.UserCredential;
+import com.play001.cloud.support.entity.user.UserCredential;
 import org.apache.commons.codec.binary.Base64;
-import sun.misc.BASE64Decoder;
-
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.IOException;
 
 
 public class JwtUtil {
+
+    private JwtUtil() {
+    }
+
     //加密字符串,密匙
     private static String secret = "xxx1aAxxx!!!";
 
     private static final String header = "{ \"alg\": \"HS256\",\"typ\": \"JWT\"}";
+    private static final Gson gson = new Gson();
 
     public static String createJwt(Long userId, String username, Long expiryDate) throws Exception {
         UserCredential credential = new UserCredential(userId, username, expiryDate);
@@ -36,8 +39,8 @@ public class JwtUtil {
             String []arr = jwt.split("\\.");
             if(arr.length != 3) return false;
             String oldSignature = arr[2];
-            String payload  = new String(new BASE64Decoder().decodeBuffer(arr[1]));
-            UserCredential credential = new Gson().fromJson(payload, UserCredential.class);
+            String payload  = new String(Base64.decodeBase64(arr[1]));
+            UserCredential credential = gson.fromJson(payload, UserCredential.class);
             if(credential.getExpiryDate() < System.currentTimeMillis()) return false;
             String newSignature = HMACSHA256(arr[0],arr[1],secret);
             return oldSignature.equals(newSignature);
@@ -54,8 +57,8 @@ public class JwtUtil {
      */
     public static UserCredential getCredentialByJwt(String jwt) throws IOException {
         String []jwtArray = jwt.split("\\.");
-        String payload  = new String(new BASE64Decoder().decodeBuffer(jwtArray[1]));
-        return new Gson().fromJson(payload, UserCredential.class);
+        String payload  = new String(Base64.decodeBase64(jwtArray[1]));
+        return gson.fromJson(payload, UserCredential.class);
     }
     /**
      * 加密
