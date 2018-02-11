@@ -16,6 +16,7 @@ import java.util.List;
  * 产品
  */
 public class Product  implements Serializable {
+
     private Long id;
     @NotBlank(message = "产品名字不能为空")
     private String name;//商品名字

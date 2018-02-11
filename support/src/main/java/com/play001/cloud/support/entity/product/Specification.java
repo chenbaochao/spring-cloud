@@ -10,9 +10,9 @@ public class Specification  implements Serializable {
     private Long id;
     private Long productId;
     private String name;
-    private String stock;
+    private Integer stock;
     private Integer soldNumber;
-    private Long price;
+    private Double price;
 
     public Long getId() {
         return id;
@@ -38,19 +38,19 @@ public class Specification  implements Serializable {
         this.name = name;
     }
 
-    public String getStock() {
+    public Integer getStock() {
         return stock;
     }
 
-    public void setStock(String stock) {
+    public void setStock(Integer stock) {
         this.stock = stock;
     }
 
-    public Long getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(Long price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
@@ -61,4 +61,5 @@ public class Specification  implements Serializable {
     public void setSoldNumber(Integer soldNumber) {
         this.soldNumber = soldNumber;
     }
+
 }

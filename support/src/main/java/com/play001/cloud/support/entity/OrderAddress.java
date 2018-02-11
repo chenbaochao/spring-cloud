@@ -1,5 +1,7 @@
 package com.play001.cloud.support.entity;
 
+import com.play001.cloud.support.entity.user.UserAddress;
+
 //订单-收货地址信息
 public class OrderAddress {
     private Long id;
@@ -8,6 +10,17 @@ public class OrderAddress {
     private String userPhone;
     private String userAddr;
     private String zipcode;
+
+    public OrderAddress(Long id, UserAddress userAddress) {
+        this.orderId = id;
+        this.username = userAddress.getUsername();
+        this.userPhone = userAddress.getUserPhone();
+        this.userAddr = userAddress.getUserAddress();
+        this.zipcode = userAddress.getZipcode();
+    }
+
+    public OrderAddress() {
+    }
 
     public Long getId() {
         return id;

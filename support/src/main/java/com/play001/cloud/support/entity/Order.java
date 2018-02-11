@@ -8,10 +8,13 @@ import java.util.List;
 public class Order {
     private Long id;
     private User user;
-    private Integer amount;
+    //总金额
+    private Double amount;
     private Byte status;
     private String createTime;
-    List<OrderProduct> orderProducts;
+    private List<OrderProduct> orderProducts;
+    private OrderAddress orderAddress;
+
     public Long getId() {
         return id;
     }
@@ -28,11 +31,11 @@ public class Order {
         this.user = user;
     }
 
-    public Integer getAmount() {
+    public Double getAmount() {
         return amount;
     }
 
-    public void setAmount(Integer amount) {
+    public void setAmount(Double amount) {
         this.amount = amount;
     }
 
@@ -58,5 +61,13 @@ public class Order {
 
     public void setOrderProducts(List<OrderProduct> orderProducts) {
         this.orderProducts = orderProducts;
+    }
+
+    public OrderAddress getOrderAddress() {
+        return orderAddress;
+    }
+
+    public void setOrderAddress(OrderAddress orderAddress) {
+        this.orderAddress = orderAddress;
     }
 }
