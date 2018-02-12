@@ -26,4 +26,9 @@ public class UserAddressEndPoint {
     public ResponseEntity<List<UserAddress>> getAll(@RequestHeader("userJwt")String userJwt) throws IOException {
         return userAddressService.getAll(userJwt);
     }
+    @UserPermissionVerify
+    @RequestMapping(value = "/findById", method = RequestMethod.GET)
+    public ResponseEntity<UserAddress> findById(@RequestHeader("userJwt")String userJwt, Long id) throws IOException {
+        return userAddressService.findById(id, userJwt);
+    }
 }

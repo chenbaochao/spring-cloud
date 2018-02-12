@@ -25,4 +25,21 @@ public class UserAddressService {
         List<UserAddress> userAddresses = userAddressMapper.getAll(userCredential.getUserId());
         return responseEntity.setMessage(userAddresses);
     }
+
+    public ResponseEntity<UserAddress> findById(Long id, String userJwt) {
+        ResponseEntity<UserAddress> responseEntity = new ResponseEntity<>();
+        if(id == null){
+            return responseEntity.setErrMsg("参数错误");
+        }
+        try {
+            UserCredential userCredential = JwtUtil.getCredentialByJwt(userJwt);
+            responseEntity.setMessage(userAddressMapper.findById(id, userCredential.getUserId()));
+        } catch (IOException e) {
+            e.printStackTrace();
+            responseEntity.setErrMsg("内部错误");
+        }
+
+        return responseEntity;
+
+    }
 }
