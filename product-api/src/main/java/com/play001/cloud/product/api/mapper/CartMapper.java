@@ -1,4 +1,4 @@
-package com.play001.cloud.support.api.mapper;
+package com.play001.cloud.product.api.mapper;
 
 import com.play001.cloud.support.entity.user.ShopCart;
 import org.apache.ibatis.annotations.*;
@@ -15,7 +15,7 @@ public interface CartMapper {
 
     //加购
     @Insert("insert into os_shop_cart(product_id,  product_spec_id, product_price, user_id, buy_number, product_name, product_spec_name, product_thumb_id, status) " +
-            "values(#{product.id}, #{spec.id}, #{user.id}, 1, #{product.name}, #{spec.name}, #{product.thumb.id}, 1)")
+            "values(#{product.id}, #{spec.id}, #{spec.price}, #{user.id}, 1, #{product.name}, #{spec.name}, #{product.thumb.id}, 1)")
     void add(ShopCart shopCart);
 
     //listByUserId列出全部

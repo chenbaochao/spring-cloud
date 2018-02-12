@@ -1,16 +1,13 @@
-package com.play001.cloud.support.api.controller;
+package com.play001.cloud.product.api.controller;
 
+import com.play001.cloud.product.api.serivce.CartService;
 import com.play001.cloud.support.entity.ResponseEntity;
 import com.play001.cloud.support.entity.user.ShopCart;
-import com.play001.cloud.support.entity.user.UserCredential;
 import com.play001.cloud.support.entity.IException;
 import com.play001.cloud.support.interceptor.UserPermissionVerify;
-import com.play001.cloud.support.util.JwtUtil;
-import com.play001.cloud.support.api.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.xml.ws.Response;
 import java.io.IOException;
 import java.util.List;
 
@@ -34,10 +31,7 @@ public class CartEndPoint {
     @UserPermissionVerify
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public ResponseEntity<Integer> add(Long productId, Long productSpecId, @RequestHeader("userJwt") String userJwt) throws IException, IOException {
-        if(productId == null) throw new IException("产品Id为空");
-        if(productSpecId == null) throw new IException("产品规格Id为空");
-        cartService.add(userJwt, productId, productSpecId);
-        return new ResponseEntity<>(ResponseEntity.SUCCESS);
+        return cartService.add(userJwt, productId, productSpecId);
     }
 
     /**

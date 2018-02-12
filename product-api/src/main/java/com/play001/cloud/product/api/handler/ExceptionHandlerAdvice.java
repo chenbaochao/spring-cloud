@@ -20,15 +20,13 @@ public class ExceptionHandlerAdvice {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @ExceptionHandler
-    public ResponseEntity<String> handler(HttpServletRequest request, HttpServletResponse response, Exception e){
+    public ResponseEntity<Object> handler(HttpServletRequest request, HttpServletResponse response, Exception e){
         e.printStackTrace();
         logger.info("拦截到异常:"+e.getMessage());
         if(e instanceof IException){
-            return new ResponseEntity<>(ResponseEntity.ERROR, e.getMessage());
+            return new ResponseEntity<>().setErrMsg(e.getMessage());
         }else{
-            return new ResponseEntity<>(ResponseEntity.ERROR, "未知异常");
+            return new ResponseEntity<>().setErrMsg("未知异常");
         }
-
-
     }
 }

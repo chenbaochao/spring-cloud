@@ -1,0 +1,193 @@
+package com.play001.cloud.product.api.serivce;
+
+import com.play001.cloud.product.api.mapper.*;
+import com.play001.cloud.support.entity.*;
+import com.play001.cloud.support.entity.product.Product;
+import com.play001.cloud.support.entity.product.Specification;
+import com.play001.cloud.support.entity.user.ShopCart;
+import com.play001.cloud.support.entity.user.User;
+import com.play001.cloud.support.entity.user.UserAddress;
+import com.play001.cloud.support.entity.user.UserCredential;
+import com.play001.cloud.support.util.DateUtil;
+import com.play001.cloud.support.util.JwtUtil;
+import com.sun.org.apache.xpath.internal.operations.Or;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+@Service
+public class OrderService {
+
+    @Autowired
+    private CartMapper cartMapper;
+    @Autowired
+    private ProductMapper productMapper;
+    @Autowired
+    private SpecificationMapper specificationMapper;
+    @Autowired
+    private UserAddressMapper userAddressMapper;
+    @Autowired
+    private OrderMapper orderMapper;
+    @Autowired
+    private OrderAddressMapper orderAddressMapper;
+    @Autowired
+    private OrderProductMapper orderProductMapper;
+    @Autowired
+    private DataSourceTransactionManager transactionManager;
+
+    //下单
+    public ResponseEntity<Long> order(Long cartIds[], String userJwt, Long addressId){
+        ResponseEntity<Long> responseEntity = new ResponseEntity<>();
+        if(cartIds == null || cartIds.length == 0 || addressId == null){
+            return responseEntity.setErrMsg("参数错误");
+        }
+        Order order = new Order();
+        order.setStatus(Order.STATUS_UN_PAY);
+        UserCredential userCredential;
+        try {
+            userCredential = JwtUtil.getCredentialByJwt(userJwt);
+            User user = new User();
+            user.setId(userCredential.getUserId());
+            order.setUser(user);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return responseEntity.setErrMsg("操作失败");
+        }
+        //获取收货地址
+        ResponseEntity<UserAddress> userAddressResponse = userAddressMapper.findById(addressId, userJwt);
+
+        if(userAddressResponse.getStatus().equals(ResponseEntity.ERROR)){
+            return responseEntity.setErrMsg(userAddressResponse.getErrMsg());
+        }
+        UserAddress userAddress = userAddressResponse.getMessage();
+        if(userAddress == null){
+            return responseEntity.setErrMsg("收货地址不存在");
+        }
+        //开启事务
+        DefaultTransactionDefinition transactionDefinition = new DefaultTransactionDefinition();
+        transactionDefinition.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
+        TransactionStatus status = transactionManager.getTransaction(transactionDefinition);
+
+        try {
+            List<OrderProduct> orderProducts = new ArrayList<>(cartIds.length);
+            //订单总价
+            double totalPrice = 0L;
+
+            for(Long cartId:cartIds){
+                ShopCart shopCart = cartMapper.findById(cartId, userCredential.getUserId());
+                if(shopCart == null){
+                    throw new IException("没有找到对应的购物车数据");
+                }
+                Product product = productMapper.findById(shopCart.getProduct().getId());
+                if(product == null || product.getStatus().equals(0)){
+                    throw new IException("商品:"+shopCart.getProduct().getName()+"已下架");
+                }
+                shopCart.setProduct(product);
+                Specification spec = specificationMapper.findById(shopCart.getSpec().getId());
+                if(spec == null){
+                    throw new IException("商品:"+shopCart.getProduct().getName()+", 规格"+shopCart.getSpec().getName()+",已下架");
+                }
+                if(spec.getStock() < 1){
+                    throw new IException("来晚一步,商品:"+shopCart.getProduct().getName()+", 规格"+shopCart.getSpec().getName()+",已买完");
+                }
+                shopCart.setSpec(spec);
+                OrderProduct orderProduct = new OrderProduct(shopCart);
+                orderProduct.setProductAmount(spec.getPrice() * shopCart.getBuyNumber());
+                totalPrice+=orderProduct.getProductAmount();
+                Integer effectLineCount = 0;
+                //库存-1,重试三次
+                for(int i = 0; i < 3 && effectLineCount == 0; i++){
+                    effectLineCount = specificationMapper.decreaseStock(shopCart.getSpec().getId());
+                }
+                if(effectLineCount == 0){
+                    throw new IException("网络繁忙,请重试");
+                }
+                //检查完毕后删除购物车
+                cartMapper.delete(shopCart.getId(), userCredential.getUserId());
+                orderProducts.add(orderProduct);
+            }
+            order.setAmount(totalPrice);
+            order.setCreateTime(DateUtil.getTime());
+            /*
+                先保存订单,从而获取订单Id
+             */
+            orderMapper.add(order);
+            //保存收货地址
+            orderAddressMapper.add(new OrderAddress(order.getId(), userAddress));
+            //保存订单产品
+            for(OrderProduct orderProduct:orderProducts){
+                orderProduct.setOrderId(order.getId());
+                orderProductMapper.add(orderProduct);
+            }
+            transactionManager.commit(status);
+            return responseEntity.setMessage(order.getId());
+        }catch (IException ie){
+            //哥屋恩
+            transactionManager.rollback(status);
+            return responseEntity.setErrMsg(ie.getMessage());
+        }catch (Exception e){
+            e.printStackTrace();
+            transactionManager.rollback(status);
+            return responseEntity.setErrMsg("出错了,请重试");
+        }
+    }
+
+    //查找订单
+    public ResponseEntity<Order> findById(Long id, String userJwt) {
+        ResponseEntity<Order> responseEntity = new ResponseEntity<>();
+        if(id == null){
+            return responseEntity.setErrMsg("参数错误");
+        }
+        try {
+            UserCredential userCredential = JwtUtil.getCredentialByJwt(userJwt);
+            responseEntity.setMessage(orderMapper.findById(id, userCredential.getUserId()));
+            return responseEntity;
+        }catch (Exception e) {
+            e.printStackTrace();
+            return responseEntity.setErrMsg("网络繁忙");
+        }
+
+    }
+
+
+    /**
+     * 列表,分页
+     * @param type 订单状态, -1为查询所有商品
+     * @param pageNo 当前页面编号. 从1开始
+     * @param userJwt 用户jwt
+     */
+    public ResponseEntity<Pagination<Order>> list(Integer type, Integer pageNo, String userJwt) throws IOException {
+        UserCredential userCredential = JwtUtil.getCredentialByJwt(userJwt);
+        ResponseEntity<Pagination<Order>> responseEntity = new ResponseEntity<>();
+        //-1表示所有订单
+        if(type == null || type < -1 || type > 4){
+            return responseEntity.setErrMsg("分类错误");
+        }
+        if(pageNo == null || pageNo < 1){
+            return responseEntity.setErrMsg("页数错误");
+        }
+        Pagination<Order> pagination = new Pagination<>();
+        //默认一页显示20条数据
+        final int defaultPageSize = 20;
+        //数据总条数
+        int totalCount = orderMapper.count(userCredential.getUserId(), type);
+        long start = (long)(pageNo-1) * defaultPageSize;
+        List<Order> orders = orderMapper.pagination(userCredential.getUserId(), start, defaultPageSize, type);
+        //数据总条数
+        pagination.setDataQuantity((long)totalCount);
+        //当前页面
+        pagination.setPageNo(pageNo);
+        //总页数
+        pagination.setPageQuantity((totalCount+totalCount-1)/defaultPageSize);
+        pagination.setPageSize(defaultPageSize);
+        pagination.setData(orders);
+        return responseEntity.setMessage(pagination);
+    }
+}

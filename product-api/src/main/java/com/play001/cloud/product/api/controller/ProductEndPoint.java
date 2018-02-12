@@ -24,7 +24,7 @@ public class ProductEndPoint {
      */
     @RequestMapping(value = "/getStarProduct", method = RequestMethod.GET)
     public ResponseEntity<List<Product>> getStarProduct(){
-        return new ResponseEntity<>(recommendService.getStarProduct());
+        return new ResponseEntity<List<Product>>().setMessage(recommendService.getStarProduct());
     }
 
     /**
@@ -32,7 +32,6 @@ public class ProductEndPoint {
      */
     @RequestMapping(value = "/getDetail", method = RequestMethod.GET)
     public ResponseEntity<Product> getDetail(Long id) throws Exception {
-
         return productService.findById(id);
     }
     /**
