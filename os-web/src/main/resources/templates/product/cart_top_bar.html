@@ -1,7 +1,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <!--     导航栏购物车 begin       -->
   <ul class="cart-list"  th:if="${#lists.size(carts) gt 0}" >
-      <li th:each="cart:${carts}">
+      <li th:each="cart:${carts}"">
         <div class="cart-item clearfix first">
           <a class="thumb" th:href="'/product/detail-'+${cart.product.id}">
             <img th:alt="${cart.product.name}" th:src="${cart.product.thumb.url}" width="60" height="60">

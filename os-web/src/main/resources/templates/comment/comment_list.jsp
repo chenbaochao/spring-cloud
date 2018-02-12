@@ -168,7 +168,7 @@
 				} else if (result.code == 401) {
 					window.location.href = baselocation + '/pass/login';
 				} else {
-					layer.alert(result.message, {
+					layer.alert(result.msgType, {
 						icon : 2
 					});
 				}
@@ -194,7 +194,7 @@
 				} else if (result.code == 401) {
 					window.location.href = baselocation + '/pass/login';
 				} else {
-					layer.alert(result.message, {
+					layer.alert(result.msgType, {
 						icon : 2
 					});
 				}
@@ -224,7 +224,7 @@
 				} else if (result.code == 401) {
 					window.location.href = baselocation + '/pass/login';
 				} else {
-					layer.alert(result.message, {
+					layer.alert(result.msgType, {
 						icon : 2
 					});
 				}

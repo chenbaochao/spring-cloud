@@ -32,7 +32,7 @@
                      <li class="brick-item brick-item-m" th:each="product:${category.products}">
                        <div class="figure figure-img">
                          <a target="_blank" th:title="${product.name}" th:href="|/product/detail-${product.id}|">
-                           <img th:src="${product.thumb.url}" width="160" height="160" th:alt="${product.name}">
+                           <img th:src="${product.thumb?.url}" width="160" height="160" th:alt="${product.name}">
                          </a>
                        </div>
                        <h3 class="title">

@@ -1,8 +1,8 @@
 package com.play001.cloud.os.controller.rest;
 
-import com.play001.cloud.common.entity.Response;
-import com.play001.cloud.common.entity.User;
-import com.play001.cloud.os.service.impl.UserServiceImpl;
+import com.play001.cloud.support.entity.ResponseEntity;
+import com.play001.cloud.support.entity.user.User;
+import com.play001.cloud.os.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 public class UserRestController {
 
     @Autowired
-    private UserServiceImpl userService;
+    private UserService userService;
 
     @Value("${credential.expiryDate}")
     private Long expiryDate;//登陆口令有效期
@@ -34,16 +34,16 @@ public class UserRestController {
      * @param password 密码
      */
     @RequestMapping(value = "/doLogin", method = RequestMethod.POST)
-    public Response doLogin(String key, String password, HttpServletResponse response) throws Exception {
+    public ResponseEntity doLogin(String key, String password, HttpServletResponse response) throws Exception {
         if(key == null || password == null){
-            return new Response(Response.ERROR, "用户名或密码为空");
+            return new ResponseEntity(ResponseEntity.ERROR, "用户名或密码为空");
         }
-        Response<String> responseMsg  = userService.getCredential(key, password, expiryDate);
+        ResponseEntity<String> responseEntityMsg = userService.getCredential(key, password, expiryDate);
         //成功登陆后,要设置cookie,这样浏览器每次请求都会带上口令cookie
-        Cookie cookie = new Cookie("userJwt", responseMsg.getMessage());
+        Cookie cookie = new Cookie("userJwt", responseEntityMsg.getMessage());
         cookie.setPath("/");
         response.addCookie(cookie);
-        return responseMsg;
+        return responseEntityMsg;
     }
 
     /**
@@ -52,7 +52,7 @@ public class UserRestController {
      * @param code 验证码
      */
     @RequestMapping(value = "/doRegister", method = RequestMethod.POST)
-    public Response doRegister(User user, String code, @CookieValue("registerCookie")String registerCookie){
+    public ResponseEntity doRegister(User user, String code, @CookieValue("registerCookie")String registerCookie){
         return  userService.register(user, code, registerCookie);
     }
 }

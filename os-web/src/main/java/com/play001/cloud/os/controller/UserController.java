@@ -1,7 +1,7 @@
 package com.play001.cloud.os.controller;
 
 
-import com.play001.cloud.os.service.impl.UserServiceImpl;
+import com.play001.cloud.os.service.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,7 +18,7 @@ public class UserController {
 
 
     @Autowired
-    private UserServiceImpl userService;
+    private UserService userService;
 
     //登陆页面
     @RequestMapping(value = "/login", method = RequestMethod.GET)

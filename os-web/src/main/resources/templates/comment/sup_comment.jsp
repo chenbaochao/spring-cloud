@@ -75,7 +75,7 @@ function comment_like(obj, commentId) {
 			} else if (result.code == 401) {
 				window.location.href = baselocation + '/pass/login';
 			} else {
-				layer.alert(result.message, {
+				layer.alert(result.msgType, {
 					icon : 2
 				});
 			}
@@ -101,7 +101,7 @@ function comment_csLike(obj, commentReplyId) {
 			} else if (result.code == 401) {
 				window.location.href = baselocation + '/pass/login';
 			} else {
-				layer.alert(result.message, {
+				layer.alert(result.msgType, {
 					icon : 2
 				});
 			}
@@ -130,7 +130,7 @@ function comment_reply(obj, commentId) {
 			} else if (result.code == 401) {
 				window.location.href = baselocation + '/pass/login';
 			} else {
-				layer.alert(result.message, {
+				layer.alert(result.msgType, {
 					icon : 2
 				});
 			}

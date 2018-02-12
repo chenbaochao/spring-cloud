@@ -41,7 +41,7 @@
                     </div>
                     <!--     轮播top菜单导航end       -->
                 </li>
-                <li class="nav-item"  th:each="item:${categories}" th:if="${item.showInNav eq 1}">
+                <li class="nav-item"  th:each="item:${categories}" th:if="${item.showInTop eq 1}">
                     <a class="link" th:href="'/product/list?categoryId='+${item.id}" >
                         <span class="text" th:text="${item.name}">手机</span>
                         <span class="arrow"></span>

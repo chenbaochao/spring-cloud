@@ -1,15 +1,38 @@
-<%@ page language="java" import="java.util.*" contentType="text/html; charset=utf-8"%>
-<%@ include file="/WEB-INF/layouts/base.jsp"%>
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-<title>选择在线支付方式 - 猫宁商城</title>
-<link rel="stylesheet" href="${ctxsta}/os/css/order-confirm.css">
+<title>下单成功</title>
+    <link rel="stylesheet" href="../os/css/order-confirm.css">
+    <link rel="stylesheet" href="../common/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../os/css/base.min.css">
+    <link rel="stylesheet" href="../os/css/base.css">
 </head>
 <body>
-<!-- 轮播top菜单导航引入 -->
-<jsp:include page="/WEB-INF/views/modules/common/site_header.jsp" />
-<!-- 轮播top菜单导航引入 -->
+<div class="site-header site-mini-header">
+  <div class="container">
+    <div class="header-logo">
+      <a class="logo ir" href="https://www.mi.com/index.html" title="小米官网"  >小米官网</a>
+    </div>
+    <div class="header-title has-more" id="J_miniHeaderTitle">
+      <h2>我的购物车</h2>
+      <p>温馨提示：产品是否购买成功，以最终下单为准哦，请尽快结算</p></div>
+    <div class="topbar-info" id="J_userInfo">
+      <span class="user">
+        <a rel="nofollow" class="user-name" href="../user/portal" target="_blank" >
+          <span class="name" id="J_username">*</span><i class="iconfont"></i>
+        </a>
+        <ul class="user-menu">
+          <li><a rel="nofollow" href="../user/portal" target="_blank" >个人中心</a></li>
+          <li><a rel="nofollow" href="https://order.mi.com/user/comment" target="_blank" >评价晒单</a></li>
+          <li><a rel="nofollow" href="https://order.mi.com/user/favorite" target="_blank" >我的喜欢</a></li>
+          <li><a rel="nofollow" href="../user/logout" >退出登录</a></li>
+        </ul>
+      </span>
+      <span class="sep">|</span>
+      <a rel="nofollow" class="link link-order" href="../user/order/list" target="_blank" >我的订单</a>
+    </div>
+  </div>
+</div>
 
 <div class="page-main page-mini-main">
   <div class="container-fluid confirm-box">
@@ -20,11 +43,10 @@
             <h2 class="title">订单提交成功！去付款咯～</h2>
             <p class="order-time" id="J_deliverDesc">我们将尽快为您发货</p>
             <p class="order-time">请在<span class="pay-time-tip">23小时55分</span>内完成支付, 超时后将取消订单</p>
-            <p class="post-info" id="J_postInfo"> 收货信息：${orderShipment.userName} ${orderShipment.userPhone}&nbsp;&nbsp;
-              ${orderShipment.provinceName}&nbsp;&nbsp;${orderShipment.cityName}&nbsp;&nbsp;${orderShipment.districtName}&nbsp;&nbsp;${orderShipment.userAdress} </p>
+            <p class="post-info" id="J_postInfo" th:text="'收货信息：'+${order.orderAddress.username} +'  '+${order.orderAddress.userPhone} +'  '+${order.orderAddress.userAddr}"> </p>
           </div>
           <div class="fr">
-            <p class="total"> 应付总额：<span class="money"><em>${order.payAmount }</em>元</span> </p>
+            <p class="total"> 应付总额：<span class="money"><em th:text="${order.amount}"></em>元</span> </p>
             <a href="javascript:void(0);" class="show-detail" id="J_showDetail">订单详情&nbsp;<i class="glyphicon glyphicon-chevron-down"></i></a> </div>
         </div>
         <i class="iconfont icon-right">&#x221a;</i>
@@ -32,34 +54,34 @@
           <ul>
             <li class="clearfix">
               <div class="label">订单号：</div>
-              <div class="content"> <span class="order-num"> ${order.orderNumber } </span> </div>
+              <div class="content"> <span class="order-num" th:text="${order.id}">  </span> </div>
             </li>
             <li class="clearfix">
               <div class="label">收货信息：</div>
-              <div class="content"> ${orderShipment.userName} ${orderShipment.userPhone}&nbsp;&nbsp;
-                ${orderShipment.provinceName}&nbsp;&nbsp;${orderShipment.cityName}&nbsp;&nbsp;${orderShipment.districtName}&nbsp;&nbsp;${orderShipment.userAdress} </div>
+              <div class="content" th:text="'收货信息：'+${order.orderAddress.username} +'  '+ ${order.orderAddress.userPhone} +'  '+${order.orderAddress.userAddr}"> </div>
             </li>
             <li class="clearfix">
               <div class="label">商品名称：</div>
               <div class="content">
-                <c:forEach items="${orderProducts}" var="orderProduct"> ${orderProduct.name}&nbsp;${orderProduct.productSpecName} <br>
-                </c:forEach>
+                <span th:each="orderProduct:${order.orderProducts}" th:text="${orderProduct.productName + '  '+orderProduct.productSpecName +'  '}"></span>
               </div>
             </li>
             <li class="clearfix">
               <div class="label">配送时间：</div>
               <div class="content">
-                <c:if test="${order.shipmentTime eq 1}">不限送货时间</c:if>
+                  不限送货时间
+<!--                <c:if test="${order.shipmentTime eq 1}">不限送货时间</c:if>
                 <c:if test="${order.shipmentTime eq 2}">工作日送货</c:if>
-                <c:if test="${order.shipmentTime eq 3}">双休日、假日送货</c:if>
+                <c:if test="${order.shipmentTime eq 3}">双休日、假日送货</c:if>-->
               </div>
             </li>
             <li class="clearfix">
               <div class="label">发票信息：</div>
               <div class="content">
-                <c:if test="${order.invoiceType eq 1}">不开发票</c:if>
+                  不开发票
+               <!-- <c:if test="${order.invoiceType eq 1}">不开发票</c:if>
                 <c:if test="${order.invoiceType eq 2}">电子发票&nbsp; ${order.invoiceTitle }</c:if>
-                <c:if test="${order.invoiceType eq 3}">普通发票&nbsp; ${order.invoiceTitle }</c:if>
+                <c:if test="${order.invoiceType eq 3}">普通发票&nbsp; ${order.invoiceTitle }</c:if>-->
               </div>
             </li>
           </ul>
@@ -214,10 +236,33 @@
     </form>
   </div>
 </div>
-<myfooter> 
-  <!-- layer javascript --> 
-  <script src="${ctxsta}/common/layer/layer.js"></script> 
-  <script src="${ctxsta}/os/js/order.js"></script> 
+<myfooter>
+    <script src="../common/jquery/jquery-3.2.0.min.js"></script>
+    <!-- layer javascript -->
+    <script src="../common/layer/layer.js"></script>
+    <script src="../os/js/order.js"></script>
+
 </myfooter>
+<script type="javascript">
+    setUserName();
+    function setUserName(){
+        var cookie = $.cookie('userJwt');
+        if(cookie !== null){
+            var strs = cookie.split('.');
+            if(strs !== null && strs.length === 3){
+                var credential = eval('('+window.atob(strs[1])+')');
+                var expiryData = credential.expiryDate;//有效期
+                var nowTime = Date.parse(new Date());
+                if(expiryData > nowTime){//未过期
+                    var username = credential.username;
+                    $('#J_username').text(username);
+                }else{
+                    $('#J_username').text('请登录');
+                }
+
+            }
+        }
+    }
+</script>
 </body>
 </html>

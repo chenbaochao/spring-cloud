@@ -22,7 +22,7 @@
 .icon-safe:after{content: "\e600";}
 .icon-fabu:before { content: "\e617"; }
 a:focus {outline: none;blr:expression(this.onFocus=this.blur());} 
-/*common set*/
+/*support set*/
 body{ font-family:"microsoft yahei"; min-width:1080px;}
 a{ color:#666;}
 a:hover{text-decoration:none;color:#0080cb;}

@@ -1,9 +1,9 @@
 package com.play001.cloud.os.controller;
 
-import com.play001.cloud.common.entity.IException;
-import com.play001.cloud.common.entity.ShopCart;
-import com.play001.cloud.os.service.impl.CartServiceImpl;
-import com.play001.cloud.os.service.impl.CategoryServiceImpl;
+import com.play001.cloud.support.entity.IException;
+import com.play001.cloud.support.entity.user.ShopCart;
+import com.play001.cloud.os.service.CartService;
+import com.play001.cloud.os.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,9 +20,9 @@ import java.util.List;
 public class CartController {
 
     @Autowired
-    private CartServiceImpl cartService;
+    private CartService cartService;
     @Autowired
-    private CategoryServiceImpl categoryService;
+    private CategoryService categoryService;
     /**
      * 加购物车后的回显界面
      * @param pageTitle 商品标题,需要显示的信息

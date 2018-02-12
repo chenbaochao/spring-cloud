@@ -256,7 +256,7 @@ function saveAddr(a) {
 		data : a,
 		dataType : "json",
 		success : function(result) {
-			if (result.code == 1) {
+			if (result.code === 1) {
 				window.location.reload();
 			} else {
 				layer.alert(result.message, {

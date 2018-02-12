@@ -1,26 +1,65 @@
 package com.play001.cloud.os.service;
 
-import com.play001.cloud.common.entity.Response;
-import com.play001.cloud.common.entity.ShopCart;
-import com.play001.cloud.os.service.fallback.DefaultFallbackFactory;
-import org.springframework.cloud.netflix.feign.FeignClient;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import com.play001.cloud.support.entity.IException;
+import com.play001.cloud.support.entity.ResponseEntity;
+import com.play001.cloud.support.entity.user.ShopCart;
+import com.play001.cloud.os.mapper.CartMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
-@FeignClient(name = "ZUUL", fallbackFactory = DefaultFallbackFactory.class)
-public interface CartService {
+@Service
+public class CartService {
 
-    @RequestMapping(value = "/common/cart/add", method = RequestMethod.POST)
-    Response<String> add(@RequestParam("productId") Long productId,  @RequestParam("productSpecId")Long productSpecId, @RequestHeader("userJwt") String userJwt);
+    @Autowired
+    private CartMapper cartMapper;
+    /**
+     * 加购????
+     * @param productId 产品Id
+     * @param productSpecId 服务规格ID
+     * @param userJwt 用户口令
+     */
+    public ResponseEntity<Integer> add(Long productId, Long productSpecId, String userJwt) throws IException {
+        ResponseEntity<Integer> responseEntity = cartMapper.add(productId, productSpecId, userJwt);
+        if(ResponseEntity.ERROR.equals(responseEntity.getStatus())) throw new IException(responseEntity.getErrMsg());
+        return new ResponseEntity<Integer>().setStatus(ResponseEntity.SUCCESS);
+    }
 
-    @RequestMapping(value = "/common/cart/list", method = RequestMethod.GET)
-    Response<List<ShopCart>>  list(@RequestHeader("userJwt") String userJwt);
+    /**
+     *  列出所有数据
+     */
+    public List<ShopCart> list(String userJwt) throws IException {
+        ResponseEntity<List<ShopCart>> responseEntity = cartMapper.list(userJwt);
+        if(ResponseEntity.ERROR.equals(responseEntity.getStatus())) throw new IException(responseEntity.getErrMsg());
+        return responseEntity.getMessage();
+    }
 
-    @RequestMapping(value = "/common/cart/delete", method = RequestMethod.POST)
-    Response<Integer> delete(@RequestParam("cartId")Long cartId, @RequestHeader("userJwt") String userJwt);
+    /**
+     * 删除操作
+     */
+    public void delete(Long cartId, String userJwt) throws IException {
+        ResponseEntity<Integer> responseEntity = cartMapper.delete(cartId, userJwt);
+        if(ResponseEntity.ERROR.equals(responseEntity.getStatus())) throw new IException(responseEntity.getErrMsg());
+    }
 
+    public List<ShopCart> findById(Long cartId[], String userJwt) throws IException {
+        if(cartId==null || cartId.length == 0){
+            throw new IException("参数错误");
+        }
+        List<ShopCart> shopCarts = new ArrayList<>(cartId.length);
+        for(Long id:cartId){
+            ResponseEntity<ShopCart> responseEntity = cartMapper.findById(id, userJwt);
+            if(responseEntity.getStatus().equals(ResponseEntity.ERROR)){
+                throw new IException("查询购物车失败");
+            }
+            ShopCart shopCart = responseEntity.getMessage();
+            if(shopCart == null){
+                throw new IException("没有对应的购物车数据");
+            }
+            shopCarts.add(shopCart);
+        }
+        return shopCarts;
+    }
 }

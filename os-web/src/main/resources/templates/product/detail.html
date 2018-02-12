@@ -55,7 +55,7 @@
                                     <ul>
                                         <!--<c:if test="${not empty productapi.labelName}">-->
                                         <li class="others" th:each="item:${product.labels}" >
-                                            <i th:text="${item}">手机</i>
+                                            <i th:text="${item.name}">手机</i>
                                         </li>
                                         <!--</c:if>-->
                                     </ul>
@@ -355,7 +355,7 @@
                     if (result.success === true) {
                         $('#goodsDetailCollectBtn i').toggleClass("red");
                     } else {
-                        layer.alert(result.message, {
+                        layer.alert(result.msgType, {
                             icon : 2
                         });
                     }
@@ -370,7 +370,7 @@
                     if (result.success === true) {
                         $('#goodsDetailCollectBtn i').toggleClass("red");
                     } else {
-                        layer.alert(result.message, {
+                        layer.alert(result.msgType, {
                             icon : 2
                         });
                     }

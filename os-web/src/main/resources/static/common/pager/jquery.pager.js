@@ -27,7 +27,7 @@
         // add in the previous and next buttons
         $pager.append(renderButton('首页', pagenumber, pagecount, buttonClickCallback)).append(renderButton('上一页', pagenumber, pagecount, buttonClickCallback));
 
-        // pager currently only handles 10 viewable pages ( could be easily parameterized, maybe in next version ) so handle edge cases
+        // pager currently only handles 10 viewable pages ( could be easily parameterized, maybe in next version ) so handler edge cases
         var startPoint = 1;
         var endPoint = 5;
 

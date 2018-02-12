@@ -1,22 +1,14 @@
 /**
  * 地址选择
  */
+var addressId = null;
 $(function() {
 	$(".J_addressItem").on("click", function() {
 		$(this).addClass("selected").siblings().removeClass("selected");
-		var b = $(this),
-			c = b.attr("data-consignee"),
-			e = b.attr("data-province_name"),
-			g = b.attr("data-city_name"),
-			i = b.attr("data-district_name"),
-			j = b.attr("data-address"),
-			k = b.attr("data-zipcode"),
-			l = b.attr("data-tel"),
-			m = b.attr("data-tag_name"),
-			n = b.attr("data-address_id");
-		var html = '<div class="seleced-address" id="J_confirmAddress">' + c + '&nbsp;&nbsp;' + l + '<br>'
+		addressId = $(this).data("address_id");
+/*		var html = '<div class="seleced-address" id="J_confirmAddress">' + c + '&nbsp;&nbsp;' + l + '<br>'
 			+ e + '&nbsp;&nbsp;' + g + '&nbsp;&nbsp;' + i + '&nbsp;&nbsp;' + j + '&nbsp;&nbsp;';
-		$(".section-bar").find(".fl:first-child").html(html);
+		$(".section-bar").find(".fl:first-child").html(html);*/
 	})
 })
 
@@ -81,39 +73,34 @@ $(function() {
  */
 $(function() {
 	$("#J_checkoutToPay").on("click", function() {
-		var b = $("#J_addressList").find(".selected").length;
-		if (0 >= b) {
+		if (addressId === null) {
 			layer.alert("请选择地址！", {
 				icon : 2
 			});
-			return !1;
 		}
-		var a = $(".section-invoice").find(".selected").attr('data-value');
-		var t = $("#invoice_title").val();
-		if (a !== "1" && (strLen(t) < 1)) {
-			layer.alert("发票抬头名称不能为空!", {
-				icon : 2
-			});
-			return !1;
-		}
-		var params = {};
-		params.addressId = $("#J_addressList").find(".selected").attr('data-address_id');
-		params.payType = $(".section-payment").find(".selected").attr('data-value');
-		params.shipmentType = $(".section-shipment").find(".selected").attr('data-value');
-		params.shipmentAmount = $(".section-shipment").find(".selected").attr('data-amount');
-		params.shipmentTime = $(".section-time").find(".selected").attr('data-value');
-		params.invoiceType = $(".section-invoice").find(".selected").attr('data-value');
-		params.invoiceTitle = $("#invoice_title").val();
+		var cartId = [];
+		$('[name="cartId"]').each(function(){
+            cartId.push($(this).data('cart-id'));
+        });
+		if(cartId.length === 0){
+            layer.alert("出错了,请刷新重试", {
+                icon : 2
+            });
+        }
+
 		$.ajax({
-			url : baselocation + '/buy/confirm',
+			url : '../order/order',
 			type : 'post',
 			dataType : 'json',
-			data : params,
+			data : {
+			    cartId:cartId,
+                addressId:addressId
+            },
 			success : function(result) {
-				if (result.code == true) {
-					window.location.href = baselocation + '/buy/confirm/' + result.data;
+				if (result.status === 'SUCCESS') {
+					window.location.href = '/order/detail?id=' + result.message;
 				} else {
-					layer.alert(result.message, {
+					layer.alert(result.errMsg, {
 						icon : 2
 					});
 				}

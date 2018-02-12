@@ -7,16 +7,9 @@ $(function() {
  */
 $(function() {
 	$("#J_newAddress").on("click", function() {
-		resetData();
+
 		if ("object" != typeof $(this)) return !1;
-		var b = $(this).offset().left - 15,
-			c = $(this).offset().top,
-			d = $(this).outerWidth() + 70;
-		$(".address-edit-box").css({
-			width : d,
-			top : c,
-			left : b
-		}).show();
+		$("#J_modalEditAddress").show();
 		var e = $(document).width(),
 			f = $(document).height();
 		$("#J_editAddrBackdrop").css({
@@ -31,8 +24,7 @@ $(function() {
  */
 $(function() {
 	$("#J_cancel").click(function() {
-		$(".address-edit-box").hide(),
-		$("#J_editAddrBackdrop").hide()
+		$("#J_modalEditAddress").hide()
 	})
 })
 
@@ -41,60 +33,25 @@ $(function() {
  */
 $(function() {
 	$("#J_save").click(function() {
-		var c = $("#user_name"),
-			d = $("#loc_province"),
-			e = $("#loc_city"),
-			f = $("#loc_town"),
-			g = $("#user_adress"),
-			h = $("#user_zipcode"),
-			i = $("#user_phone"),
-			j = $("#user_tag"),
-			s = $("#address_id"),
-			k = /^[1-9]+\d*$/,
-			l = /^\d{6}$/,
-			m = /^1[0-9]{10}$/,
-			n = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/,
-			o = /^\d+$/,
-			p = /^[0-9a-zA-Z]+$/,
-			q = /^[a-zA-Z\u4e00-\u9fa5]+$/,
-			r = {},
-			v = !1;
-		var t = $.trim(c.val()),
-			u = c.attr("placeholder");
-		if (t === u && (t = ""), !(strLen(t) >= 4)) return c.focus(), setMsg(c, "收货人姓名 太短 (最小值为 2 个中文字)"), !1;
-		if (!q.test(t)) return c.focus(), setMsg(c, "收货人姓名不正确（只能是英文、汉字）"), !1;
-		setMsg(c, ""), r.userName = t, v = !0;
-		var w = $.trim(i.val()),
-			x = !1;
-		a = !0;
-		if (w === i.attr("placeholder") && (w = ""), !(strLen(w) == 11)) return i.focus(), setMsg(i, "请填写11位手机号"), !1;
-		if (a && w && w !== i.attr("placeholder") ? a = !1 : !a && w && w === i.attr("placeholder") ? i.attr("placeholder", "") : a || w || i.attr("placeholder", "11位手机号"), !a && w !== i.attr("placeholder") && !m.test(w)) return i.focus(), setMsg(i, "请填写11位手机号"), !1;
-		setMsg(i, ""), r.userPhone = w, x = !0;
-		var y = d.val(),
-			z = e.val(),
-			A = f.val(),
-			B = !1;
-		if (!(k.test(y) && k.test(z) && k.test(A))) return setMsg(d, "收货地址不正确"), !1;
-		setMsg(d, ""), r.provinceId = y, r.cityId = z, r.districtId = A, r.provinceName = $("#select2-chosen-1").html(), r.cityName = $("#select2-chosen-2").html(), r.districtName = $("#select2-chosen-3").html(), B = !0;
-		var C = $.trim(g.val()).replace(/</g, "").replace(/>/g, "").replace(/\//g, "").replace(/\\/g, ""),
-			D = g.attr("placeholder"),
-			E = !1;
-		if (C === D && (C = ""), !(C.length >= 5 && C.length <= 32)) return g.focus(), setMsg(g, "详细地址长度不对，最小为 5 个字，最大32个字"), !1;
-		if (n.test(C) || o.test(C) || p.test(C)) return g.focus(), setMsg(g, "详细地址不正确"), !1;
-		setMsg(g, ""), r.userAdress = C, E = !0;
-		var F = $.trim(h.val()),
-			G = !1;
-		if (!l.test(F)) return h.focus(), setMsg(h, "邮编是6位数字"), !1;
-		setMsg(h, ""), r.userZipcode = F, G = !0;
-		var H = $.trim(j.val()),
-			I = j.attr("placeholder"),
-			J = !1;
-		if (H === I && (H = ""), H.length > 5) return j.focus(), setMsg(j, "地址标签最长5个字"), !1;
-		setMsg(j, ""), r.userTag = H, J = !0;
-		var S = $.trim(s.val());
-		r.addressId = S;
-		if (J = !0, v && B && E && G && x && J)
-			saveAddr(r), Close(), resetData()
+		var username = $("#username").val();
+        if(username.length < 2 || username.length > 10 ){
+            return $("#username").focus(), layer.msg('收件人名字长度错误(2-10之间))', {
+                icon : 7
+            });
+        }
+        var userPhone = $("#userPhone").val();
+        if(userPhone.length !== 11 && userPhone.length !== 7 ){
+            return $("#userPhone").focus(), layer.msg('电话号码长度只能为7或者11位', {
+                icon : 7
+            });
+        }
+        var userAddress = $("#userAddress").val();
+        if(userAddress.length < 5 || userAddress.length > 100){
+            return $("#userAddress").focus(), layer.msg('地址长度需大于5小于100', {
+                icon : 7
+            });
+        }
+        /////---------------------
 	})
 })
 
@@ -106,40 +63,35 @@ function strLen(a) {
 }
 
 /**
- * 显示错误信息
- */
-function setMsg(a, b) {
-	a && b ? a.siblings(".tipMsg").html(b).show() : a.siblings(".tipMsg").html("").hide()
-}
-
-/**
  * 关闭地址栏
  */
 function Close() {
-	$(".address-edit-box").hide(),
-	$("#J_editAddrBackdrop").hide()
+	$("#J_modalEditAddress").hide()
 }
 
 /**
  * 保存收货地址
  */
+$('#J_editAddressSave').click(function(){
+    $.ajax({
+        type : "POST",
+        url : baselocation + '/uc/user/address',
+        data : a,
+        dataType : "json",
+        success : function(result) {
+            if (result.code == 1) {
+                window.location.reload();
+            } else {
+                layer.alert(result.message, {
+                    icon : 2
+                });
+            }
+        }
+    })
+});
 function saveAddr(a) {
 	if (a.addressId == null || a.addressId == "") {
-		$.ajax({
-			type : "POST",
-			url : baselocation + '/uc/user/address',
-			data : a,
-			dataType : "json",
-			success : function(result) {
-				if (result.code == 1) {
-					window.location.reload();
-				} else {
-					layer.alert(result.message, {
-						icon : 2
-					});
-				}
-			}
-		})
+
 	} else {
 		$.ajax({
 			type : "PUT",

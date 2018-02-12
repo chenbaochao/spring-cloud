@@ -1,23 +1,41 @@
 package com.play001.cloud.os.service;
 
-import com.play001.cloud.common.entity.NavigationBar;
-import com.play001.cloud.common.entity.Response;
-import com.play001.cloud.os.service.fallback.DefaultFallbackFactory;
-import org.springframework.cloud.netflix.feign.FeignClient;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+
+import com.play001.cloud.support.entity.IException;
+import com.play001.cloud.support.entity.NavigationBar;
+import com.play001.cloud.support.entity.ResponseEntity;
+import com.play001.cloud.os.mapper.NavigationMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
-/**
- * 导航,导航栏
- */
-@FeignClient(value = "ZUUL", fallbackFactory = DefaultFallbackFactory.class)
-public interface NavigationService {
+@Service
+public class NavigationService {
 
-    @RequestMapping(value = "/common/navigation/getTopBarNavigationBars", method = RequestMethod.GET)
-    Response<List<NavigationBar>> getTopBarNavigationBars();
+    @Autowired
+    private NavigationMapper navigationMapper;
 
-    @RequestMapping(value = "/common/navigation/getNavigationBars1", method = RequestMethod.GET)
-    Response<List<NavigationBar>> getNavigationBars1();
+    /**
+     * 首页-顶部 数据
+     */
+    public List<NavigationBar> getTopBarNavigationBars() throws IException {
+        ResponseEntity<List<NavigationBar>> responseEntity = navigationMapper.getTopBarNavigationBars();
+        if(Objects.equals(responseEntity.getStatus(), ResponseEntity.ERROR)){
+            throw  new IException(responseEntity.getErrMsg());
+        }
+        return responseEntity.getMessage();
+    }
+
+    /**
+     * 首页-轮播图下方六个小链接
+     */
+    public List<NavigationBar> getChannelNavigationBars() throws IException {
+        ResponseEntity<List<NavigationBar>> responseEntity = navigationMapper.getChannelNavigationBars();
+        if(Objects.equals(responseEntity.getStatus(), ResponseEntity.ERROR)){
+            throw  new IException(responseEntity.getErrMsg());
+        }
+        return responseEntity.getMessage();
+    }
 }

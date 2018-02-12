@@ -37,7 +37,7 @@ function question_like(obj, questionId) {
 			} else if (result.code == 401) {
 				window.location.href = baselocation + '/pass/login';
 			} else {
-				layer.alert(result.message, {
+				layer.alert(result.msgType, {
 					icon : 2
 				});
 			}

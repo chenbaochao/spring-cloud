@@ -1697,7 +1697,7 @@
 
             style = sprintf('style="%s"', csses.concat(that.header.styles[j]).join('; '));
 
-            // handle td's id and class
+            // handler td's id and class
             if (item['_' + field + '_id']) {
                 id_ = sprintf(' id="%s"', item['_' + field + '_id']);
             }

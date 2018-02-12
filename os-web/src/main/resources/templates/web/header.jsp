@@ -24,7 +24,7 @@
             <li><a rel="nofollow" href="" target="_blank">猫宁账户</a></li>
             <li><a rel="nofollow" href="${ctx}/pass/logout">退出登录</a></li>
           </ul>
-          </span><span class="sep">|</span><span class="message"><a rel="nofollow" href="">消息通知<i class="J_miMessageTotal"></i></a></span><span class="sep">|</span><a rel="nofollow" class="link link-order" href="${ctx}/uc/order/list" target="_blank">我的订单</a></div>
+          </span><span class="sep">|</span><span class="msgType"><a rel="nofollow" href="">消息通知<i class="J_miMessageTotal"></i></a></span><span class="sep">|</span><a rel="nofollow" class="link link-order" href="${ctx}/uc/order/list" target="_blank">我的订单</a></div>
         </c:if>
         <c:if test="${empty user.userNumber}">
         <div class="topbar-info"> <a rel="nofollow" class="link" href="${ctx}/pass/login">登录</a><span class="sep">|</span><a rel="nofollow" class="link" href="${ctx}/pass/register">注册</a></div>

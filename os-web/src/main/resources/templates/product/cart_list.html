@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html lang="zh-CN" xml:lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
 <head>
-
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <title>我的购物车-小米商城</title>
-  <meta name="viewport" content="width=1226">
-  <link rel="stylesheet" href="/os/css/base.min.css">
-  <link rel="stylesheet" type="text/css" href="/os/css/cart.min.css">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>我的购物车</title>
+    <meta name="viewport" content="width=1226">
+    <link rel="stylesheet" href="../os/css/base.min.css">
+    <link rel="stylesheet" type="text/css" href="../os/css/cart.min.css">
+    <script src="../common/jquery/jquery-3.2.0.min.js"></script>
+    <script src="../common/jquery/jquery.cookie.js"></script>
+    <script src="../os/js/cart.js"></script>
 </head>
 <body>
+
 <div class="site-header site-mini-header">
   <div class="container">
     <div class="header-logo">
@@ -20,7 +23,7 @@
     <div class="topbar-info" id="J_userInfo">
       <span class="user">
         <a rel="nofollow" class="user-name" href="https://my.mi.com/portal" target="_blank" >
-          <span class="name">玄心</span><i class="iconfont"></i>
+          <span class="name" id="J_username">*</span><i class="iconfont"></i>
         </a>
         <ul class="user-menu">
           <li><a rel="nofollow" href="https://my.mi.com/portal" target="_blank" >个人中心</a></li>
@@ -35,6 +38,8 @@
     </div>
   </div>
 </div>
+
+
 <div class="page-main">
 
   <div class="container">
@@ -50,7 +55,7 @@
     <div id="J_cartBox" class="">
       <div class="cart-goods-list">
         <div class="list-head clearfix">
-          <div class="col col-check"><i class="iconfont icon-checkbox icon-checkbox  J_itemCheckbox" id="J_selectAll">√</i>全选</div>
+          <div class="col col-check"><i class="iconfont icon-checkbox icon-checkbox-selected  J_itemCheckbox" id="J_selectAll" data-checked="1">√</i>全选</div>
           <div class="col col-img">&nbsp;</div>
           <div class="col col-name">商品名称</div>
           <div class="col col-price">单价</div>
@@ -60,29 +65,26 @@
         </div>
         <div class="list-body" id="J_cartListBody">
 
-          <div class="item-box" th:each="cart:${carts}">
+          <div class="item-box" th:each="cart:${carts}" th:style="${cart.status == 1?'':'background-color:#bbb'}">
             <div class="item-table J_cartGoods" >
               <div class="item-row clearfix">
                 <div class="col col-check">
-                  <i class="iconfont icon-checkbox icon-checkbox-selected J_itemCheckbox" data-status="1">√</i>
+                  <i class="iconfont icon-checkbox icon-checkbox J_itemCheckbox" name="status"
+                     th:attr="data-cart-id=${cart.id},data-price=${cart.spec.price * cart.buyNumber}, data-status=${cart.status}" >√</i>
                 </div>
                 <div class="col col-img">
                   <a th:href="'/product/detial-'+${cart.product.id}" target="_blank">
-                    <img th:alt="${cart.product.name}" th:src="${cart.product.thumb.url}" width="80" height="80">
+                    <img th:alt="${cart.product.name}" th:src="${cart.product.thumb?.url}" width="80" height="80">
                   </a>
                 </div>
                 <div class="col col-name">
                   <div class="tags">  </div>
-                  <h3 class="name"><a th:href="'/product/detial-'+${cart.product.id}" target="_blank" th:text="${cart.product.name}"> 小米路由器3C 白色 </a> </h3>
+                  <h3 class="name"><a th:href="'/product/detial-'+${cart.product.id}" target="_blank" th:text="${cart.product.name}+'&nbsp;&nbsp;'+${cart.spec.name}"> 小米路由器3C 白色 </a> </h3>
                 </div> <div class="col col-price" th:text="|${cart.spec.price}元|"> 79元 </div>
                 <div class="col col-num">
-                  <div class="change-goods-num clearfix J_changeGoodsNum">
-                    <a href="javascript:void(0)" class="J_minus"><i class="iconfont"></i></a>
-                    <input tyep="text" name="2163000001_0_buy" th:value="${cart.buyNumber}" data-num="1" data-buylimit="50" autocomplete="off" class="goods-num J_goodsNum" >
-                    <a href="javascript:void(0)" class="J_plus"><i class="iconfont"></i></a>
-                  </div>
+                  <span th:text="${cart.buyNumber}"></span>
                 </div>
-                <div class="col col-total" th:text="${cart.spec.price * cart.buyNumber}"> 79元 <p class="pre-info">  </p> </div>
+                <div class="col col-total" th:utext="${cart.spec.price * cart.buyNumber}+'元'+'<p class=\'pre-info\'></p>'"> 79元 <p class="pre-info">  </p> </div>
                 <div class="col col-action">
                   <a id="2163000001_0_buy" data-msg="确定删除吗？" href="javascript:void(0);" title="删除" class="del J_delGoods"><i class="iconfont"></i></a>
                 </div>
@@ -95,10 +97,10 @@
     <div class="cart-bar clearfix cart-bar-fixed" id="J_cartBar">
       <div class="section-left">
         <a href="/" class="back-shopping J_goShoping">继续购物</a>
-        <span class="cart-total">共 <i id="J_cartTotalNum">4</i> 件商品，已选择 <i id="J_selTotalNum">4</i> 件</span>
+        <span class="cart-total">共 <i id="J_cartTotalNum" th:text="${#lists.size(carts)}">*</i> 件商品，已选择 <i id="J_selTotalNum" th:text="${#lists.size(carts)}">*</i> 件</span>
       </div>
       <span class="total-price">
-          合计：<em id="J_cartTotalPrice">1536</em>元
+          合计：<em id="J_cartTotalPrice">*</em>元
         </span>
       <a href="javascript:void(0);" class="btn btn-a btn btn-primary" id="J_goCheckout" >去结算</a>
       <div class="no-select-tip hide" id="J_noSelectTip">

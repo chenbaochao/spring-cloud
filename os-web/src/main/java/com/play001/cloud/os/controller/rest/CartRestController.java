@@ -1,7 +1,7 @@
 package com.play001.cloud.os.controller.rest;
 
-import com.play001.cloud.common.entity.Response;
-import com.play001.cloud.os.service.impl.CartServiceImpl;
+import com.play001.cloud.support.entity.ResponseEntity;
+import com.play001.cloud.os.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,23 +16,20 @@ import org.springframework.web.bind.annotation.RestController;
 public class CartRestController {
 
     @Autowired
-    private CartServiceImpl cartService;
+    private CartService cartService;
 
 
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public Response<String> add(Long productId, Long productSpecId , @CookieValue("userJwt") String userJwt) throws Exception {
-        cartService.add(productId, productSpecId, userJwt);
-        Response<String> response = new Response<>();
-        response.setStatus(Response.SUCCESS);
-        return response;
+    public ResponseEntity<Integer> add(Long productId, Long productSpecId , @CookieValue("userJwt") String userJwt) throws Exception {
+        return cartService.add(productId, productSpecId, userJwt);
     }
 
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
-    public Response<String> delete(Long cartId, @CookieValue("userJwt") String userJwt) throws Exception {
+    public ResponseEntity<String> delete(Long cartId, @CookieValue("userJwt") String userJwt) throws Exception {
         cartService.delete(cartId, userJwt);
-        Response<String> response = new Response<>();
-        response.setStatus(Response.SUCCESS);
-        return response;
+        ResponseEntity<String> responseEntity = new ResponseEntity<>();
+        responseEntity.setStatus(ResponseEntity.SUCCESS);
+        return responseEntity;
     }
 }

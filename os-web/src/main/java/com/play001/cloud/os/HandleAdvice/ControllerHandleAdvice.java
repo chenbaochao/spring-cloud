@@ -1,8 +1,10 @@
 package com.play001.cloud.os.HandleAdvice;
 
 
-import com.play001.cloud.common.entity.IException;
-import com.play001.cloud.common.entity.Response;
+import com.play001.cloud.os.controller.CartController;
+import com.play001.cloud.os.controller.OrderController;
+import com.play001.cloud.support.entity.IException;
+import com.play001.cloud.support.entity.ResponseEntity;
 import com.play001.cloud.os.controller.ProductController;
 import com.play001.cloud.os.controller.UserController;
 import org.slf4j.Logger;
@@ -18,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
  * 异常统一返回
  * 此拦截器针对的是@Controller注解
  */
-@ControllerAdvice(assignableTypes = {UserController.class, ProductController.class, UserController.class})
+@ControllerAdvice(assignableTypes = {UserController.class, ProductController.class, UserController.class, OrderController.class, CartController.class})
 public class ControllerHandleAdvice {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -27,14 +29,14 @@ public class ControllerHandleAdvice {
     public String handler(HttpServletRequest request, HttpServletResponse response, Exception e, Model model){
         e.printStackTrace();
         logger.info("ControllerHandleAdvice拦截到异常:"+e.getMessage());
-        Response<String> responseMsg = new Response<>();
-        responseMsg.setStatus(Response.ERROR);
+        ResponseEntity<String> responseEntityMsg = new ResponseEntity<>();
+        responseEntityMsg.setStatus(ResponseEntity.ERROR);
         if(e instanceof IException){
-            responseMsg.setErrMsg(e.getMessage());
+            responseEntityMsg.setErrMsg(e.getMessage());
         }else{
-            responseMsg.setErrMsg("出错啦");
+            responseEntityMsg.setErrMsg("出错啦");
         }
-        model.addAttribute("response", responseMsg);
+        model.addAttribute("response", responseEntityMsg);
         return "message";
     }
 }

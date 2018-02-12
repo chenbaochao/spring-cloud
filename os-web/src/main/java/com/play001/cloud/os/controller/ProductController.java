@@ -1,8 +1,8 @@
 package com.play001.cloud.os.controller;
 
-import com.play001.cloud.common.entity.IException;
-import com.play001.cloud.os.service.impl.CategoryServiceImpl;
-import com.play001.cloud.os.service.impl.ProductServiceImpl;
+import com.play001.cloud.support.entity.IException;
+import com.play001.cloud.os.service.CategoryService;
+import com.play001.cloud.os.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,13 +15,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class ProductController {
 
     @Autowired
-    private ProductServiceImpl productService;
+    private ProductService productService;
     @Autowired
-    private CategoryServiceImpl categoryService;
+    private CategoryService categoryService;
 
     @RequestMapping("/detail-{id}")
     public String detail(@PathVariable Long id, Model model) throws IException {
-        model.addAttribute("product",productService.getDetial(id));
+        model.addAttribute("product",productService.getDetail(id));
         return "product/detail";
     }
     @RequestMapping("/search")

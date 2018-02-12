@@ -1,28 +1,43 @@
 package com.play001.cloud.os.service;
 
-import com.play001.cloud.common.entity.Advert;
-import com.play001.cloud.common.entity.Response;
-import com.play001.cloud.os.service.fallback.DefaultFallbackFactory;
-import org.springframework.cloud.netflix.feign.FeignClient;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import com.play001.cloud.support.entity.Advert;
+import com.play001.cloud.support.entity.IException;
+import com.play001.cloud.support.entity.product.Product;
+import com.play001.cloud.support.entity.ResponseEntity;
+import com.play001.cloud.os.mapper.AdvertMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@FeignClient(value = "ZUUL", fallbackFactory = DefaultFallbackFactory.class)
-public interface AdvertService {
+@Service
+public class AdvertService {
+    @Autowired
+    private AdvertMapper advertMapper;
+
 
     /**
-     * 获取首页轮播数据
+     * 首页轮播
      */
-    @RequestMapping(value = "/common/advert/getSliderAdvert", method = RequestMethod.GET)
-    Response<List<Advert>> getSliderAdvert();
+    public List<Advert> getSliderAdvert() throws IException {
+        ResponseEntity<List<Advert>> responseEntity = advertMapper.getSliderAdvert();
+        if(ResponseEntity.ERROR.equals(responseEntity.getStatus())) throw new IException(responseEntity.getErrMsg());
+        return responseEntity.getMessage();
+    }
 
     /**
-     * 获取首页轮播下方数据
+     * 首页轮播下方广告
      */
-    @RequestMapping(value = "/common/advert/getUnderSliderAdvert", method = RequestMethod.GET)
-    Response<List<Advert>> getUnderSliderAdvert();
+    public List<Advert> getUnderSliderAdvert() throws IException {
+        ResponseEntity<List<Advert>> responseEntity = advertMapper.getUnderSliderAdvert();
+        if(ResponseEntity.ERROR.equals(responseEntity.getStatus())) throw new IException(responseEntity.getErrMsg());
+        return responseEntity.getMessage();
+    }
 
 
+    public List<Product> getStarProduct() throws IException {
+        ResponseEntity<List<Product>> responseEntity = advertMapper.getStarProduct();
+        if(ResponseEntity.ERROR.equals(responseEntity.getStatus())) throw new IException(responseEntity.getErrMsg());
+        return responseEntity.getMessage();
+    }
 }

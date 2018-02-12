@@ -8,17 +8,15 @@ $(function() {
 	*/
     show_star_product(); // 明星单品
     show_hot_category(); // 热门分类
-    show_topBar();
-    show_footer();
     show_header();
-    siteHeaderInit();
+    indexSiteHeaderInit();
 });
 
 
 /**
  * 必须在siteheader加载完成后启用
  */
-function siteHeaderInit(){
+function indexSiteHeaderInit(){
     /**
      * 轮播top菜单导航
      */
@@ -37,6 +35,7 @@ function siteHeaderInit(){
      * 初始化搜索框
      */
     initSearch();
+
 }
 
 /**

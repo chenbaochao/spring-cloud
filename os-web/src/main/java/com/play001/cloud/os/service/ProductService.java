@@ -1,37 +1,82 @@
 package com.play001.cloud.os.service;
 
-import com.play001.cloud.common.entity.Pagination;
-import com.play001.cloud.common.entity.Product;
-import com.play001.cloud.common.entity.Response;
-import com.play001.cloud.os.service.fallback.DefaultFallbackFactory;
-import org.springframework.cloud.netflix.feign.FeignClient;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+
+import com.play001.cloud.support.entity.*;
+import com.play001.cloud.os.mapper.ProductMapper;
+import com.play001.cloud.support.entity.product.Product;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 
-@FeignClient(name = "ZUUL", fallbackFactory = DefaultFallbackFactory.class)
-public interface ProductService {
+@Service
+public class ProductService {
 
-    @RequestMapping(value = "/product/getDetail", method = RequestMethod.GET)
-    Response<Product> getProduct(@RequestParam("id") Long id);
-
-    @RequestMapping(value = "/product/search", method = RequestMethod.GET)
-    Response<Pagination<Product>> search(@RequestParam("keyword")String keyword,
-                                         @RequestParam("start")Long start,
-                                         @RequestParam("quantity") Integer quantity);
-
-    @RequestMapping(value = "/product/listByCategoryId", method = RequestMethod.GET)
-    Response<Pagination<Product>> listByCategoryId(@RequestParam("categoryId")Integer categoryId,
-                                                        @RequestParam("sort") Integer sort,
-                                                        @RequestParam("start")Long start,
-                                                        @RequestParam("quantity") Integer quantity);
+    @Autowired
+    private ProductMapper productService;
 
     /**
-     * 获取首页明星产品
+     * 获取商品详情
+     * @param id 商品Id
      */
-    @RequestMapping(value = "/product/getStarProduct", method = RequestMethod.GET)
-    Response<List<Product>> getStarProduct();
+    public Product getDetail(Long id) throws IException {
+        ResponseEntity<Product> responseEntity = productService.getProduct(id);
+        if(responseEntity.getStatus().equals(ResponseEntity.ERROR)) throw new IException(responseEntity.getErrMsg());
+        return responseEntity.getMessage();
+    }
+
+    /**
+     * 搜索分页
+     * @param keyword 关键字
+     * @param pageNo 页面编号,从1开始
+     */
+    public Pagination<Product> getPaginationBySearch(Integer pageNo, String keyword) throws IException {
+        //一页显示二十个
+        final Integer pageSize = 20;
+        //计算开始位置
+        Long start = Long.valueOf((pageNo-1)*pageSize);
+        ResponseEntity<Pagination<Product>> responseEntity =  productService.search(keyword, start, pageSize);
+        if(ResponseEntity.ERROR.equals(responseEntity.getStatus())){
+            throw new IException(responseEntity.getErrMsg());
+        }
+        Pagination<Product> pagination = responseEntity.getMessage();
+        pagination.setPageNo(pageNo);
+        pagination.setPageSize(pageSize);
+        //计算总共有多少页
+        pagination.setPageQuantity((pagination.getDataQuantity().intValue()+pageSize-1)/pageSize.intValue());
+        return pagination;
+    }
+
+    /**
+     * 分类列出产品
+     * @param categoryId 产品目录ID
+     * @param sort 排序方式,1.新品,2.销量,3.价格up,4.价格down
+     * @param pageNo
+     * @return 分页数据
+     */
+    public Pagination<Product> getPaginationByCategoryId(Integer categoryId, Integer sort, Integer pageNo) throws IException {
+        //一页显示二十个
+
+        final Integer pageSize = 20;
+        Long start = (long)((pageNo-1)*pageSize);
+        ResponseEntity<Pagination<Product>> responseEntity =  productService.listByCategoryId(categoryId, sort, start, pageSize);
+        if(ResponseEntity.ERROR.equals(responseEntity.getStatus())){
+            throw new IException(responseEntity.getErrMsg());
+        }
+        Pagination<Product> pagination = responseEntity.getMessage();
+        pagination.setPageNo(pageNo);
+        pagination.setPageSize(pageSize);
+        //计算总共有多少页
+        pagination.setPageQuantity((pagination.getDataQuantity().intValue()+pageSize-1)/pageSize.intValue());
+        return pagination;
+    }
+    /**
+     * 首页明星产品
+     */
+    public List<Product> getStarProduct() throws IException {
+        ResponseEntity<List<Product>> responseEntity = productService.getStarProduct();
+        if(ResponseEntity.ERROR.equals(responseEntity.getStatus())) throw new IException(responseEntity.getErrMsg());
+        return responseEntity.getMessage();
+    }
 }

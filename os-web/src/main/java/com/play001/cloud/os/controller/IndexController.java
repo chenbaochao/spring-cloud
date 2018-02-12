@@ -1,8 +1,8 @@
 package com.play001.cloud.os.controller;
 
-import com.play001.cloud.common.entity.IException;
-import com.play001.cloud.common.entity.NavigationBar;
-import com.play001.cloud.os.service.impl.*;
+import com.play001.cloud.os.service.*;
+import com.play001.cloud.support.entity.IException;
+import com.play001.cloud.support.entity.NavigationBar;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,22 +14,22 @@ import java.util.List;
 @Controller
 public class IndexController {
     @Autowired
-    private CategoryServiceImpl categoryService;
+    private CategoryService categoryService;
     @Autowired
-    private AdvertServiceImpl advertService;
+    private AdvertService advertService;
     @Autowired
-    private ProductServiceImpl productService;
+    private ProductService productService;
     @Autowired
-    private SectionServiceImpl sectionService;
+    private SectionService sectionService;
     @Autowired
-    private NavigationServiceImpl navigationService;
+    private NavigationService navigationService;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String index(Model model) throws IException {
         //轮播广告
         model.addAttribute("sliderAdvert", advertService.getSliderAdvert());
         //轮播下面六个小链接
-        model.addAttribute("navigationBars", navigationService.getNavigationBars1());
+        model.addAttribute("navigationBars", navigationService.getChannelNavigationBars());
         //轮播下面三个小广告
         model.addAttribute("underSliderAdvert", advertService.getUnderSliderAdvert());
         return "webfront/index";

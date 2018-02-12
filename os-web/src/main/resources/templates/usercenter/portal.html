@@ -1,20 +1,23 @@
 <!DOCTYPE html>
 <html lang="zh-CN" xml:lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title>个人中心</title>
-  <meta name="viewport" content="width=1226">
-  <meta name="description" content="">
-  <meta name="keywords" content="小米商城">
-  <link rel="stylesheet" href="/os/css/base.css">
-  <link rel="stylesheet" href="/os/css/base.min.css">
-  <link rel="stylesheet" type="text/css" href="/os/user/css/main.min.css">
+    <title>个人中心</title>
+    <meta name="viewport" content="width=1226">
+    <meta name="description" content="">
+    <meta name="keywords" content="小米商城">
+    <link rel="stylesheet" href="../os/css/base.css">
+    <link rel="stylesheet" href="../os/css/base.min.css">
+    <link rel="stylesheet" type="text/css" href="../os/user/css/main.min.css">
+    <script src="../common/jquery/jquery-3.2.0.min.js"></script>
+    <script src="../os/js/base.js"></script>
+    <script src="../common/jquery/jquery.cookie.js"></script>
+    <script src="../os/js/userPortal.js"></script>
+
 </head>
 <body>
-<div th:replace="common/site_topbar :: div">
-</div>
 
-<div th:replace="common/site_header :: div">
-</div>
+<div id="site-topBar"></div>
+<div id="site-header"></div>
 
 <div class="breadcrumbs">
   <div class="container">
@@ -79,7 +82,14 @@
     </div>
   </div>
 </div>
-<div th:replace="common/site_footer :: div">
-</div>
+<!--<div th:replace="common/site_footer :: div">
+</div>-->
+
+<div id="site-footer"></div>
 </body>
+
+
+<script src="/common/bootstrap/js/bootstrap.min.js"></script>
+<script src="/os/js/zySearch.js"></script>
+<script src="/os/js/jump.js"></script>
 </html>

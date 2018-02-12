@@ -1,246 +1,135 @@
-/** 多选按钮插件 */
-$(document).ready(function() {
-	$('input').iCheck({
-		checkboxClass : 'icheckbox_flat-orange',
-		radioClass : 'iradio_flat-orange'
-	});
-});
+$(function(){
+    initChecked();
+    setTotalCount();
+    setUserName();
 
-/**
- * Created by an www.jq22.com
- */
-window.onload = function() {
-	if (!document.getElementsByClassName) {
-		document.getElementsByClassName = function(cls) {
-			var ret = [];
-			var els = document.getElementsByTagName('*');
-			for (var i = 0, len = els.length; i < len; i++) {
+    $('[name="status"]').click(function(){
+        var status =  $(this).data('status');
+        if(status !== 1) return;
+        $(this).removeClass();
+        var checked =  $(this).data('checked');
+        if(checked === 1){
+            $(this).addClass("iconfont icon-checkbox icon-checkbox J_itemCheckbox");
+            $(this).data('checked',0);
+            $('#J_selectAll').removeClass();
+            $('#J_selectAll').addClass("iconfont icon-checkbox icon-checkbox J_itemCheckbox");
+            $('#J_selectAll').data('checked',0);
+        }else{
+            $(this).addClass("iconfont icon-checkbox icon-checkbox-selected J_itemCheckbox");
+            $(this).data('checked',1);
+        }
+        setTotalCount();
+    });
 
-				if (els[i].className.indexOf(cls + ' ') >= 0 || els[i].className.indexOf(' ' + cls + ' ') >= 0 || els[i].className.indexOf(' ' + cls) >= 0) {
-					ret.push(els[i]);
-				}
-			}
-			return ret;
-		}
-	}
+    $('#J_selectAll').click(function () {
+        $(this).removeClass();
+        //全选
+        if($(this).data('checked') === 0){
+            $(this).data('checked', 1);
+            $(this).addClass("iconfont icon-checkbox icon-checkbox-selected J_itemCheckbox");
+            $('[name="status"]').each(function(){
+                var status =  $(this).data('status');
+                var checked =  $(this).data('checked');
+                if(status === 1){
+                    if(checked === 0){
+                        $(this).removeClass();
+                        $(this).addClass("iconfont icon-checkbox icon-checkbox-selected J_itemCheckbox");
+                        $(this).data('checked',1);
+                    }
+                }
+            });
+        }else{
+            //取消全选
+            $(this).data('checked', 0);
+            $(this).addClass("iconfont icon-checkbox icon-checkbox J_itemCheckbox");
+            $('[name="status"]').each(function(){
+                var status =  $(this).data('status');
+                var checked =  $(this).data('checked');
+                if(status === 1){
+                    if(checked === 1){
+                        $(this).removeClass();
+                        $(this).addClass("iconfont icon-checkbox icon-checkbox J_itemCheckbox");
+                        $(this).data('checked',0);
+                    }
+                }
 
-	var table = document.getElementById('cartTable'); // 购物车表格
-	//var selectInputs = document.getElementsByClassName('check-one'); // 所有勾选框
-	var selectInputs = document.getElementsByClassName('iCheck-helper'); // 所有勾选框
-	var tr = table.children[1].rows; //行
-	var numberTotal = document.getElementById('J_cartTotalNum'); //总共商品数目容器
-	var selectedTotal = document.getElementById('J_selTotalNum'); //已选商品数目容器
-	var priceTotal = document.getElementById('J_cartTotalPrice'); //总计
-	var cartBar = document.getElementById('J_cartBar'); //购物车底部导航栏
+            });
+        }
+        setTotalCount();
+    });
+    //去结账
+    $('#J_goCheckout').click(function(){
+        var carts = '';
+        $('[name="status"]').each(function(){
+            var checked =  $(this).data('checked');
+            if(checked === 1){
+                if(carts !==''){
+                    carts+='&';
+                }
+                carts+='cartId='+$(this).data('cart-id');
+            }
+        });
+        if(carts.length > 0){
+            window.location.href = '../order/checkout?'+carts;
+        }
+    });
+    function setTotalCount(){
+        var totalPrice = 0;
+        var selectNum = 0;
+        $('[name="status"]').each(function(){
+            var checked =  $(this).data('checked');
+            if(checked === 1){
+                selectNum++;
+                var price = Number($(this).data('price'));
+                totalPrice+=price;
+            }
+        });
+        if(selectNum === 0){
+            $('#J_noSelectTip').removeClass('hide');
+            $('#J_goCheckout').removeClass('btn-primary').addClass('btn-disabled');
+        }else{
+            $('#J_noSelectTip').addClass("hide");
+            $('#J_goCheckout').addClass('btn-primary').removeClass('btn-disabled');
+        }
+        $('#J_cartTotalPrice').text(totalPrice);
+        $('#J_selTotalNum').text(selectNum);
+    }
+    function setUserName(){
+        var cookie = $.cookie('userJwt');
+        if(cookie !== null){
+            var strs = cookie.split('.');
+            if(strs !== null && strs.length === 3){
+                var credential = eval('('+window.atob(strs[1])+')');
+                var expiryData = credential.expiryDate;//有效期
+                var nowTime = Date.parse(new Date());
+                if(expiryData > nowTime){//未过期
+                    var username = credential.username;
+                    $('#J_username').text(username);
+                }
 
-
-	// 更新总数和总价格
-	function getTotal() {
-		var seleted = 0;
-		var number = 0;
-		var price = 0;
-		for (var i = 0, len = tr.length; i < len; i++) {
-			if (tr[i].getElementsByTagName('input')[0].checked) {
-				tr[i].className = 'on';
-				seleted += parseInt(tr[i].getElementsByTagName('input')[1].value);
-				price += parseFloat(tr[i].cells[4].innerHTML);
-			} else {
-				tr[i].className = '';
-			}
-			number += parseInt(tr[i].getElementsByTagName('input')[1].value);
-		}
-		selectedTotal.innerHTML = seleted;
-		priceTotal.innerHTML = price.toFixed(2);
-		numberTotal.innerHTML = number;
-		if (seleted == 0) {
-			$('#J_noSelectTip').removeClass('hide');
-			$('#J_goCheckout').removeClass('btn-primary').addClass('btn-disabled');
-		} else {
-			$('#J_noSelectTip').addClass('hide');
-			$('#J_goCheckout').addClass('btn-primary').removeClass('btn-disabled');
-		}
-	}
-
-	// 购物车商品是否存在
-	function cartEmpty() {
-		var len = tr.length;
-		if (len < 1) {
-			console.info(len);
-			$('#J_cartEmpty').removeClass('hide');
-			$('#J_cartBox').addClass('hide');
-
-		} else {
-			$('#J_cartBox').removeClass('hide');
-			$('#J_cartEmpty').addClass('hide');
-		}
-	}
-
-	// 计算单行价格
-	function getSubtotal(tr) {
-		var cells = tr.cells;
-		var price = cells[2]; //单价
-		var subtotal = cells[4]; //小计td
-		var countInput = tr.getElementsByTagName('input')[1]; //数目input
-		var a = tr.getElementsByTagName('a')[2]; //-号
-		//写入HTML
-		subtotal.innerHTML = (parseInt(countInput.value) * parseFloat(price.innerHTML)).toFixed(2);
-		//如果数目只有一个，把-号去掉
-		if (countInput.value == 1) {
-			a.innerHTML = '';
-		} else {
-			a.innerHTML = '-';
-		}
-	}
-
-	// 点击选择框
-	for (var i = 0; i < selectInputs.length; i++) {
-		selectInputs[i].onclick = function() {
-			var productSpecNumber = this.previousSibling.getAttribute('data-sid');
-
-			if (this.previousSibling.getAttribute('data-check-status') == 1 && this.previousSibling.getAttribute('data-initial') == 'false') {
-				// 选中状态
-				this.previousSibling.setAttribute('data-check-status', 0) ;
-				$.ajax({
-					type : 'PUT',
-					datatype : 'json',
-					url : baselocation + '/cart/' + productSpecNumber + '/status',
-					data : {
-						'checkStatus' : 1
-					}
-				});
-			} else if (this.previousSibling.getAttribute('data-check-status') == 0) {
-				// 未选中状态
-				this.previousSibling.setAttribute('data-check-status', 1) ;
-				$.ajax({
-					type : 'PUT',
-					datatype : 'json',
-					url : baselocation + '/cart/' + productSpecNumber + '/status',
-					data : {
-						'checkStatus' : 0
-					}
-				});
-			}
-			getTotal(); //选完更新总计
-		}
-	}
-
-	// 点击底部导航栏更新价格
-	cartBar.onclick = function() {
-		getTotal(); //选完更新总计
-		cartEmpty(); // 购物车商品是否存在
-	}
-
-	//为每行元素添加事件
-	for (var i = 0; i < tr.length; i++) {
-		//将点击事件绑定到tr元素
-		tr[i].onclick = function(e) {
-			var e = e || window.event;
-			var el = e.target || e.srcElement; //通过事件对象的target属性获取触发元素
-			var cls = el.className; //触发元素的class
-			var countInout = this.getElementsByTagName('input')[1]; // 数目input
-			var value = parseInt(countInout.value); //数目
-			//通过判断触发元素的class确定用户点击了哪个元素
-			switch (cls) {
-			case 'add': //点击了加号
-				countInout.value = value + 1;
-				var productSpecNumber = this.getAttribute('data-sid');
-				var buyNumber = countInout.value;
-				getSubtotal(this);
-				$.ajax({
-					type : 'put',
-					datatype : 'json',
-					url : baselocation + '/cart/' + productSpecNumber,
-					data : {
-						'buyNumber' : buyNumber
-					}
-				});
-				break;
-			case 'reduce': //点击了减号
-				if (value > 1) {
-					countInout.value = value - 1;
-					var productSpecNumber = this.getAttribute('data-sid');
-					var buyNumber = countInout.value;
-					getSubtotal(this);
-					$.ajax({
-						type : 'put',
-						datatype : 'json',
-						url : baselocation + '/cart/' + productSpecNumber,
-						data : {
-							'buyNumber' : buyNumber
-						}
-					});
-				}
-				break;
-			}
-			getTotal();
-		}
-	}
-
-	// 默认全选
-	for (var j = 0; j < selectInputs.length; j++) {
-		if (selectInputs[j].previousSibling.getAttribute('data-check-status') == 1) {
-
-			selectInputs[j].click();
-			selectInputs[j].previousSibling.setAttribute('data-initial', false);
-		} else {
-			selectInputs[j].previousSibling.setAttribute('data-initial', false);
-		}
-	}
-
-	// 更新总数
-	getTotal();
-	// 购物车商品是否存在
-	cartEmpty();
-}
-
-/**
- * 购物车商品删除
- */
-function cart_list_delete(obj, data) {
-	layer.confirm('确认要删除吗？', {
-		btn : [ '确定', '取消' ] //按钮
-	}, function() {
-		$.ajax({
-			type : 'delete',
-			dataType : 'json',
-			url : baselocation + '/cart/' + data,
-			success : function(result) {
-				if (result.code == 1) {
-					$(obj).parent().parent().parent("tr").remove();
-					$('#J_cartBar').click();
-					show_cart_umber();
-					layer.msg('已删除!', {
-						icon : 1,
-						time : 1000
-					});
-				} else {
-					layer.alert(result.message, {
-						icon : 2
-					});
-				}
-			}
-		})
-	});
-}
-
-/**
- * 跳转确认订单页面
- */
-function J_goCheckout() {
-	if ($('#J_goCheckout').hasClass('btn-primary')) {
-		window.location.href = baselocation + '/buy/checkout'
-	}
-}
-
-/**
- * 导航分类栏显示及颜色变换
- */
-$(function() {
-	$('#J_navCategory').mouseover(function() {
-		$('.site-category').css('display', 'block');
-	})
-	$('#J_navCategory').mouseout(function() {
-		$('.site-category').css('display', 'none');
-	})
+            }
+        }
+    }
+    //选中有效的购物车
+    function initChecked(){
+        $('[name="status"]').each(function(index){
+            var status =  $(this).data('status');
+            if(status === 1){
+                $(this).data('checked', 1);
+                $(this).removeClass();
+                $(this).addClass("iconfont icon-checkbox icon-checkbox-selected J_itemCheckbox");
+            }else {
+                $('.pre-info').each(function(i){
+                    if(i === index){
+                        if(status === 2){
+                            $(this).html('库存不足');
+                        }else{
+                            $(this).html("商品已下架");
+                        }
+                    }
+                });
+            }
+        });
+    }
 });
 

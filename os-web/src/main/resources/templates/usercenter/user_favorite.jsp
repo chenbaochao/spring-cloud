@@ -90,7 +90,7 @@
   							time : 1000
   						});
   					} else {
-  						layer.alert(result.message, {
+  						layer.alert(result.msgType, {
   							icon : 2
   						});
   					}

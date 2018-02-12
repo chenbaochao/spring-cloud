@@ -1789,7 +1789,7 @@ the specific language governing permissions and limitations under the Apache Lic
                     return;
                 }
 
-                // handle ajax error
+                // handler ajax error
                 if(data.hasError !== undefined && checkFormatter(opts.formatAjaxError, "formatAjaxError")) {
                     render("<li class='select2-ajax-error'>" + evaluate(opts.formatAjaxError, opts.element, data.jqXHR, data.textStatus, data.errorThrown) + "</li>");
                     return;
@@ -1996,7 +1996,7 @@ the specific language governing permissions and limitations under the Apache Lic
 
             if (this.showSearchInput !== false) {
                 // IE appends focusser.val() at the end of field :/ so we manually insert it at the beginning using a range
-                // all other browsers handle this just fine
+                // all other browsers handler this just fine
 
                 this.search.val(this.focusser.val());
             }
