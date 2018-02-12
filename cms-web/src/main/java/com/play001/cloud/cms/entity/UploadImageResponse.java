@@ -2,12 +2,13 @@ package com.play001.cloud.cms.entity;
 
 import com.google.gson.Gson;
 
+import java.io.Serializable;
 import java.util.Arrays;
 
 /**
  * BootStarp-fileInput 上传文件返回信息
  */
-public class UploadImageResponse {
+public class UploadImageResponse implements Serializable {
 
     private String error;
     private String []initialPreview;

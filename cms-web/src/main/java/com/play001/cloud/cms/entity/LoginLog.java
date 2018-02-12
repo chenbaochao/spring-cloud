@@ -1,7 +1,9 @@
 package com.play001.cloud.cms.entity;
 
+import java.io.Serializable;
+
 //登陆日志
-public class LoginLog {
+public class LoginLog implements Serializable {
     private Long id;
     private Integer adminId;
     private String ip;

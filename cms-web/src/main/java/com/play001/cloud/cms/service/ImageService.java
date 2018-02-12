@@ -53,7 +53,7 @@ public class ImageService {
 
         Image image = new Image();
         image.setCreateTime(DateUtil.getTime());
-        image.setUsed(false);
+        image.setCount(0L);
         try {
             //判断文件MIME type
             String type = upFile.getContentType();

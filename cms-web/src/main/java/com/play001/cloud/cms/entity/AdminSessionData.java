@@ -1,11 +1,12 @@
 package com.play001.cloud.cms.entity;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
 /**
  * 存放于session的数据
  */
-public class AdminSessionData {
+public class AdminSessionData implements Serializable {
     private Integer id;
     private String username;
     private Role role;

@@ -5,12 +5,13 @@ import org.hibernate.validator.constraints.NotBlank;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * 用户组/角色
  */
-public class Role {
+public class Role implements Serializable{
 
     private Integer id;
     @NotBlank

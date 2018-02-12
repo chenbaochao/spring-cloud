@@ -6,6 +6,8 @@ import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectOutputStream;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.List;
@@ -15,24 +17,21 @@ public class ITest {
     public int i = 1;
     @Test
     public void Itest(){
+        tt();
+        tt();
+
 
     }
-    private int get(){
-        try {
-            throw new Exception();
-        }catch (Exception e){
-            return get1();
-        }finally {
-            return get2();
-        }
+
+    public void tt(){
+        final T t1 = new T();
     }
 
-    private int get1(){
-        System.out.println("get1--------------");
-        return i++;
-    }
-    private int get2(){
-        System.out.println("get2--------------");
-        return i++;
+
+}
+
+class T{
+    public T() {
+        System.out.println("测试");
     }
 }

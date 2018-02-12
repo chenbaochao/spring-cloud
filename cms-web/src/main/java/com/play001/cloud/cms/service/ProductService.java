@@ -50,8 +50,6 @@ public class ProductService {
         if(newProduct.getId() == null){
             return responseEntity.setErrMsg("参数错误");
         }
-        //待删除的图片,事务执行完成后从云端删除
-        List<Image> deleteImages = new LinkedList<>();
         DefaultTransactionDefinition transactionDefinition = new DefaultTransactionDefinition();
         //获取事务级别
         transactionDefinition.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
@@ -63,16 +61,15 @@ public class ProductService {
             //保存产品基本信息
             productMapper.update(newProduct);
             productMapper.updateIntroduction(newProduct);
-            //判断封面是否更改,更改后需要将旧封面图片数据存进待删除的图片list中,并设置图片为已用
+            //判断封面是否更改,更改后需要将旧封面图片数据引用-1,新图片引用+1
             if(!Objects.equals(oldProduct.getThumb().getId(), newProduct.getThumb().getId())){
-                deleteImages.add(oldProduct.getThumb());
-                imageMapper.setUsed(newProduct.getThumb().getId());
+                imageMapper.decreaseCount(oldProduct.getThumb().getId());
+                imageMapper.increaseCount(newProduct.getThumb().getId());
             }
             //相册
             List<ProductImage> oldProductImages = oldProduct.getPics();
             /* 查询存在于旧相册中不存在于新相册中的数据(被删除的productImage数据)
-             *  然后删除os_ProductImage中的数据,并把对应的image状态设置为未用
-             *  不能直接删除存储的图片文件,否者事务执行失败,回滚的话,图片数据是无法回滚的
+             *  然后删除os_ProductImage中的数据,并把对应的image引用-1
              */
             boolean flag;
             for(ProductImage oldImage:oldProductImages){
@@ -84,9 +81,7 @@ public class ProductService {
                 }
                 if(!flag){
                     productImageMapper.delete(oldImage.getId());
-                    //待删除的图片Id,事务执行完成后从云端删除
-                    deleteImages.add(oldImage.getImage());
-
+                    imageMapper.decreaseCount(oldImage.getId());
                 }
             }
             //保存新的相册
@@ -174,7 +169,7 @@ public class ProductService {
             transactionManager.rollback(status);
             return responseEntity.setErrMsg("删除失败");
         }
-        //删除图片文件和数据
+        /*//删除图片文件和数据
         IBaseStorageUtil storageUtil;
         for(Image image : deleteImages){
             try{
@@ -189,7 +184,7 @@ public class ProductService {
             }catch (Exception e){
                 e.printStackTrace();
             }
-        }
+        }*/
 
         return responseEntity.setStatus(ResponseEntity.SUCCESS);
     }
@@ -198,7 +193,6 @@ public class ProductService {
      */
     @Transactional
     public ResponseEntity<Integer> create(Product product){
-
         product.setCreateTime(DateUtil.getTime());
         product.setSoldNumber(0);
         List<Parameter> parameters = product.getParameters();
@@ -211,7 +205,7 @@ public class ProductService {
             productParaMapper.add(para);
         }
         //保存规格
-        for(Specification spec : product.getSpecs()){
+        for(Specification spec : specs){
             spec.setProductId(product.getId());
             spec.setSoldNumber(0);
             productSpecMapper.add(spec);
@@ -220,7 +214,7 @@ public class ProductService {
         for(ProductImage productImage : product.getPics()){
             productImage.setProductId(product.getId());
             productImageMapper.add(productImage);
-            imageMapper.setUsed(productImage.getImage().getId());
+            imageMapper.increaseCount(productImage.getImage().getId());
         }
         //保存标签
         for(Label label : product.getLabels()){
@@ -244,6 +238,7 @@ public class ProductService {
             categoryId = 0;
         }
         //排序默认按照创建时间排序
+        sort=sort==null?"createTime":sort;
         switch (sort){
             case "showPrice":
             case "soldNumber":

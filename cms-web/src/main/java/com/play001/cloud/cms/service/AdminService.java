@@ -266,7 +266,7 @@ public class AdminService {
         }
         adminMapper.updateAvatar(newImage.getUrl(), adminId);
         //设置图片为已使用
-        imageMapper.setUsed(imageId);
+        imageMapper.increaseCount(imageId);
         //删除旧头像,删除失败不处理
         Image oldImage = imageMapper.findByUrl(admin.getAvatar());
         try {

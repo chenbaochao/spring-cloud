@@ -1,8 +1,9 @@
 package com.play001.cloud.cms.entity;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class InitialPreviewConfig {
+public class InitialPreviewConfig implements Serializable {
     private String caption;
     private String width;
     public final String url = "/delete";
