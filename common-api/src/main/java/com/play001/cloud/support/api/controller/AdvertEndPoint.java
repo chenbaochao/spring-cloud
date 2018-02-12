@@ -26,7 +26,7 @@ public class AdvertEndPoint {
      */
     @RequestMapping(value = "/getSliderAdvert", method = RequestMethod.GET)
     public ResponseEntity<List<Advert>> getSliderAdvert(){
-        return new ResponseEntity<>(advertService.getSliderAdvert());
+        return new ResponseEntity<List<Advert>>().setMessage(advertService.getSliderAdvert());
     }
 
     /**
@@ -34,7 +34,7 @@ public class AdvertEndPoint {
      */
     @RequestMapping(value = "/getUnderSliderAdvert", method = RequestMethod.GET)
     public ResponseEntity<List<Advert>> getUnderSliderAdvert(){
-        return new ResponseEntity<>(advertService.getUnderSliderAdvert());
+        return new ResponseEntity<List<Advert>>().setMessage(advertService.getUnderSliderAdvert());
     }
 
 }

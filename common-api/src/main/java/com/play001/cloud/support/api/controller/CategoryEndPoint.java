@@ -28,16 +28,16 @@ public class CategoryEndPoint {
             Category category = new Category();
             category.setId(0);
             category.setName("全部商品");
-            return new ResponseEntity<>(category);
+            return new  ResponseEntity<Category>().setMessage(category);
         }
-        return new ResponseEntity<>(categoryService.findById(categoryId));
+        return new ResponseEntity<Category>().setMessage(categoryService.findById(categoryId));
     }
 
 
 
     @RequestMapping(value = "/findAll", method = RequestMethod.GET)
     public ResponseEntity<List<Category>> findAll() throws IException {
-        return  new ResponseEntity<>(categoryService.findAll());
+        return new ResponseEntity<List<Category>>().setMessage(categoryService.findAll());
     }
 
 

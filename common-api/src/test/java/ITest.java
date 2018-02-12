@@ -14,10 +14,8 @@ public class ITest {
     private static final BASE64Encoder base64Encoder  = new BASE64Encoder();
     @Test
     public void iTest() throws IOException {
-        String str = "你好,中国";
-        String str1 = Base64.encodeBase64String(str.getBytes());
-        String str2 = new String(Base64.decodeBase64(str1));
-        System.out.println(str2);
+        byte b = -1;
+        System.out.println(b);
     }
 
     public static void main(String[] args) {

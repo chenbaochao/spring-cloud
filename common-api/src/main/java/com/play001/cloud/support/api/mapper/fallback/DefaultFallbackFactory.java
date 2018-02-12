@@ -12,6 +12,6 @@ public class DefaultFallbackFactory implements FallbackFactory {
 
     @Override
     public Object create(Throwable throwable){
-        return new ResponseEntity<>(ResponseEntity.ERROR);
+        return new ResponseEntity<>().setStatus(ResponseEntity.ERROR);
     }
 }
