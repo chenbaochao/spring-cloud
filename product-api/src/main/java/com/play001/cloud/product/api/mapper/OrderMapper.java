@@ -18,9 +18,11 @@ public interface OrderMapper {
     @ResultMap("orderResult")
     Order findById(@Param("id")Long id, @Param("userId") Long userId);
 
+    @Update("update os_order set status = #{status} where id = #{id} and user_id = #{userId}")
+    void setStatus(@Param("id")Long id, @Param("status") byte status, @Param("userId") Long userId);
 
-    Integer count(@Param("userId") Long userId, @Param("status")Integer type);
+    Integer count(@Param("userId") Long userId, @Param("status")Integer status);
 
     List<Order> pagination(@Param("userId") Long userId, @Param("start")Long start, @Param("limit")Integer limit,
-                           @Param("status")Integer type);
+                           @Param("status")Integer status);
 }

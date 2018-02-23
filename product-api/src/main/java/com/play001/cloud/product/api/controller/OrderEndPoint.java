@@ -5,10 +5,12 @@ import com.play001.cloud.support.entity.IException;
 import com.play001.cloud.support.entity.Order;
 import com.play001.cloud.support.entity.Pagination;
 import com.play001.cloud.support.entity.ResponseEntity;
+import com.play001.cloud.support.interceptor.UserPermissionVerify;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 @RestController
 @RequestMapping(value = "/order")
@@ -23,9 +25,10 @@ public class OrderEndPoint {
      * @param addressId 收件人地址Id
      *  返回订单Id
      */
+    @UserPermissionVerify
     @RequestMapping(value = "/order", method = RequestMethod.POST)
-    public ResponseEntity<Long> checkout(Long cartId[], @RequestHeader("userJwt") String userJwt, Long addressId ) throws IException {
-        return orderService.order(cartId, userJwt, addressId);
+    public ResponseEntity<Long> order(@RequestParam("cartIds") ArrayList<Long> cartIds, @RequestHeader("userJwt") String userJwt, Long addressId ) throws IException {
+        return orderService.order(cartIds, userJwt, addressId);
     }
     /**
      * findById
@@ -33,8 +36,9 @@ public class OrderEndPoint {
      * @param userJwt 用户jwt
      *  返回订单Id
      */
+    @UserPermissionVerify
     @RequestMapping(value = "/findById", method = RequestMethod.GET)
-    public ResponseEntity<Order> findById(Long id, @RequestHeader("userJwt") String userJwt) throws IException {
+    public ResponseEntity<Order> findById( Long id, @RequestHeader("userJwt") String userJwt) throws IException {
         return orderService.findById(id, userJwt);
     }
     /**
@@ -43,8 +47,14 @@ public class OrderEndPoint {
      * @param pageNo 当前页面编号. 从1开始
      * @param userJwt 用户jwt
      */
+    @UserPermissionVerify
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public  ResponseEntity<Pagination<Order>> list(Integer pageNo, Integer type, @RequestHeader("userJwt")String userJwt) throws IException, IOException {
         return orderService.list(type, pageNo, userJwt);
+    }
+    @UserPermissionVerify
+    @RequestMapping(value = "/pay", method = RequestMethod.POST)
+    public  ResponseEntity<Integer> pay(Long id, @RequestHeader("userJwt")String userJwt) throws IOException {
+        return orderService.pay(id, userJwt);
     }
 }

@@ -43,9 +43,9 @@ public class OrderService {
     private DataSourceTransactionManager transactionManager;
 
     //下单
-    public ResponseEntity<Long> order(Long cartIds[], String userJwt, Long addressId){
+    public ResponseEntity<Long> order(ArrayList<Long> cartIds, String userJwt, Long addressId){
         ResponseEntity<Long> responseEntity = new ResponseEntity<>();
-        if(cartIds == null || cartIds.length == 0 || addressId == null){
+        if(cartIds == null || cartIds.size() == 0 || addressId == null){
             return responseEntity.setErrMsg("参数错误");
         }
         Order order = new Order();
@@ -76,7 +76,7 @@ public class OrderService {
         TransactionStatus status = transactionManager.getTransaction(transactionDefinition);
 
         try {
-            List<OrderProduct> orderProducts = new ArrayList<>(cartIds.length);
+            List<OrderProduct> orderProducts = new ArrayList<>(cartIds.size());
             //订单总价
             double totalPrice = 0L;
 
@@ -189,5 +189,16 @@ public class OrderService {
         pagination.setPageSize(defaultPageSize);
         pagination.setData(orders);
         return responseEntity.setMessage(pagination);
+    }
+    //模拟付款
+    public ResponseEntity<Integer> pay(Long id, String userJwt) throws IOException {
+        ResponseEntity<Integer> responseEntity = new ResponseEntity<>();
+        UserCredential userCredential = JwtUtil.getCredentialByJwt(userJwt);
+        if(id == null){
+            responseEntity.setErrMsg("订单id错误");
+            return responseEntity;
+        }
+        orderMapper.setStatus(id, Order.STATUS_PAID, userCredential.getUserId());
+        return responseEntity.setStatus(ResponseEntity.SUCCESS);
     }
 }

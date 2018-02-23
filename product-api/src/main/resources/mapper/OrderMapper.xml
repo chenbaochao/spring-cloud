@@ -14,17 +14,17 @@
 
     </resultMap>
 
-    <select id="count">
+    <select id="count" resultType="Integer">
         select count(id) from os_order where user_id = #{userId}
-        <if test="type != -1">
-            AND status = #{type}
+        <if test="status != 0">
+            AND status = #{status}
         </if>
     </select>
 
     <select id="pagination" resultMap="orderResult">
         select id, user_id, amount, status, create_time from os_order  where user_id = #{userId}
-        <if test="type != -1">
-            AND status = #{type}
+        <if test="status != 0">
+            AND status = #{status}
         </if>
     </select>
 
