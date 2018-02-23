@@ -72,6 +72,6 @@ public class UserEndPoint {
     @RequestMapping(value = "/getInfo", method = RequestMethod.GET)
     public ResponseEntity<User> getInfo(@RequestHeader("userJwt")String userJwt) throws Exception {
         UserCredential userCredential = JwtUtil.getCredentialByJwt(userJwt);
-        return new ResponseEntity<>(userService.getInfo(userCredential.getUserId()));
+        return new ResponseEntity<User>().setMessage(userService.getInfo(userCredential.getUserId()));
     }
 }

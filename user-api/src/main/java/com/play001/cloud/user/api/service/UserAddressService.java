@@ -7,6 +7,7 @@ import com.play001.cloud.support.entity.user.UserCredential;
 import com.play001.cloud.support.util.JwtUtil;
 import com.play001.cloud.user.api.mapper.UserAddressMapper;
 import com.play001.cloud.user.api.mapper.UserMapper;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,8 +39,43 @@ public class UserAddressService {
             e.printStackTrace();
             responseEntity.setErrMsg("内部错误");
         }
-
         return responseEntity;
+    }
 
+    //新增
+    public ResponseEntity<Integer> add(UserAddress userAddress, String userJwt) throws IOException {
+       ResponseEntity<Integer> responseEntity = new ResponseEntity<>();
+        if(userAddress == null ||  userAddress.getZipcode() == null || StringUtils.isBlank(userAddress.getUserPhone()) ||
+                StringUtils.isBlank(userAddress.getUsername()) || StringUtils.isBlank(userAddress.getUserAddress())){
+            return responseEntity.setErrMsg("参数错误");
+        }
+       UserCredential userCredential = JwtUtil.getCredentialByJwt(userJwt);
+       //设置userId
+       userAddress.setUserId(userCredential.getUserId());
+       userAddressMapper.add(userAddress);
+       return responseEntity.setStatus(ResponseEntity.SUCCESS);
+    }
+    //修改
+    public ResponseEntity<Integer> update(UserAddress userAddress, String userJwt) throws IOException {
+        ResponseEntity<Integer> responseEntity = new ResponseEntity<>();
+        if(userAddress == null || userAddress.getId() == null || userAddress.getZipcode() == null || StringUtils.isBlank(userAddress.getUserPhone()) ||
+                StringUtils.isBlank(userAddress.getUsername()) || StringUtils.isBlank(userAddress.getUserAddress())){
+            return responseEntity.setErrMsg("参数错误");
+        }
+        UserCredential userCredential = JwtUtil.getCredentialByJwt(userJwt);
+        //设置userId
+        userAddress.setUserId(userCredential.getUserId());
+        userAddressMapper.update(userAddress);
+        return responseEntity.setStatus(ResponseEntity.SUCCESS);
+    }
+    //删除
+    public ResponseEntity<Integer> delete(Long id,  String userJwt) throws IOException {
+        ResponseEntity<Integer> responseEntity = new ResponseEntity<>();
+        if(id == null || id < 1){
+            return responseEntity.setErrMsg("参数错误");
+        }
+        UserCredential userCredential = JwtUtil.getCredentialByJwt(userJwt);
+        userAddressMapper.delete(id, userCredential.getUserId());
+        return responseEntity.setStatus(ResponseEntity.SUCCESS);
     }
 }
