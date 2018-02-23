@@ -1,5 +1,7 @@
 package com.play001.cloud.support.entity.user;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 //用户收货地址表
 public class UserAddress {
     private Long id;

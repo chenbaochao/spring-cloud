@@ -14,8 +14,12 @@ import java.io.Serializable;
  */
 public class ShopCart  implements Serializable {
 
-    public static final byte INVALID = 0;
-    public static final byte VALID = 1;
+    //正常状态
+    public static final byte STATUS_NORMAL = 1;
+    //已卖完
+    public static final byte STATUS_NO_STOCK = 2;
+    //产品或规格已下架
+    public static final byte STATUS_INVALID = 3;
     private Long id;
     @NotNull(message = "产品信息不能为空")
     private Product product;
@@ -24,7 +28,7 @@ public class ShopCart  implements Serializable {
     @Min(value = 1, message = "购买数量必须大于0")
     private Integer buyNumber;//购买数量
     private User user;
-    //0表示失效,1表示正常
+
     private Byte status;
 
     public User getUser() {

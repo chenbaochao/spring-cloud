@@ -21,24 +21,17 @@ public class ResponseEntity<T> {
     }
 
     public ResponseEntity(String status, String errMsg) {
-        this.status = status;
+        this(status);
         this.errMsg = errMsg;
-    }
-
-    /**
-     * 传递了数据,默认操作成功
-     * 注意当泛型T为String类型时,会产生歧义,
-     * 为Response(String status)和Response(T message)编译器不知道调用哪一个
-     */
-    public ResponseEntity(T message) {
-        this.status = SUCCESS;
-        this.message = message;
     }
 
 
     public ResponseEntity<T> setMessage(T message) {
-        this.status = SUCCESS;
-        this.message = message;
+        //重大BUG, feign请求返回数据时,即使message为null,也会调用setMessage方法
+        if(message != null) {
+            this.status = SUCCESS;
+            this.message = message;
+        }
         return this;
     }
 
@@ -48,8 +41,11 @@ public class ResponseEntity<T> {
     }
 
     public ResponseEntity<T> setErrMsg(String errMsg) {
-        this.status = ERROR;
-        this.errMsg = errMsg;
+        //重大BUG, feign请求返回数据时,errMsg,也会调用setErrMsg方法
+        if(errMsg != null) {
+            this.status = ERROR;
+            this.errMsg = errMsg;
+        }
         return this;
     }
     public String getStatus() {

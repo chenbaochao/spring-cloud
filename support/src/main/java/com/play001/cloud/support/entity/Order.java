@@ -6,6 +6,12 @@ import java.util.List;
 
 //订单表
 public class Order {
+    public static final byte STATUS_UN_PAY = 1;//未付款
+    public static final byte STATUS_PAID = 2;//待发货
+    public static final byte STATUS_INVALID = 3;//已关闭
+    public static final byte STATUS_UNRECEIVE = 4;//待收货
+    public static final byte STATUS_RECEIVED = 5;//带评价
+    public static final byte STATUS_UNCOMMENT = 6;//已完成
     private Long id;
     private User user;
     //总金额
