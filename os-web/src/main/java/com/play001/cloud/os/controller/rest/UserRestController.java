@@ -26,7 +26,7 @@ public class UserRestController {
 
     @RequestMapping(value = "/test", method = RequestMethod.GET)
     public String test() {
-        return userService.test();
+        return null;
     }
     /**
      * 登陆
@@ -34,15 +34,17 @@ public class UserRestController {
      * @param password 密码
      */
     @RequestMapping(value = "/doLogin", method = RequestMethod.POST)
-    public ResponseEntity doLogin(String key, String password, HttpServletResponse response) throws Exception {
+    public ResponseEntity<String> doLogin(String key, String password, HttpServletResponse response) throws Exception {
         if(key == null || password == null){
-            return new ResponseEntity(ResponseEntity.ERROR, "用户名或密码为空");
+            return new ResponseEntity<String>().setErrMsg("用户名或密码为空");
         }
         ResponseEntity<String> responseEntityMsg = userService.getCredential(key, password, expiryDate);
-        //成功登陆后,要设置cookie,这样浏览器每次请求都会带上口令cookie
-        Cookie cookie = new Cookie("userJwt", responseEntityMsg.getMessage());
-        cookie.setPath("/");
-        response.addCookie(cookie);
+        if(responseEntityMsg.getStatus().equals(ResponseEntity.SUCCESS)){
+            //成功登陆后,要设置cookie,这样浏览器每次请求都会带上口令cookie
+            Cookie cookie = new Cookie("userJwt", responseEntityMsg.getMessage());
+            cookie.setPath("/");
+            response.addCookie(cookie);
+        }
         return responseEntityMsg;
     }
 

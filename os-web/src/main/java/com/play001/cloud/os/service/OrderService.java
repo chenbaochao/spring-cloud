@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -24,12 +25,12 @@ public class OrderService {
     @Autowired
     private OrderMapper orderMapper;
     //下单.返回订单编号
-    public ResponseEntity<Long> order(Long cartIds[], String userJwt, Long addrssId){
+    public ResponseEntity<Long> order(ArrayList<Long> cartIds, String userJwt, Long addressId){
         ResponseEntity<Long> responseEntity = new ResponseEntity<>();
-        if(cartIds == null || cartIds.length == 0 || userJwt == null || addrssId == null){
+        if(cartIds == null || cartIds.size() == 0 || userJwt == null || addressId == null){
             return responseEntity.setErrMsg("参数缺失");
         }
-        return orderMapper.add(cartIds, userJwt, addrssId);
+        return orderMapper.order(cartIds, userJwt, addressId);
     }
     //下单成功后,获取订单信息
     public Order findById(Long id, String userJwt) throws IException {
@@ -39,17 +40,25 @@ public class OrderService {
         }
         return responseEntity.getMessage();
     }
+
+    //下单.返回订单编号
+    public ResponseEntity<Integer> pay(Long id, String userJwt){
+        return orderMapper.pay(id, userJwt);
+    }
     //订单列表
     public void list(Integer type, Model model, Integer pageNo, String userJwt) throws IException {
         if(type == null || type < 1 || type > 4){
-            type = 1;
+            type = 0;
+        }
+        if(pageNo == null || pageNo < 1){
+            pageNo = 1;
         }
         ResponseEntity<Pagination<Order>> responseEntity = orderMapper.list(type, pageNo, userJwt);
         if(responseEntity.getStatus().equals(ResponseEntity.ERROR)){
             throw new IException(responseEntity.getErrMsg());
         }
         Pagination<Order> pagination = responseEntity.getMessage();
-        if(pageNo < 1 || pageNo > pagination.getPageQuantity()){
+        if(pageNo > pagination.getPageQuantity()){
             pageNo = 1;
         }
         List<Order> orders = pagination.getData();

@@ -4,31 +4,30 @@ import com.play001.cloud.support.entity.IException;
 import com.play001.cloud.support.entity.ResponseEntity;
 import com.play001.cloud.support.entity.user.User;
 import com.play001.cloud.os.mapper.UserMapper;
+import com.play001.cloud.support.entity.user.UserAddress;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import java.io.OutputStream;
+import java.util.List;
 
 @Service
 public class UserService {
 
     @Autowired
-    private UserMapper userService;
+    private UserMapper userMapper;
 
     public ResponseEntity<String> getCredential(String username, String password, Long expiryDate) throws IException {
-        ResponseEntity<String> responseEntity = userService.getCredential(username, password, expiryDate);
+        ResponseEntity<String> responseEntity = userMapper.getCredential(username, password, expiryDate);
         if(responseEntity.getStatus().equals(ResponseEntity.ERROR)) throw new IException(responseEntity.getErrMsg());
         return responseEntity;
     }
 
-    public String  test(){
-        return userService.test();
-    }
 
     public void setCaptcha(HttpServletResponse response) throws Exception {
-        ResponseEntity<byte[]> responseEntityMsg = userService.getCaptcha();
+        ResponseEntity<byte[]> responseEntityMsg = userMapper.getCaptcha();
         if(!ResponseEntity.SUCCESS.equals(responseEntityMsg.getStatus())){
             throw new IException(responseEntityMsg.getErrMsg());
         }
@@ -59,15 +58,16 @@ public class UserService {
         if(registerCookie == null || registerCookie.length() < 1){
             return new ResponseEntity(ResponseEntity.ERROR, "验证码无效, 请刷新验证码");
         }
-        return userService.register(user, code, registerCookie);
+        return userMapper.register(user, code, registerCookie);
     }
 
     /**
      * 获取用户基本信息
      */
     public User getInfo(String userJwt) throws IException {
-        ResponseEntity<User> responseEntity = userService.getInfo(userJwt);
+        ResponseEntity<User> responseEntity = userMapper.getInfo(userJwt);
         if(ResponseEntity.ERROR.equals(responseEntity.getStatus())) throw new IException(responseEntity.getErrMsg());
         return responseEntity.getMessage();
     }
+
 }

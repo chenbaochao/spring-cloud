@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xml:lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>订单详情 - 猫宁商城</title>
+<link rel="stylesheet" href="../os/css/address.css">
+<link rel="stylesheet" href="../os/area/css/select2.css" />
+</head>
+<body>
+<div class="span16">
+  <div class="uc-box uc-main-box">
+    <div class="uc-content-box order-view-box">
+      <div class="box-hd">
+        <h1 class="title"><span class="text">订单详情</span><small>请谨防钓鱼链接或诈骗电话，<a href="" target="_blank">了解更多&gt;</a></small></h1>
+        <div class="more clearfix">
+          <h2 class="subtitle" th:text="|订单号：${order.id}|"><span class="tag tag-subsidy"></span> </h2>
+          <div class="actions">
+            <a id="J_cancelOrder" th:if="${order.status == 1}" class="btn btn-small btn-line-gray" title="取消订单" th:attr="|data-order-id=${order.id}|" href="javascript:;" data-confirm="你真的要取消此订单吗?">取消订单</a>
+            <a id="J_payOrder" th:if="${order.status == 1}"  class="btn btn-small btn-primary" title="立即支付" th:href="|../order/orderSuccess?id=${order.id}|" target="_blank" >立即支付</a>
+            <a title="申请售后" href="" class="btn btn-small btn-line-gray" >申请售后</a>
+          </div>
+        </div>
+      </div>
+      <div class="box-bd">
+        <div class="uc-order-item uc-order-item-finish">
+          <div class="order-detail">
+            <div class="order-summary">
+              <div class="order-status">
+                  <span th:if="${order.status == 1}">待付款</span>
+                  <span th:if="${order.status == 2}">代发货</span>
+                  <span th:if="${order.status == 3}">已失效</span>
+                  <span th:if="${order.status == 4}">待收货</span>
+                  <span th:if="${order.status == 5}">待评价</span>
+                  <span th:if="${order.status == 6}">已完成</span>
+              </div>
+              <div class="order-progress">
+                <ol class="progress-list clearfix">
+                  <!--<li class="step step-first ${status == true ? 'step-done':''}">-->
+                    <!--<div><span class="text">下单</span></div>-->
+                    <!--<div class="info">-->
+                      <!--<fmt:formatDate value="${info}" pattern="yyyy年MM月dd日 hh:mm" />-->
+                    <!--</div>-->
+                  <!--</li>-->
+                  <li class="step" th:>
+                    <div><span class="text">付款</span></div>
+                    <div class="info" th:text="${order.createTime}">
+                    </div>
+                  </li>
+                  <!--<li class="step ${status == true ? 'step-done':''}">-->
+                    <!--<div><span class="text">出库</span></div>-->
+                    <!--<div class="info">-->
+                      <!--<fmt:formatDate value="${info}" pattern="yyyy年MM月dd日 hh:mm" />-->
+                    <!--</div>-->
+                  <!--</li>-->
+                  <!--<li class="step step-last ${status == true ? 'step-done':''}">-->
+                    <!--<div><span class="text">交易成功</span></div>-->
+                    <!--<div class="info">-->
+                      <!--<fmt:formatDate value="${info}" pattern="yyyy年MM月dd日 hh:mm" />-->
+                    <!--</div>-->
+                  <!--</li>-->
+                </ol>
+              </div>
+            </div>
+<!--            &lt;!&ndash; 首次查看密码 &ndash;&gt;
+            <div class="order-liwu J_giftcard_active hide">
+              <div class="box">
+                <h3>激活并获取 小米礼物码 密码</h3>
+                <p>点击获取密码后，我们将向账户绑定的手机  发送一条验证码<br>
+                  由于密码的特殊性，获取后不再支持7天无理由退货</p>
+                <a href="javascript:void(0);" class="btn btn-primary J_getGiftViewcode" data-stat-id="a23d55b9e18fc08a" onclick="_msq.push(['trackEvent', 'ad6d0503ac0c92d8-a23d55b9e18fc08a', 'javascript:void0', 'pcpid', '']);">获取密码</a> </div>
+            </div>
+            &lt;!&ndash; 账号未绑定手机号 &ndash;&gt;
+            <div class="order-liwu J_giftcard_bind hide">
+              <div class="box">
+                <h3>您的账号尚未绑定手机号</h3>
+                <p>为了密码的安全性，获取密码以及每次查看密码都需要通过小米账号绑定的手机号进行验证<br>
+                  您的账号尚未绑定手机号，需要绑定手机号后继续操作</p>
+                <a href="//account.xiaomi.com/" target="_blank" class="btn btn-primary " data-stat-id="045af825eddc79cb" onclick="_msq.push(['trackEvent', 'ad6d0503ac0c92d8-045af825eddc79cb', '//account.xiaomi.com/', 'pcpid', '']);">前往 账号中心</a> </div>
+            </div>
+            &lt;!&ndash; Token已过期，再次查看密码 &ndash;&gt;
+            <div class="order-liwu J_giftcard_view hide">
+              <div class="box">
+                <h3>查看 小米礼物码 密码</h3>
+                <p>点击查看密码后，我们将向账户绑定的手机  发送一条验证码</p>
+                <a href="javascript:void(0);" class="btn btn-primary J_getGiftcode" data-stat-id="b95059948ec21a01" onclick="_msq.push(['trackEvent', 'ad6d0503ac0c92d8-b95059948ec21a01', 'javascript:void0', 'pcpid', '']);">查看密码</a> </div>
+            </div>
+            &lt;!&ndash; 礼物码领取后 &ndash;&gt;
+            <div class="order-liwu-list J_liwulist hide">
+              <h3>小米礼物码 密码</h3>
+              <table>
+              </table>
+              <p>* 电脑访问 <a href="//www.mi.com/giftcode/" target="_blank" data-stat-id="6636cdbc657762ae" onclick="_msq.push(['trackEvent', 'ad6d0503ac0c92d8-6636cdbc657762ae', '//www.mi.com/giftcode/', 'pcpid', '']);">http://www.mi.com/giftcode/</a> 根据提示使用礼物码，或在小米商城App中以此点击「服务」-「使用礼物码」</p>
+            </div>-->
+            <table class="order-items-table">
+              <tbody>
+                  <tr th:each="orderProduct:${order.orderProducts}">
+                    <td class="col col-thumb">
+                      <div class="figure figure-thumb">
+                        <a target="_blank" th:href="|../product/detail-${orderProduct.id}|">
+                          <img th:src="${orderProduct.productThumb.url}" width="80" height="80" th:alt="${orderProduct.productName}">
+                        </a>
+                      </div>
+                    </td>
+                    <td class="col col-name">
+                      <p class="name">
+                        <a target="_blank" th:href="|../product/detail-${orderProduct.id}|"  th:text="${orderProduct.productName} + '  '+${orderProduct.productSpecName}"></a>
+                      </p>
+                    </td>
+                    <td class="col col-price"><p class="price" th:text="|数量${orderProduct.productNumber}, 总计${orderProduct.productAmount}元|"></p></td>
+                    <td class="col col-actions"></td>
+                  </tr>
+              </tbody>
+            </table>
+          </div>
+          <div id="editAddr" class="order-detail-info">
+            <h3>收货信息</h3>
+            <table class="info-table">
+              <tbody>
+                <tr>
+                  <th>姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名：</th>
+                  <td th:text="${order.orderAddress.username}"></td>
+                </tr>
+                <tr>
+                  <th>联系电话：</th>
+                  <td th:text="${order.orderAddress.userPhone}"></td>
+                </tr>
+                <tr>
+                  <th>收货地址：</th>
+                  <td th:text="${order.orderAddress.userAddr}"></td>
+                </tr>
+              </tbody>
+            </table>
+<!--            <div class="actions">
+              <a class="btn btn-small btn-line-gray J_editAddr" data-shipment-id="${orderVO.orderShipment.orderShipmentId}" data-order-id="${orderVO.orderId}"> 修改 </a>
+            </div>-->
+          </div>
+          <div id="editTime" class="order-detail-info">
+            <h3>支付方式及送货时间</h3>
+            <table class="info-table">
+              <tbody>
+                <tr>
+                  <th>支付方式：</th>
+                  <td>在线支付</td>
+                </tr>
+                <tr>
+                  <th>送货时间：</th>
+                  <td>不限送货时间</td>
+                </tr>
+              </tbody>
+            </table>
+<!--            <div class="actions">
+              <a class="btn btn-small btn-line-gray J_editTime" data-shipment-time="${orderVO.shipmentTime}" data-order-id="${orderVO.orderNumber}"> 修改 </a>
+            </div>-->
+          </div>
+          <div class="order-detail-info">
+            <h3>发票信息</h3>
+            <table class="info-table">
+              <tbody>
+                <tr>
+                  <th>发票类型：</th>
+                  <td>
+                     不开发票
+                  </td>
+                </tr>
+<!--                <tr>
+                  <th>发票内容：</th>
+                  <td>购买商品明细</td>
+                </tr>
+                  <tr>
+                    <th>发票抬头：</th>
+                    <td>${orderVO.invoiceTitle}</td>
+                  </tr>-->
+              </tbody>
+            </table>
+            <div class="actions"> </div>
+          </div>
+          <div class="order-detail-total">
+            <table class="total-table">
+              <tbody>
+                <tr>
+                  <th>商品总价：</th>
+                  <td><span class="num" th:text="${order.amount}"></span>元</td>
+                </tr>
+                <tr>
+                  <th>运&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;费：</th>
+                  <td><span class="num">0</span>元</td>
+                </tr>
+                <tr>
+                  <th>订单金额：</th>
+                  <td><span class="num"  th:text="${order.amount}">0</span>元</td>
+                </tr>
+                <tr>
+                  <th class="total">实付金额：</th>
+                  <td class="total"><span class="num"  th:text="${order.amount}">0</span>元</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-backdrop in" style="display: none; width: 100%; height: 1854px;"></div>
+<myfooter> 
+  <!-- layer javascript --> 
+  <script src="../common/layer/layer.js"></script>
+  <script src="../os/area/js/area.js"></script>
+  <script src="../os/area/js/location.js"></script>
+  <script src="../os/area/js/select2.js"></script>
+  <script src="../os/area/js/select2_locale_zh-CN.js"></script>
+  <script src="../os/js/order.js"></script>
+</myfooter>
+</body>
+</html>

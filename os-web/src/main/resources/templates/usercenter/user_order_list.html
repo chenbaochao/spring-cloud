@@ -39,17 +39,11 @@
               <h1 class="title">我的订单<small>请谨防钓鱼链接或诈骗电话，<a href="" target="_blank">了解更多&gt;</a></small></h1>
               <div class="more clearfix">
                 <ul class="filter-list J_orderType">
-                  <li th:class="${type eq -1 ? 'first active':'first'}"><a href="../user/order/list?type=-1" data-type="-1">全部订单</a></li>
-                  <li th:class="${type eq 0 ? 'active':''}"><a id="J_unpaidTab" href="../user/order/list?type=2" data-type="0">待支付</a></li>
-                  <li th:class="${type eq 4 ? 'active':''}"><a id="J_sendTab" href="../user/order/list?type=3" data-type="4">待收货</a></li>
-                  <li th:class="${type eq 2 ? 'active':''}"><a href="../order/list?type=2" data-type="2">已失效</a></li>
+                  <li th:class="${type eq -1 ? 'first active':'first'}"><a href="../order/list?type=0" >全部订单</a></li>
+                  <li th:class="${type eq 0 ? 'active':''}"><a id="J_unpaidTab" href="../order/list?type=1" >待支付</a></li>
+                  <li th:class="${type eq 4 ? 'active':''}"><a id="J_sendTab" href="../order/list?type=4" >待收货</a></li>
+                  <li th:class="${type eq 2 ? 'active':''}"><a href="../order/list?type=3">已关闭</a></li>
                 </ul>
-                <form id="J_orderSearchForm" class="search-form clearfix" action="" method="get">
-                  <label for="J_orderSearchKeywords" class="hide">站内搜索</label>
-                  <input class="search-text" type="search" id="J_orderSearchKeywords" name="search" value="" autocomplete="off" placeholder="输入商品名称、商品编号、订单号" />
-                  <input type="hidden" name="type" value="4" />
-                  <input type="submit" class="search-btn iconfont" value="搜索" />
-                </form>
               </div>
             </div>
             <div class="box-bd">
@@ -60,23 +54,23 @@
               </div>
               <div id="J_orderList">
                 <ul class="order-list">
-                  <li class="uc-order-item uc-order-item-pay" th:each="order,orderState:${orders}" th:if="${order.status == 0}">
+                  <li class="uc-order-item uc-order-item-pay" th:each="order,orderState:${orders}">
                     <div class="order-detail">
                       <div class="order-summary">
-                            <div class="order-status">未付款</div>
-                           <div class="order-status">待发货</div>
-                           <div class="order-status">已关闭</div>
-                           <div class="order-status">待收货</div>
-                           <div class="order-status">待评价</div>
-                           <div class="order-status">已完成</div>
-                            <p class="order-desc J_deliverDesc"> 我们将尽快为您发货 </p>
+                           <div class="order-status" th:if="${order.status == 1}">未付款</div>
+                           <div class="order-status" th:if="${order.status == 2}">待发货</div>
+                           <div class="order-status" th:if="${order.status == 3}">已关闭</div>
+                           <div class="order-status" th:if="${order.status == 4}">待收货</div>
+                           <div class="order-status" th:if="${order.status == 5}">待评价</div>
+                           <div class="order-status" th:if="${order.status == 6}">已完成</div>
+                            <p class="order-desc J_deliverDesc" th:if="${order.status == 2}"> 我们将尽快为您发货 </p>
                       </div>
                       <table class="order-detail-table">
                         <thead>
                         <tr>
                           <th class="col-main"> <p class="caption-info">
                             <span th:text="${order.createTime}"></span>
-                            <span class="sep">|</span>张三<span class="sep">|</span>订单号： <a th:href="'../order/detail?id='+${order.id}" th:text="${order.id}">1234556789</a><span class="sep">|</span>在线支付</p>
+                            <span class="sep">|</span >张三<span class="sep">|</span>订单号： <a th:href="'../order/detail?id='+${order.id}" th:text="${order.id}">1234556789</a><span class="sep">|</span>在线支付</p>
                           </th>
                           <th class="col-sub"> <p class="caption-price">订单金额：<span class="num" th:text="${order.amount}">1999</span>元</p>
                           </th>
@@ -98,7 +92,7 @@
                               </li>
                           </ul></td>
                           <td class="order-actions">
-                              <a class="btn btn-small btn-primary" th:href="'../order/orderSuccess?id='+${order.id}" target="_blank">立即支付</a>
+                              <a class="btn btn-small btn-primary" th:if="${order.status == 1}" th:href="'../order/orderSuccess?id='+${order.id}" target="_blank">立即支付</a>
                               <a class="btn btn-small btn-line-gray" th:href="'../order/detail?id='+${order.id}" >订单详情</a></td>
                         </tr>
                         </tbody>
@@ -117,14 +111,11 @@
   </div>
 </div>
 </div>
-<!--<div th:replace="common/site_footer :: div">
-</div>-->
-
 <div id="site-footer"></div>
 </body>
 
 
-<script src="/common/bootstrap/js/bootstrap.min.js"></script>
-<script src="/os/js/zySearch.js"></script>
-<script src="/os/js/jump.js"></script>
+<script src="../common/bootstrap/js/bootstrap.min.js"></script>
+<script src="../os/js/zySearch.js"></script>
+<script src="../os/js/jump.js"></script>
 </html>

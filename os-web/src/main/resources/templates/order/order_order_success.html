@@ -11,7 +11,7 @@
 <div class="site-header site-mini-header">
   <div class="container">
     <div class="header-logo">
-      <a class="logo ir" href="https://www.mi.com/index.html" title="小米官网"  >小米官网</a>
+      <a class="logo ir" href="../" title="小米官网"  >小米官网</a>
     </div>
     <div class="header-title has-more" id="J_miniHeaderTitle">
       <h2>我的购物车</h2>
@@ -42,6 +42,7 @@
           <div class="fl">
             <h2 class="title">订单提交成功！去付款咯～</h2>
             <p class="order-time" id="J_deliverDesc">我们将尽快为您发货</p>
+              <input type="hidden" id="J_id" th:value="${order.id}"/>
             <p class="order-time">请在<span class="pay-time-tip">23小时55分</span>内完成支付, 超时后将取消订单</p>
             <p class="post-info" id="J_postInfo" th:text="'收货信息：'+${order.orderAddress.username} +'  '+${order.orderAddress.userPhone} +'  '+${order.orderAddress.userAddr}"> </p>
           </div>
@@ -236,18 +237,16 @@
     </form>
   </div>
 </div>
-<myfooter>
     <script src="../common/jquery/jquery-3.2.0.min.js"></script>
+    <script src="/common/jquery/jquery.cookie.js"></script>
     <!-- layer javascript -->
     <script src="../common/layer/layer.js"></script>
-    <script src="../os/js/order.js"></script>
 
-</myfooter>
-<script type="javascript">
+<script>
     setUserName();
     function setUserName(){
         var cookie = $.cookie('userJwt');
-        if(cookie !== null){
+        if(cookie !== null && cookie !== undefined){
             var strs = cookie.split('.');
             if(strs !== null && strs.length === 3){
                 var credential = eval('('+window.atob(strs[1])+')');
@@ -257,12 +256,38 @@
                     var username = credential.username;
                     $('#J_username').text(username);
                 }else{
+                    console.log('3');
                     $('#J_username').text('请登录');
                 }
 
             }
         }
     }
+    //模拟付款
+    $('#J_weixin').click(function () {
+        $.ajax({
+            url:'../order/pay',
+            method:'post',
+            data:{
+                id:$('#J_id').val()
+            },
+            dataType:'json',
+            success:function(result){
+                if(result.status === 'SUCCESS'){
+                    layer.msg("付款成功,即将返回订单列表", {
+                        icon : 1,
+                        time : 2000
+                    },function(){
+                        //window.location.href = '../order/list'
+                    });
+                }else{
+                    layer.msg(result.errMsg, {
+                        icon : 2
+                    });
+                }
+            }
+        });
+    });
 </script>
 </body>
 </html>

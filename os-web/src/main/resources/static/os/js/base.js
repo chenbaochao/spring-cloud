@@ -136,7 +136,7 @@ function showsectime() {
  */
 function isLogin(){
     var cookie = $.cookie('userJwt');
-    if(cookie !== null){
+    if(cookie !== null && cookie !== undefined){
         var strs = cookie.split('.');
         if(strs !== null && strs.length === 3){
         	var credential = eval('('+window.atob(strs[1])+')');

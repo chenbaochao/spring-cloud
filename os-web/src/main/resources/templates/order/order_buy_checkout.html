@@ -3,7 +3,6 @@
 <head>
     <title>填写订单信息</title>
     <link rel="stylesheet" href="../os/css/address.css">
-    <link rel="stylesheet" href="../os/area/css/select2.css" />
     <link rel="stylesheet" href="../os/css/checkout.css">
     <link rel="stylesheet" href="../os/css/checkout.min.css">
     <link rel="stylesheet" href="../common/bootstrap/css/bootstrap.min.css" />
@@ -46,7 +45,8 @@
                     <h3 class="title">收货地址</h3>
                 </div>
                 <div class="section-body clearfix" id="J_addressList">
-                      <div class="address-item J_addressItem" th:each="address:${userAddresses}" th:attr="data-address_id=${address.id}">
+                      <div class="address-item J_addressItem" th:each="address:${userAddresses}"
+                           th:attr="data-address-id=${address.id},data-zipcode=${address.zipcode},data-username=${address.username},data-userPhone=${address.userPhone},data-userAddress=${address.userAddress}" >
                         <dl>
                           <dt> <span class="tag" th:text="${address.zipcode}">644888</span> <em class="uname" th:text="${address.username}">张三</em> </dt>
                           <dd class="utel" th:text="${address.userPhone}"> 138xxxxxxxxx </dd>
@@ -82,12 +82,13 @@
                                 <label class="input-label" for="zipcode">邮政编码</label>
                                 <input class="input-text J_addressInput" type="text" id="zipcode" name="user_zipcode">
                             </div>
+                            <input type="hidden" id="addressId" value="0"/>
                             <div class="form-section form-tip-msg clearfix" id="J_formTipMsg"></div>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <a href="javascript:void(0);" class="btn btn-primary" id="J_editAddressSave" >保存</a>
-                        <a href="javascript:Close()" class="btn btn-gray" data-toggle="modal" data-stat-id="534a9d14be886f2f" >取消</a>
+                        <a href="javascript:void(0);" class="btn btn-primary" id="J_Save" >保存</a>
+                        <a href="javascript:Close()" class="btn btn-gray" data-toggle="modal"  >取消</a>
                     </div>
                 </div>
                 <!--点击弹出新增/收货地址界面end-->
@@ -199,13 +200,10 @@
 </div>
 <myfooter>
     <script src="../common/jquery/jquery-3.2.0.min.js"></script>
+    <script src="/common/jquery/jquery.cookie.js"></script>
     <!-- layer javascript -->
     <script src="../common/layer/layer.js"></script>
     <!-- 地址选择 -->
-    <script src="../os/area/js/area.js"></script>
-    <script src="../os/area/js/location.js"></script>
-    <script src="../os/area/js/select2.js"></script>
-    <script src="../os/area/js/select2_locale_zh-CN.js"></script>
     <script src="../os/js/address.js"></script>
     <script src="../os/js/checkout.js"></script>
 </myfooter>

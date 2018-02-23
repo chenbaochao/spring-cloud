@@ -4,6 +4,7 @@ import com.play001.cloud.os.service.CartService;
 import com.play001.cloud.os.service.OrderService;
 import com.play001.cloud.os.service.UserAddressService;
 import com.play001.cloud.support.entity.IException;
+import com.play001.cloud.support.entity.Order;
 import com.play001.cloud.support.entity.ResponseEntity;
 import com.play001.cloud.support.entity.user.ShopCart;
 import com.play001.cloud.support.entity.user.UserAddress;
@@ -57,14 +58,17 @@ public class OrderController {
      */
     @RequestMapping(value = "/orderSuccess", method = RequestMethod.GET)
     public String orderSuccess(Long id, @CookieValue("userJwt") String userJwt, Model model) throws IException {
-        model.addAttribute("order", orderService.findById(id, userJwt));
+        Order order = orderService.findById(id, userJwt);
+        if(!order.getStatus().equals(Order.STATUS_UN_PAY)){
+            throw new IException("订单状态错误");
+        }
+        model.addAttribute("order", order);
         return "order/order_order_success";
     }
 
    @RequestMapping(value = "/list", method = RequestMethod.GET)
     public String list(Integer pageNo, Integer type, Model model, @CookieValue("userJwt")String userJwt) throws IException {
-
         orderService.list(type, model, pageNo, userJwt);
-        return "user/user_order_list";
+        return "usercenter/user_order_list";
    }
 }

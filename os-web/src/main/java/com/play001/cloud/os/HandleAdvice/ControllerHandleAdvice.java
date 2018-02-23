@@ -32,11 +32,10 @@ public class ControllerHandleAdvice {
         ResponseEntity<String> responseEntityMsg = new ResponseEntity<>();
         responseEntityMsg.setStatus(ResponseEntity.ERROR);
         if(e instanceof IException){
-            responseEntityMsg.setErrMsg(e.getMessage());
+            model.addAttribute("message", e.getMessage());
         }else{
-            responseEntityMsg.setErrMsg("出错啦");
+            model.addAttribute("message", "出错啦");
         }
-        model.addAttribute("response", responseEntityMsg);
-        return "message";
+        return "common/message";
     }
 }

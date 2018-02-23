@@ -77,6 +77,7 @@ $(function() {
 			layer.alert("请选择地址！", {
 				icon : 2
 			});
+			return ;
 		}
 		var cartId = [];
 		$('[name="cartId"]').each(function(){
@@ -86,6 +87,7 @@ $(function() {
             layer.alert("出错了,请刷新重试", {
                 icon : 2
             });
+            return ;
         }
 
 		$.ajax({
@@ -98,7 +100,7 @@ $(function() {
             },
 			success : function(result) {
 				if (result.status === 'SUCCESS') {
-					window.location.href = '/order/detail?id=' + result.message;
+					window.location.href = '/order/orderSuccess?id=' + result.message;
 				} else {
 					layer.alert(result.errMsg, {
 						icon : 2

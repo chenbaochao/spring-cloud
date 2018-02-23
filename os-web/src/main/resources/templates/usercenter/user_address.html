@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>填写订单信息</title>
+    <link rel="stylesheet" href="../os/css/base.min.css">
+    <link rel="stylesheet" type="text/css" href="../os/css/main.css">
+    <script src="../common/jquery/jquery-3.2.0.min.js"></script>
+    <script src="../os/js/base.js"></script>
+    <script src="../common/jquery/jquery.cookie.js"></script>
+    <script src="../os/js/userPortal.js"></script>
+</head>
+<body>
+<div id="site-topBar"></div>
+<div id="site-header"></div>
+
+<div class="breadcrumbs">
+    <div class="container">
+        <a href="">首页</a><span class="sep">&gt;
+		</span><span>个人中心</span>
+    </div>
+</div>
+
+
+
+<div class="page-main user-main">
+    <div class="container">
+        <div class="row">
+            <!-- 左边菜单栏 -->
+            <div th:replace="usercenter/left :: div"></div>
+            <div class="span16">
+                <div class="uc-box uc-main-box">
+                    <div class="uc-content-box portal-content-box">
+                        <div class="box-bd">
+                             <div class="section section-address">
+                                 <div class="section-header clearfix">
+                                     <h3 class="title">收货地址</h3>
+                                 </div>
+                                <div class="section-body clearfix" id="J_addressList">
+                                    <div class="address-item J_addressItem" th:each="address:${addresses}"  style="float: left"
+                                         th:attr="data-address-id=${address.id},data-zipcode=${address.zipcode},data-username=${address.username},data-userPhone=${address.userPhone},data-userAddress=${address.userAddress}" >
+                                        <dl>
+                                            <dt> <span class="tag" th:text="${address.zipcode}">644888</span> <em class="uname" th:text="${address.username}">张三</em> </dt>
+                                            <dd class="utel" th:text="${address.userPhone}"> 138xxxxxxxxx </dd>
+                                            <dd class="uaddress" th:text="${address.userAddress}"> 四川省成都市XXXXX</dd>
+                                        </dl>
+                                        <div class="actions">
+                                            <a href="javascript:void(0);" class="modify J_addressModify">修改</a>
+                                            <a class="modify J_addressDel" href="javascript:void(0);"  th:attr="data-id=${address.id}" onclick="del(this)">删除</a>
+                                        </div>
+                                    </div>
+                                    <div class="address-item address-item-new" id="J_newAddress" style="clear: both">
+                                        <i class="iconfont"></i> 添加新地址
+                                    </div>
+                                </div>
+                                <!--点击弹出新增/收货地址界面start-->
+                                <div class="modal modal-hide fade modal-edit-address in" id="J_modalEditAddress" style="display: none;" aria-hidden="false">
+                                    <div class="modal-header">
+                                        <span class="title">添加收货地址</span>
+                                        <a class="close" data-dismiss="modal" href="javascript: void(0);"  id="J_cancel"><i class="iconfont"></i></a>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="form-box clearfix">
+                                            <div class="form-section form-name form-section-active form-section-valid">
+                                                <label class="input-label" for="username">姓名</label>
+                                                <input class="input-text J_addressInput" type="text" id="username"  placeholder="收货人姓名">
+                                            </div>
+                                            <div class="form-section form-phone form-section-active form-section-valid">
+                                                <label class="input-label" for="userPhone">手机号</label>
+                                                <input class="input-text J_addressInput" type="text" id="userPhone" placeholder="158****2222">
+                                            </div>
+                                            <div class="form-section form-address-detail form-section-active form-section-valid">
+                                                <label class="input-label" for="userAddress">详细地址</label>
+                                                <textarea class="input-text J_addressInput" rows="3" type="text" id="userAddress"  placeholder="详细地址，路名或街道名称，门牌号"></textarea>
+                                            </div>
+                                            <div class="form-section form-zipcode form-section-active form-section-valid">
+                                                <label class="input-label" for="zipcode">邮政编码</label>
+                                                <input class="input-text J_addressInput" type="text" id="zipcode" >
+                                            </div>
+                                            <input type="hidden" id="addressId" value="0"/>
+                                            <div class="form-section form-tip-msg clearfix" id="J_formTipMsg"></div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <a href="javascript:void(0);" class="btn btn-primary" id="J_save" >保存</a>
+                                        <a href="javascript:Close()" class="btn btn-gray" data-toggle="modal" data-stat-id="534a9d14be886f2f" >取消</a>
+                                    </div>
+                                </div>
+                                <!--点击弹出新增/收货地址界面end-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<myfooter>
+    <script src="../common/jquery/jquery-3.2.0.min.js"></script>
+    <!-- layer javascript -->
+    <script src="../common/layer/layer.js"></script>
+    <!-- 地址选择 -->
+    <script src="../os/js/address.js"></script>
+</myfooter>
+</body>
+</html>

@@ -23,7 +23,7 @@ public class NavigationService {
     public List<NavigationBar> getTopBarNavigationBars() throws IException {
         ResponseEntity<List<NavigationBar>> responseEntity = navigationMapper.getTopBarNavigationBars();
         if(Objects.equals(responseEntity.getStatus(), ResponseEntity.ERROR)){
-            throw  new IException(responseEntity.getErrMsg());
+            throw new IException(responseEntity.getErrMsg());
         }
         return responseEntity.getMessage();
     }

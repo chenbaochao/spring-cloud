@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RestController
 @RequestMapping(value = "/order")
 public class OrderRestController {
@@ -23,9 +26,18 @@ public class OrderRestController {
      *  返回订单Id
      */
     @RequestMapping(value = "/order", method = RequestMethod.POST)
-    public ResponseEntity<Long> checkout(Long cartId[], @CookieValue("userJwt") String userJwt, Long addressId ) throws IException {
+    public ResponseEntity<Long> checkout(@RequestParam(value = "cartId[]")ArrayList<Long>cartId, @CookieValue("userJwt") String userJwt,@RequestParam(value = "addressId") Long addressId ) throws IException {
         return orderService.order(cartId, userJwt, addressId);
     }
 
+    /**
+     * 模拟付款
+     * @param id 订单id
+
+     */
+    @RequestMapping(value = "/pay", method = RequestMethod.POST)
+    public ResponseEntity<Integer> pay(Long id, @CookieValue("userJwt")String userJwt){
+        return orderService.pay(id, userJwt);
+    }
 
 }

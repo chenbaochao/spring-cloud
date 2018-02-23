@@ -23,4 +23,16 @@ public class UserAddressService {
         }
         return responseEntity.getMessage();
     }
+
+    public ResponseEntity<Integer> add(UserAddress userAddress, String userJwt) {
+        return userAddressMapper.add(userAddress, userJwt);
+    }
+
+    public ResponseEntity<Integer> update(UserAddress userAddress, String userJwt) {
+        return userAddressMapper.update(userAddress, userJwt);
+    }
+
+    public ResponseEntity<Integer> delete(Long id, String userJwt) {
+        return userAddressMapper.delete(id, userJwt);
+    }
 }
