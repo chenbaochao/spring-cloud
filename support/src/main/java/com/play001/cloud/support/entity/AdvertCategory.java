@@ -1,11 +1,13 @@
 package com.play001.cloud.support.entity;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 /**
  * 广告分类
  */
 public class AdvertCategory implements Serializable {
+    @NotNull
     private Integer id;
     private String name;
     private String description;

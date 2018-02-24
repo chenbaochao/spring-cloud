@@ -1,5 +1,8 @@
 package com.play001.cloud.support.entity;
 
+import org.hibernate.validator.constraints.NotBlank;
+
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 /**
@@ -10,16 +13,22 @@ public class Advert implements Serializable{
     /**
      * 广告分类ID,共同属性
      */
-    private Integer advertCategoryId;
+    @NotNull
+    private AdvertCategory advertCategory;
     /**
      * 首页sectionID,部分属性
      */
-    private Integer sectionId;
+    private Section section;
+    @NotBlank
     private String title;
+    @NotNull
     private Integer sort;
+    @NotBlank
     private String href;
+    @NotBlank
     private String showPic;
-
+    @NotNull
+    private Byte status;
     public Integer getId() {
         return id;
     }
@@ -28,21 +37,20 @@ public class Advert implements Serializable{
         this.id = id;
     }
 
-    public Integer getAdvertCategoryId() {
-        return advertCategoryId;
+    public AdvertCategory getAdvertCategory() {
+        return advertCategory;
     }
 
-    public void setAdvertCategoryId(Integer advertCategoryId) {
-        this.advertCategoryId = advertCategoryId;
+    public void setAdvertCategory(AdvertCategory advertCategory) {
+        this.advertCategory = advertCategory;
     }
 
-
-    public Integer getSectionId() {
-        return sectionId;
+    public Section getSection() {
+        return section;
     }
 
-    public void setSectionId(Integer sectionId) {
-        this.sectionId = sectionId;
+    public void setSection(Section section) {
+        this.section = section;
     }
 
     public String getTitle() {
@@ -75,5 +83,13 @@ public class Advert implements Serializable{
 
     public void setShowPic(String showPic) {
         this.showPic = showPic;
+    }
+
+    public Byte getStatus() {
+        return status;
+    }
+
+    public void setStatus(Byte status) {
+        this.status = status;
     }
 }
