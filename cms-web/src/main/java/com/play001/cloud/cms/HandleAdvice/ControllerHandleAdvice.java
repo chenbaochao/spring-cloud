@@ -31,6 +31,6 @@ public class ControllerHandleAdvice {
         }else{
             model.addAttribute("message","未知错误");
         }
-        return "message";
+        return "common/message";
     }
 }

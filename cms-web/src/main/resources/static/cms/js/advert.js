@@ -2,21 +2,18 @@
  * 进行格式转换
  */
 function statusFormatter(value) {
-	if (value == 1) {
+	if (value === 1) {
 		return '<span class="label label-primary">显示</span>'
-	} else if (value == 0) {
+	} else if (value === 0) {
 		return '<span class="label label-danger">隐藏</span>'
 	}
 }
-function timeFormatter(value) {
-	return new Date(value).Format("yyyy-MM-dd HH:mm:ss");
-}
 function picImgFormatter(value, row) {
-	return '<a href="' + imagelocation + '/' + row.picImg + '" target="_blank" title="' + row.title + '">' + value + '</a>';
+	return '<a href="' + value + '" target="_blank" title="' + row.title + '">' + value + '</a>';
 }
 
 function actionFormatter(value, row, index) {
-	if (row.status == 1) {
+	if (row.status === 1) {
 		return [
 			'<a class="freeze m-r-sm text-info" href="javascript:void(0)" title="隐藏">',
 			'<i class="glyphicon glyphicon-pause"></i>',
@@ -45,40 +42,39 @@ function actionFormatter(value, row, index) {
 
 window.actionEvents = {
 	'click .freeze' : function(e, value, row, index) {
-		var url = $('#table').attr('data-url');
-		status_stop(index, row.advertDetailId, url);
+		status_stop(index, row.id);
 	},
 	'click .normal' : function(e, value, row, index) {
-		var url = $('#table').attr('data-url');
-		status_start(index, row.advertDetailId, url);
+		status_start(index, row.id);
 	},
 	'click .edit' : function(e, value, row, index) {
-		var url = $('#table').attr('data-url');
-		layer_show(row.title, url + row.advertDetailId + '/edit', 900, 650)
+		layer_show(row.title, '../advert/update?id=' + row.id , 900, 650)
 	},
 	'click .remove' : function(e, value, row, index) {
-		var url = $('#table').attr('data-url');
-		admin_delete(index, row.advertDetailId, url);
+		admin_delete(index, row.id);
 	},
 };
 
 /**
  * 隐藏广告详情
  */
-function status_stop(index, value, url) {
+function status_stop(index, value) {
 	layer.confirm('确认要隐藏该广告详情吗？', {
 		btn : [ '确定', '取消' ] //按钮
 	}, function() {
 		$.ajax({
 			dataType : 'json',
-			type : 'put',
-			url : url + value + '/audit',
+			type : 'post',
+            data:{
+			  id:value
+            },
+			url : '../advert/setInvalid',
 			success : function(result) {
-				if (result.code == 1) {
+				if (result.status === 'SUCCESS') {
 					$('#table').bootstrapTable('updateRow', {
 						index : index,
 						row : {
-							status : 0,
+							status : 0
 						}
 					});
 					layer.msg('该导航隐藏栏成功!', {
@@ -86,7 +82,7 @@ function status_stop(index, value, url) {
 						time : 1000
 					});
 				} else {
-					layer.alert(result.message, {
+					layer.alert(result.errMsg, {
 						icon : 2
 					});
 				}
@@ -98,20 +94,23 @@ function status_stop(index, value, url) {
 /**
  * 显示广告详情
  */
-function status_start(index, value, url) {
+function status_start(index, value) {
 	layer.confirm('确认要显示该广告详情吗？', {
 		btn : [ '确定', '取消' ] //按钮
 	}, function() {
 		$.ajax({
 			dataType : 'json',
-			type : 'put',
-			url : url + value + '/audit',
+			type : 'post',
+            data:{
+                id:value
+            },
+            url : '../advert/setValid',
 			success : function(result) {
-				if (result.code == 1) {
+				if (result.status === 'SUCCESS') {
 					$('#table').bootstrapTable('updateRow', {
 						index : index,
 						row : {
-							status : 1,
+							status : 1
 						}
 					});
 					layer.msg('该导航显示栏成功!', {
@@ -119,7 +118,7 @@ function status_start(index, value, url) {
 						time : 1000
 					});
 				} else {
-					layer.alert(result.message, {
+					layer.alert(result.errMsg, {
 						icon : 2
 					});
 				}
@@ -129,18 +128,21 @@ function status_start(index, value, url) {
 }
 
 /**
- * 删除导航
+ * 删除广告
  */
-function admin_delete(index, value, url) {
+function admin_delete(index, value) {
 	layer.confirm('确认要删除该广告详情吗？', {
 		btn : [ '确定', '取消' ] //按钮
 	}, function() {
 		$.ajax({
-			type : 'delete',
+			type : 'post',
 			dataType : 'json',
-			url : url + value,
+            data:{
+			    id:value
+            },
+			url : '../advert/delete',
 			success : function(result) {
-				if (result.code == 1) {
+				if (result.status === 'SUCCESS') {
 					$('#table').bootstrapTable('hideRow', {
 						index : index
 					});
@@ -149,11 +151,16 @@ function admin_delete(index, value, url) {
 						time : 1000
 					});
 				} else {
-					layer.alert(result.message, {
+					layer.alert(result.errMsg, {
 						icon : 2
 					});
 				}
-			}
+			},
+            error:function(){
+                layer.alert('网络繁忙,请重试', {
+                    icon : 2
+                });
+            }
 		})
 	});
 }
@@ -181,9 +188,9 @@ $(function() {
  * 查看按钮
  */
 $(function() {
-	$('.view-button').on("click", function() {
-		if ($('input[name="picImg"]').val() != null && $('input[name="picImg"]').val() != "") {
-			window.open(imagelocation + '/' + $('input[name="picImg"]').val());
+	$('#view').on("click", function() {
+		if ($('input[name="showPic"]').val() != null && $('input[name="showPic"]').val() != "") {
+			window.open($('input[name="showPic"]').val());
 		}
 	})
 })
@@ -192,32 +199,36 @@ $(function() {
  * 图片上传
  */
 $(function() {
-	$('.storage-button').on("click", function() {
+	$('#upload').on("click", function() {
 		var formData = new FormData();
-		var formData = new FormData();
-		formData.append('advert_file', $('input[type="file"]')[0].files[0]);
+		formData.append('upFile', $('input[type="file"]')[0].files[0]);
 		$.ajax({
-			url : baselocation + '/uploads/advert',
+			url : '../ueditor/uploadImage',
 			type : 'post',
 			cache : false,
 			data : formData,
 			processData : false, //因为data值是FormData对象,不需要对数据做处理
 			contentType : false, //因为是由<form>表单构造的FormData对象,且已经声明了属性enctype="multipart/form-data",所以这里设置为false
 			success : function(result) {
-				if (result.code == 1) {
+				if (result.state === 'SUCCESS') {
 					parent.layer.msg("图片上传成功!", {
 						shade : 0.3,
 						time : 1500
 					});
-					$('input[name="picImg"]').val(result.data);
+					$('input[name="showPic"]').val(result.url);
 					$('.view-button').show();
 				} else {
-					layer.msg(result.message, {
+					layer.msg('出错了', {
 						icon : 2,
 						time : 1000
 					});
 				}
-			}
+			},
+            error:function(){
+                layer.alert('网络繁忙,请重试', {
+                    icon : 2
+                });
+            }
 		});
 	})
 })
@@ -274,19 +285,16 @@ $(function() {
 			// Get the form instance
 			var $form = $(e.target);
 
-			// Get the BootstrapValidator instance
-			var bv = $form.data('bootstrapValidator');
-
-			var method = $('#form').attr('data-method');
+			var action = $('#form').attr('data-action');
 			// Use Ajax to submit form data
-			if (method == 'put') {
+			if (action === 'update') {
 				$.ajax({
 					data : $form.serialize(),
 					dataType : 'json',
-					type : 'put',
+					type : 'post',
 					url : $form.attr('action'),
 					success : function(result) {
-						if (result.code == 1) {
+						if (result.status === 'SUCCESS') {
 							parent.layer.msg("更新广告详情成功!", {
 								shade : 0.3,
 								time : 1500
@@ -294,21 +302,26 @@ $(function() {
 								window.parent.location.reload(); // 刷新父页面
 							});
 						} else {
-							layer.msg(result.message, {
+							layer.msg(result.errMsg, {
 								icon : 2,
 								time : 1000
 							});
 						}
-					}
+					},
+                    error:function(){
+                        layer.alert('网络繁忙,请重试', {
+                            icon : 2
+                        });
+                    }
 				})
-			} else if (method == 'post') {
+			} else {
 				$.ajax({
 					data : $form.serialize(),
 					dataType : 'json',
 					type : 'post',
-					url : $form.attr('action'),
+					url : '../advert/add',
 					success : function(result) {
-						if (result.code == 1) {
+						if (result.status === 'SUCCESS') {
 							parent.layer.msg("创建广告详情成功!", {
 								shade : 0.3,
 								time : 1500
@@ -316,12 +329,17 @@ $(function() {
 								window.parent.location.reload(); // 刷新父页面
 							});
 						} else {
-							layer.msg(result.message, {
+							layer.msg(result.errMsg, {
 								icon : 2,
 								time : 1000
 							});
 						}
-					}
+					},
+                    error:function(){
+                        layer.alert('网络繁忙,请重试', {
+                            icon : 2
+                        });
+                    }
 				})
 			}
 		});

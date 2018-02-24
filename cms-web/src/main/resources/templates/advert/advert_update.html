@@ -1,0 +1,135 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>编辑广告</title>
+    <link rel="stylesheet" href="../common/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" />
+    <link rel="stylesheet" href="../common/icheck/flat/green.css" />
+    <link rel="stylesheet" href="../common/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../common/font-awesome/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="../cms/css/animate.css" />
+    <link rel="stylesheet" href="../cms/css/style.css" />
+  <script src="../common/jquery/jquery-3.2.0.min.js"></script>
+</head>
+
+<body class="gray-bg">
+<div class="wrapper wrapper-content">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="ibox float-e-margins">
+        <div class="ibox-title">
+          <h5>编辑广告<small> 广告详情信息时应当遵循合法、正当、必要的原则，明示目的、方式和范围。</small></h5>
+          <div class="ibox-tools"> <a class="collapse-link"><i class="fa fa-chevron-up"></i></a> <a class="close-link"><i class="fa fa-times"></i></a> </div>
+        </div>
+        <div class="ibox-content">
+          <form id="form" class="form-horizontal"  data-action="update">
+            <div class="form-group m-t">
+              <label class="col-sm-2 col-xs-offset-1 control-label">广告位名称：</label>
+              <div class="col-sm-7">
+                  <input type="hidden" th:value="${advert.id}"  name="id"/>
+                  <input type="hidden" th:value="${advert.advertCategory.id}"  name="advertCategory.id"/>
+                  <input type="text" disabled="" th:placeholder="${advert.advertCategory.name}" class="form-control">
+              </div>
+            </div>
+          <div class="hr-line-dashed" th:if="${advert.advertCategory.id == 3}"></div>
+          <div class="form-group" th:if="${advert.advertCategory.id == 3}">
+              <label class="col-sm-2 col-xs-offset-1 control-label">分类栏目：</label>
+              <div class="col-sm-7">
+                  <select name="section.id" class="form-control">
+                      <option th:each="section:${sections}" th:value="${section.id}" th:text="${section.name}" th:selected="${advert.section.id eq section.id}"></option>
+                  </select>
+              </div>
+          </div>
+            <div class="hr-line-dashed"></div>
+            <div class="form-group">
+              <label class="col-sm-2 col-xs-offset-1 control-label">广告标题：</label>
+              <div class="col-sm-7">
+                <input type="text" class="form-control" name="title" th:value="${advert.title}">
+              </div>
+            </div>
+            <div class="hr-line-dashed"></div>
+            <div class="form-group">
+              <label class="col-sm-2 col-xs-offset-1 control-label">排序：</label>
+              <div class="col-sm-7">
+                <input type="text" class="form-control" name="sort" th:value="${advert.sort}">
+              </div>
+            </div>
+            <div class="hr-line-dashed"></div>
+              <div class="form-group">
+                <label class="col-sm-2 col-xs-offset-1 control-label">链接地址：</label>
+                <div class="col-sm-7">
+                  <input type="text" class="form-control" name="href" th:value="${advert.href}">
+                </div>
+              </div>
+              <div class="hr-line-dashed"></div>
+              <div class="form-group">
+                <label class="col-sm-2 col-xs-offset-1 control-label">展示图片：</label>
+                <div class="col-sm-7">
+                  <input type="text" class="form-control" name="showPic" th:value="${advert.showPic}">
+                </div>
+                <a class="btn btn-info view-button" id="view"> <i class="fa fa-image"> </i> 查看 </a>
+              </div>
+              <div class="form-group">
+                <div class="col-sm-7 col-xs-offset-3">
+                  <input type="file" class="form-control">
+                </div>
+                <button class="btn btn-success upload-button" type="button" id="upload"><i class="fa fa-upload"></i>&nbsp;&nbsp;<span class="bold">上传</span> </button>
+              </div>
+              <div class="hr-line-dashed"></div>
+
+            <div class="form-group">
+              <label class="col-sm-2 col-xs-offset-1 control-label">是否显示：</label>
+              <div class="col-sm-9">
+                <label class="radio-inline">
+                  <input type="radio" name="status" value="1" th:checked="${advert.status==1?true:false}">
+                  显示</label>
+                <label class="radio-inline">
+                  <input type="radio" name="status" value="0" th:checked="${advert.status==0?true:false}">
+                  隐藏</label>
+                <label class="radio-inline status-tip"><strong>提示：</strong> 状态</label>
+              </div>
+            </div>
+            <div class="hr-line-dashed"></div>
+            <div class="form-group">
+              <div class="col-sm-12 text-center">
+                <button class="btn btn-primary" type="submit">提交</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<myfooter>
+  <!-- layer弹出框js -->
+  <script src="../common/layer/layer.js"></script>
+  <script src="../common/particleground/js/jquery.particleground.min.js"></script>
+  <!-- iCheck -->
+  <script src="../common/icheck/icheck.min.js"></script>
+  <!-- bootstrapvalidator-master前端验证框架 -->
+  <script src="../common/bootstrapvalidator/js/bootstrapValidator.min.js"></script>
+
+  <!-- 全局js -->
+  <script src="../common/bootstrap/js/bootstrap.min.js"></script>
+  <script src="../common/metismenu/metisMenu.min.js"></script>
+  <script src="../common/slimscroll/jquery.slimscroll.min.js"></script>
+  <!-- 自定义js -->
+  <script src="../cms/js/hplus.js"></script>
+  <script src="../cms/js/contabs.js"></script>
+  <script src="../cms/js/content.js"></script>
+  <!-- 自定义js -->
+  <script src="../cms/js/advert.js"></script>
+  <script type="text/javascript">
+/*    $(".form_datetime").datetimepicker({
+    	language:  'zh-CN',
+        format: "yyyy-mm-dd hh:ii:ss",
+        autoclose: true,
+        todayBtn: true,
+        minuteStep: 10,
+        pickerPosition: 'bottom-left',
+    });*/
+ /*   $('input[type="file"]').prettyFile();*/
+  </script> 
+</myfooter>
+</body>
+</html>
