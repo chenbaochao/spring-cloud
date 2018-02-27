@@ -2,7 +2,7 @@ package com.play001.cloud.support.api.mapper;
 
 import com.play001.cloud.support.api.mapper.fallback.DefaultFallbackFactory;
 import com.play001.cloud.support.entity.Category;
-import com.play001.cloud.support.entity.product.Product;
+import com.play001.cloud.support.entity.Product;
 import com.play001.cloud.support.entity.ResponseEntity;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.RequestBody;

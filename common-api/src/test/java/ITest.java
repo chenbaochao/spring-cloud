@@ -10,23 +10,32 @@ import java.util.Date;
 
 public class ITest {
 
-    private static final BASE64Decoder base64Decoder = new BASE64Decoder();
-    private static final BASE64Encoder base64Encoder  = new BASE64Encoder();
-    @Test
-    public void iTest() throws IOException {
-        byte b = -1;
-        System.out.println(b);
+    public static void main(String[] args)
+    {
+        //staticFunction();
     }
 
-    public static void main(String[] args) {
-        for(int i= 0;i<100;i++){
-            for(int j= 0;j<100;j++){
-                new Thread(()->{
-                    System.out.println( DateUtil.getTime());
-                }
-                ).start();
-            }
+    static ITest st = new ITest();
 
-        }
+    static
+    {
+        System.out.println("1");
     }
+    {
+        System.out.println("2");
+    }
+
+    ITest()
+    {
+        System.out.println("3");
+        System.out.println("a="+a+",b="+b);
+    }
+
+    private static void staticFunction(){
+        System.out.println("4");
+    }
+
+    int a=110;
+    static int b =112;
+
 }
