@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.Arrays;
 
 /**
- * BootStarp-fileInput 上传文件返回信息
+ * BootStarp-fileInput 上传文件返回类
  */
 public class UploadImageResponse implements Serializable {
 
@@ -17,7 +17,7 @@ public class UploadImageResponse implements Serializable {
     public UploadImageResponse() {
         initialPreview = new String[1];
         initialPreviewConfig = new InitialPreviewConfig[1];
-        initialPreviewConfig[0] = new InitialPreviewConfig();
+        initialPreviewConfig = new InitialPreviewConfig[1];
     }
 
     public UploadImageResponse setError(String error) {
@@ -48,5 +48,50 @@ public class UploadImageResponse implements Serializable {
     @Override
     public String toString() {
         return new Gson().toJson(this);
+    }
+
+
+    public static class InitialPreviewConfig implements Serializable {
+        //标题
+        private String caption;
+        //宽度
+        private String width;
+        public final String url = "../delete";
+        //主键ID
+        private Long key;
+        private String extra;
+
+        public String getCaption() {
+            return caption;
+        }
+
+        public void setCaption(String caption) {
+            this.caption = caption;
+        }
+
+        public String getWidth() {
+            return width;
+        }
+
+        public void setWidth(String width) {
+            this.width = width;
+        }
+
+        public void setKey(Long key) {
+            this.key = key;
+        }
+
+        public String getExtra() {
+            return extra;
+        }
+
+        public void setExtra(String extra) {
+            this.extra = extra;
+        }
+
+        public Long getKey() {
+            return key;
+        }
+
     }
 }
