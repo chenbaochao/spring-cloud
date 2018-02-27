@@ -2,10 +2,10 @@
 import java.util.Random;
 
 public class ITest {
-    public void IT(){
-        for(int i = 0;i <200;i++){
-            System.out.println( new Random().nextInt(8999)+1000);
-        }
+
+    public void IT() throws ClassNotFoundException, IllegalAccessException, InstantiationException {
+        Class c1 = Class.forName("com.play001.cloud.support.entity.Product.Specification");
+        c1.newInstance();
 
     }
 

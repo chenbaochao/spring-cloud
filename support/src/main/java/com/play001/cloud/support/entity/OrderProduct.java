@@ -1,7 +1,5 @@
 package com.play001.cloud.support.entity;
 
-import com.play001.cloud.support.entity.product.Product;
-import com.play001.cloud.support.entity.product.Specification;
 import com.play001.cloud.support.entity.user.ShopCart;
 
 //订单详细信息

@@ -1,9 +1,8 @@
 package com.play001.cloud.support.entity.user;
 
 
-import com.play001.cloud.support.entity.Image;
-import com.play001.cloud.support.entity.product.Product;
-import com.play001.cloud.support.entity.product.Specification;
+import com.play001.cloud.support.entity.Product;
+import com.play001.cloud.support.entity.Product.Specification;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
