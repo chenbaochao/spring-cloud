@@ -1,6 +1,7 @@
 package com.play001.cloud.product.api.controller;
 
 import com.play001.cloud.product.api.serivce.CartService;
+import com.play001.cloud.support.entity.Order;
 import com.play001.cloud.support.entity.ResponseEntity;
 import com.play001.cloud.support.entity.user.ShopCart;
 import com.play001.cloud.support.entity.IException;
@@ -59,5 +60,10 @@ public class CartEndPoint {
     public ResponseEntity<ShopCart> findById(Long id, @RequestHeader("userJwt") String userJwt){
         return cartService.findById(id, userJwt);
     }
-
+    //获取待评价的订单数量
+    @UserPermissionVerify
+    @RequestMapping(value = "/getAmount", method = RequestMethod.GET)
+    public  ResponseEntity<Integer> getAmount(@RequestHeader("userJwt")String userJwt) throws IOException {
+        return cartService.getAmount(userJwt);
+    }
 }

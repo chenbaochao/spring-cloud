@@ -52,9 +52,29 @@ public class OrderEndPoint {
     public  ResponseEntity<Pagination<Order>> list(Integer pageNo, Integer type, @RequestHeader("userJwt")String userJwt) throws IException, IOException {
         return orderService.list(type, pageNo, userJwt);
     }
+    //模拟支付
     @UserPermissionVerify
     @RequestMapping(value = "/pay", method = RequestMethod.POST)
     public  ResponseEntity<Integer> pay(Long id, @RequestHeader("userJwt")String userJwt) throws IOException {
         return orderService.pay(id, userJwt);
     }
+    //获取待支付的订单数量
+    @UserPermissionVerify
+    @RequestMapping(value = "/getUnPaidOrderAmount", method = RequestMethod.GET)
+    public  ResponseEntity<Integer> getUnPaidOrderAmount(@RequestHeader("userJwt")String userJwt) throws IOException {
+        return orderService.countByStatus(Order.STATUS_UN_PAY, userJwt);
+    }
+    //获取待收货的订单数量
+    @UserPermissionVerify
+    @RequestMapping(value = "/getUnReceiveOrderAmount", method = RequestMethod.GET)
+    public  ResponseEntity<Integer> getUnReceiveOrderAmount(@RequestHeader("userJwt")String userJwt) throws IOException {
+        return orderService.countByStatus(Order.STATUS_UNRECEIVE,userJwt);
+    }
+    //获取待评价的订单数量
+    @UserPermissionVerify
+    @RequestMapping(value = "/getUnCommentOrderAmount", method = RequestMethod.GET)
+    public  ResponseEntity<Integer> getUnCommentOrderAmount(@RequestHeader("userJwt")String userJwt) throws IOException {
+        return orderService.countByStatus(Order.STATUS_UNCOMMENT,userJwt);
+    }
+
 }

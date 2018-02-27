@@ -1,6 +1,6 @@
 package com.play001.cloud.product.api.mapper;
 
-import com.play001.cloud.support.entity.product.Specification;
+import com.play001.cloud.support.entity.Product.Specification;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;

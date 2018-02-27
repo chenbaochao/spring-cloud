@@ -1,6 +1,6 @@
 package com.play001.cloud.product.api.serivce;
 
-import com.play001.cloud.support.entity.product.Product;
+import com.play001.cloud.support.entity.Product;
 import com.play001.cloud.product.api.mapper.RecommendMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

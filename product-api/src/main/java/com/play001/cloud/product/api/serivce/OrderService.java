@@ -2,15 +2,14 @@ package com.play001.cloud.product.api.serivce;
 
 import com.play001.cloud.product.api.mapper.*;
 import com.play001.cloud.support.entity.*;
-import com.play001.cloud.support.entity.product.Product;
-import com.play001.cloud.support.entity.product.Specification;
+import com.play001.cloud.support.entity.Product;
+import com.play001.cloud.support.entity.Product.Specification;
 import com.play001.cloud.support.entity.user.ShopCart;
 import com.play001.cloud.support.entity.user.User;
 import com.play001.cloud.support.entity.user.UserAddress;
 import com.play001.cloud.support.entity.user.UserCredential;
 import com.play001.cloud.support.util.DateUtil;
 import com.play001.cloud.support.util.JwtUtil;
-import com.sun.org.apache.xpath.internal.operations.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.stereotype.Service;
@@ -200,5 +199,10 @@ public class OrderService {
         }
         orderMapper.setStatus(id, Order.STATUS_PAID, userCredential.getUserId());
         return responseEntity.setStatus(ResponseEntity.SUCCESS);
+    }
+    //订单数量
+    public ResponseEntity<Integer> countByStatus(byte status, String userJwt) throws IOException {
+        UserCredential userCredential = JwtUtil.getCredentialByJwt(userJwt);
+        return new ResponseEntity<Integer>().setMessage(orderMapper.countByStatus(status, userCredential.getUserId()));
     }
 }

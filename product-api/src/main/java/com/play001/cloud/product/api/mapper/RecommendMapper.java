@@ -1,6 +1,6 @@
 package com.play001.cloud.product.api.mapper;
 
-import com.play001.cloud.support.entity.product.Product;
+import com.play001.cloud.support.entity.Product;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 

@@ -44,4 +44,8 @@ public interface CartMapper {
     @Update("update os_shop_cart set status = #{status}, product_price = #{spec.price}, product_name = #{product.name}, product_spec_name = #{spec.name}" +
             " where id = #{id}")
     void update(ShopCart shopCart);
+
+    //获取数量
+    @Select("SELECT count(id) FROM os_shop_cart WHERE user_id = #{userId}")
+    Integer getAmount(@Param("userId") Long userId);
 }

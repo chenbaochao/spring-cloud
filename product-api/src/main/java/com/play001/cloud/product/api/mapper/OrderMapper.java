@@ -25,4 +25,7 @@ public interface OrderMapper {
 
     List<Order> pagination(@Param("userId") Long userId, @Param("start")Long start, @Param("limit")Integer limit,
                            @Param("status")Integer status);
+    //订单数量
+    @Select("select count(*) from os_order where status = #{status} and user_id = #{userId}")
+    Integer countByStatus(@Param("status") Byte status, @Param("userId")Long userId);;
 }

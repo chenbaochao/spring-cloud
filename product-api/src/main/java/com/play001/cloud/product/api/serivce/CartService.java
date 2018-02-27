@@ -4,8 +4,7 @@ import com.play001.cloud.product.api.mapper.CartMapper;
 import com.play001.cloud.product.api.mapper.ProductMapper;
 import com.play001.cloud.product.api.mapper.SpecificationMapper;
 import com.play001.cloud.support.entity.*;
-import com.play001.cloud.support.entity.product.Product;
-import com.play001.cloud.support.entity.product.Specification;
+import com.play001.cloud.support.entity.Product;
 import com.play001.cloud.support.entity.user.ShopCart;
 import com.play001.cloud.support.entity.user.User;
 import com.play001.cloud.support.entity.user.UserCredential;
@@ -62,7 +61,7 @@ public class CartService {
         shopCart.setProduct(product);
         //找到对应的产品规格
         boolean flag = false;//是否找到对应的产品规格
-        for(Specification spec : product.getSpecs()){
+        for(Product.Specification spec : product.getSpecs()){
             if(spec.getId().equals(productSpecId)){
                 shopCart.setSpec(spec);
                 flag = true;
@@ -110,7 +109,7 @@ public class CartService {
                         isChange = true;
                     }
                     //服务规格是否存在
-                    Specification spec = specificationMapper.findById(cart.getSpec().getId());
+                    Product.Specification spec = specificationMapper.findById(cart.getSpec().getId());
                     if(spec == null){
                         isChange = true;
                         cart.setStatus(ShopCart.STATUS_INVALID);
@@ -158,5 +157,11 @@ public class CartService {
             e.printStackTrace();
             return responseEntity.setErrMsg("操作失败");
         }
+    }
+
+    //获取数量
+    public ResponseEntity<Integer> getAmount(String userJwt) throws IOException {
+        UserCredential userCredential = JwtUtil.getCredentialByJwt(userJwt);
+        return new ResponseEntity<Integer>().setMessage(cartMapper.getAmount(userCredential.getUserId()));
     }
 }
