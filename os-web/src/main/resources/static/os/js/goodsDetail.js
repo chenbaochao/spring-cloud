@@ -217,7 +217,7 @@ function add_cart(obj) {
 		},
 		url :  '/cart/add',
 		success : function(result) {
-			if (result.status == 'SUCCESS') {
+			if (result.status === 'SUCCESS') {
 				window.location.href =  '/cart/addSuccess?pageTitle='+encodeURI($('#goodsName').text());
 			} else {
 				layer.alert(result.errMsg, {

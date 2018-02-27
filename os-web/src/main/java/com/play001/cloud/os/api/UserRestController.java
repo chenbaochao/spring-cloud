@@ -1,4 +1,4 @@
-package com.play001.cloud.os.controller.rest;
+package com.play001.cloud.os.api;
 
 import com.play001.cloud.support.entity.ResponseEntity;
 import com.play001.cloud.support.entity.user.User;

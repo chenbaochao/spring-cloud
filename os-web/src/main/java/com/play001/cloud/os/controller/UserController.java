@@ -1,6 +1,8 @@
 package com.play001.cloud.os.controller;
 
 
+import com.play001.cloud.os.service.CartService;
+import com.play001.cloud.os.service.OrderService;
 import com.play001.cloud.os.service.UserAddressService;
 import com.play001.cloud.os.service.UserService;
 
@@ -17,10 +19,12 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping("/user")
 public class UserController {
 
-
-
+    @Autowired
+    private OrderService orderService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private CartService cartService;
 
     //登陆页面
     @RequestMapping(value = "/login", method = RequestMethod.GET)
@@ -41,6 +45,14 @@ public class UserController {
     @RequestMapping(value = "/portal", method = RequestMethod.GET)
     public String portal(Model model, @CookieValue("userJwt")String userJwt) throws Exception{
         model.addAttribute("user", userService.getInfo(userJwt));
+        //未付款订单数量
+        model.addAttribute("unPaidAmount", orderService.getUnPaidOrderAmount(userJwt));
+        //待收货订单数量
+        model.addAttribute("unReceivedAmount", orderService.getUnReceiveOrderAmount(userJwt));
+        //待评论订单数量
+        model.addAttribute("unCommentAmount", orderService.getUnCommentOrderAmount(userJwt));
+        //购物车数量
+        model.addAttribute("shopCartAmount", cartService.getAmount(userJwt));
         return "usercenter/portal";
     }
 

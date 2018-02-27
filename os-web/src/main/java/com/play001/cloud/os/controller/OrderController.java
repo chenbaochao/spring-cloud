@@ -69,6 +69,11 @@ public class OrderController {
    @RequestMapping(value = "/list", method = RequestMethod.GET)
     public String list(Integer pageNo, Integer type, Model model, @CookieValue("userJwt")String userJwt) throws IException {
         orderService.list(type, model, pageNo, userJwt);
-        return "usercenter/user_order_list";
+        return "order/order_list";
    }
+    @RequestMapping(value = "/view", method = RequestMethod.GET)
+    public String view(Long id, Model model, @CookieValue("userJwt")String userJwt) throws IException {
+        model.addAttribute("order", orderService.findById(id, userJwt));
+        return "order/order_view";
+    }
 }

@@ -1,4 +1,4 @@
-package com.play001.cloud.os.controller.rest;
+package com.play001.cloud.os.api;
 
 import com.play001.cloud.support.entity.ResponseEntity;
 import com.play001.cloud.os.service.CartService;
@@ -31,5 +31,9 @@ public class CartRestController {
         ResponseEntity<String> responseEntity = new ResponseEntity<>();
         responseEntity.setStatus(ResponseEntity.SUCCESS);
         return responseEntity;
+    }
+    @RequestMapping(value = "/getAmount", method = RequestMethod.GET)
+    public ResponseEntity<Integer> getAmount(@CookieValue("userJwt") String userJwt) throws Exception {
+        return new ResponseEntity<Integer>().setMessage(cartService.getAmount(userJwt));
     }
 }

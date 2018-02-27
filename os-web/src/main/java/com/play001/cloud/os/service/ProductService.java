@@ -3,7 +3,7 @@ package com.play001.cloud.os.service;
 
 import com.play001.cloud.support.entity.*;
 import com.play001.cloud.os.mapper.ProductMapper;
-import com.play001.cloud.support.entity.product.Product;
+import com.play001.cloud.support.entity.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,7 +35,7 @@ public class ProductService {
         //一页显示二十个
         final Integer pageSize = 20;
         //计算开始位置
-        Long start = Long.valueOf((pageNo-1)*pageSize);
+        Long start = (long)(pageNo-1)*pageSize;
         ResponseEntity<Pagination<Product>> responseEntity =  productService.search(keyword, start, pageSize);
         if(ResponseEntity.ERROR.equals(responseEntity.getStatus())){
             throw new IException(responseEntity.getErrMsg());

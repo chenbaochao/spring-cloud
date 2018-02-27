@@ -1,6 +1,5 @@
 $(function() {
 	//showsectime(); //网站计时器
-	//show_cart_umber(); // 购物车商品数量
     show_topBar();
     show_footer();
 })
@@ -53,9 +52,12 @@ function show_topBar() {
             success : function(result) {
                 topBar.html(result);
                 //加载完毕后判断是否登陆
-                isLogin();
-                getCartList();
-                userInfo();
+                if(isLogin()){
+                    //已经登陆显示购物车和用户信息
+                    getCartList();
+                    userInfo();
+                    show_cart_umber(); // 购物车商品数量
+                }
             }
         });
 
@@ -147,12 +149,13 @@ function isLogin(){
                 $('#LoginUsername').text(username);
                 $('#J_userInfo').css('display','');
 				$('#J_miniCartTrigger').css('display','');
-                return;
+                return true;
 			}
 
 		}
 	}
     $('#noLogin').css('display','');
+    return false;
 }
 /**
  * 搜索栏
@@ -163,7 +166,7 @@ function initSearch(){
         "height" : "35",
         "parentClass" : "pageTitle",
         "callback" : function(keyword) {
-            if(keyword !== null && keyword !== '')  window.location.href = '/product/search?keyword='+encodeURI(keyword)+'&pageNo=1';
+            if(keyword !== null && keyword !== '')  window.location.href = '/product1/search?keyword='+encodeURI(keyword)+'&pageNo=1';
         }
     });
 }
@@ -297,16 +300,16 @@ function cart_delete(obj, data) {
  */
 function show_cart_umber() {
 	$.ajax({
-		url : "/cart/cartNumber",
+		url : "/cart/getAmount",
 		type : 'get',
 		dataType : 'json',
 		success : function(result) {
-			if (result.code == 1) {
+			if (result.status === 'SUCCESS') {
 				$('.site-topbar .cart-mini').css({
 					background : '#ff6700',
 					color : '#fff'
 				});
-				$('.site-topbar .cart-mini').children('span').text("（" + result.data + "）");
+				$('.site-topbar .cart-mini').children('span').text("（" + result.message + "）");
 			} else {
 				$('.site-topbar .cart-mini').css({
 					background : '#424242',

@@ -2,7 +2,7 @@ package com.play001.cloud.os.service;
 
 import com.play001.cloud.support.entity.Advert;
 import com.play001.cloud.support.entity.IException;
-import com.play001.cloud.support.entity.product.Product;
+import com.play001.cloud.support.entity.Product;
 import com.play001.cloud.support.entity.ResponseEntity;
 import com.play001.cloud.os.mapper.AdvertMapper;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -4,9 +4,12 @@ import com.play001.cloud.support.entity.IException;
 import com.play001.cloud.support.entity.ResponseEntity;
 import com.play001.cloud.support.entity.user.ShopCart;
 import com.play001.cloud.os.mapper.CartMapper;
+import com.play001.cloud.support.entity.user.UserCredential;
+import com.play001.cloud.support.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,5 +64,14 @@ public class CartService {
             shopCarts.add(shopCart);
         }
         return shopCarts;
+    }
+
+    //购物车数量
+    public Integer getAmount(String userJwt) throws IException {
+        ResponseEntity<Integer> responseEntity = cartMapper.getAmount(userJwt);
+        if(responseEntity.getStatus().equals(ResponseEntity.ERROR)){
+            throw new IException(responseEntity.getErrMsg());
+        }
+        return responseEntity.getMessage();
     }
 }

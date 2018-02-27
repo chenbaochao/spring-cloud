@@ -36,16 +36,16 @@
         <div class="uc-box uc-main-box">
           <div class="uc-content-box portal-content-box">
             <div class="box-bd">
-         <!--     <div class="portal-main clearfix">
+                <div class="portal-main clearfix">
                 <div class="user-card">
                   <h2 class="username" th:text="${user.username}">玄心</h2>
-                  <p class="tip">hello</p>
-                  <a class="link" href="" target="_blank" >修改个人信息 &gt;</a>
+                  <p class="tip">Hello</p>
+                  <a class="link" href=""> How are you &gt;</a>
                   <img class="avatar" th:src="${user.profilePhoto}" width="150" height="150" alt="玄心">
                 </div>
                 <div class="user-actions">
                   <ul class="action-list">
-                    <li>账户安全：<span class="level level-3">较高</span></li>
+                    <li>账户安全：<span class="level level-3">一般般</span></li>
                     <li>绑定手机：<span class="tel" th:text="${user.telephone}">156********37</span></li>
                     <li>绑定邮箱：<span class="tel" th:text="${user.email}">xx****0@1**.com</span></li>
                   </ul>
@@ -54,28 +54,27 @@
               <div class="portal-sub">
                 <ul class="info-list clearfix">
                   <li>
-                    <h3>待支付的订单：<span class="num">0</span></h3>
-                    <a href="">查看待支付订单<i class="iconfont"></i></a>
+                    <h3>待支付的订单：<span class="num" th:text="${unPaidAmount}">0</span></h3>
+                    <a href="../order/list?type=1">查看待支付订单<i class="iconfont"></i></a>
                     <img src="/os/user/images/portal-icon-1.png" alt="">
                   </li>
                   <li>
-                    <h3>待收货的订单：<span class="num">0</span></h3>
-                    <a href="">查看待收货订单<i class="iconfont"></i></a>
+                    <h3>待收货的订单：<span class="num" th:text="${unReceivedAmount}">0</span></h3>
+                    <a href="../order/list?type=4">查看待收货订单<i class="iconfont"></i></a>
                     <img src="/os/user/images/portal-icon-2.png" alt="">
                   </li>
                   <li>
-                    <h3>待评价商品数：<span class="num">0</span></h3>
-                    <a href="">查看待评价商品<i class="iconfont"></i></a>
+                    <h3>待评价商品数：<span class="num" th:text="${unCommentAmount}">0</span></h3>
+                    <a href="../order/list?type=5">查看待评价商品<i class="iconfont"></i></a>
                     <img src="/os/user/images/portal-icon-3.png" alt="">
                   </li>
                   <li>
-                    <h3>收藏的商品：<span class="num">0</span></h3>
-                    <a href="" >查看收藏的商品<i class="iconfont"></i></a>
+                    <h3>我的购物车：<span class="num" th:text="${shopCartAmount}">0</span></h3>
+                    <a href="../cart/list" >查看购物车<i class="iconfont"></i></a>
                     <img src="/os/user/images/portal-icon-4.png" alt="">
                   </li>
                 </ul>
-              </div>-->
-              111111111
+              </div>
             </div>
           </div>
         </div>

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,6 +66,31 @@ public class OrderService {
         String url = "../order/list?type="+type+"&page="+pageNo;
         model.addAttribute("url", url);
         model.addAttribute("orders", orders);
+        model.addAttribute("type", type);
         model.addAttribute("pagination", pagination);
+    }
+    //获取待支付的订单数量
+    public Integer getUnPaidOrderAmount(String userJwt) throws IException {
+        ResponseEntity<Integer> responseEntity = orderMapper.getUnPaidOrderAmount(userJwt);
+        if(responseEntity.getStatus().equals(ResponseEntity.ERROR)){
+            throw new IException(responseEntity.getErrMsg());
+        }
+        return responseEntity.getMessage();
+    }
+    //获取待收货的订单数量
+    public Integer getUnReceiveOrderAmount(@RequestHeader("userJwt")String userJwt) throws IException {
+        ResponseEntity<Integer> responseEntity = orderMapper.getUnReceiveOrderAmount(userJwt);
+        if(responseEntity.getStatus().equals(ResponseEntity.ERROR)){
+            throw new IException(responseEntity.getErrMsg());
+        }
+        return responseEntity.getMessage();
+    }
+    //获取待评价的订单数量
+    public Integer getUnCommentOrderAmount(@RequestHeader("userJwt")String userJwt) throws IException {
+        ResponseEntity<Integer> responseEntity = orderMapper.getUnCommentOrderAmount(userJwt);
+        if(responseEntity.getStatus().equals(ResponseEntity.ERROR)){
+            throw new IException(responseEntity.getErrMsg());
+        }
+        return responseEntity.getMessage();
     }
 }

@@ -39,10 +39,11 @@
               <h1 class="title">我的订单<small>请谨防钓鱼链接或诈骗电话，<a href="" target="_blank">了解更多&gt;</a></small></h1>
               <div class="more clearfix">
                 <ul class="filter-list J_orderType">
-                  <li th:class="${type eq -1 ? 'first active':'first'}"><a href="../order/list?type=0" >全部订单</a></li>
-                  <li th:class="${type eq 0 ? 'active':''}"><a id="J_unpaidTab" href="../order/list?type=1" >待支付</a></li>
-                  <li th:class="${type eq 4 ? 'active':''}"><a id="J_sendTab" href="../order/list?type=4" >待收货</a></li>
-                  <li th:class="${type eq 2 ? 'active':''}"><a href="../order/list?type=3">已关闭</a></li>
+                    <li th:class="${type eq 0 ? 'first active':'first'}"><a href="../order/list?type=0" >全部订单</a></li>
+                    <li th:class="${type eq 1 ? 'active':''}"><a  href="../order/list?type=1" >待支付</a></li>
+                    <li th:class="${type eq 4 ? 'active':''}"><a  href="../order/list?type=4" >待收货</a></li>
+                    <li th:class="${type eq 5 ? 'active':''}"><a  href="../order/list?type=5" >待评价</a></li>
+                    <li th:class="${type eq 2 ? 'active':''}"><a href="../order/list?type=3">已关闭</a></li>
                 </ul>
               </div>
             </div>

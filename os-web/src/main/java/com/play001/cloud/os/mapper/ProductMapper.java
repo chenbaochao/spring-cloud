@@ -1,10 +1,11 @@
 package com.play001.cloud.os.mapper;
 
 import com.play001.cloud.support.entity.Pagination;
-import com.play001.cloud.support.entity.product.Product;
+import com.play001.cloud.support.entity.Product;
 import com.play001.cloud.support.entity.ResponseEntity;
 import com.play001.cloud.os.service.fallback.DefaultFallbackFactory;
 import org.springframework.cloud.netflix.feign.FeignClient;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 
 
-@FeignClient(name = "ZUUL", fallbackFactory = DefaultFallbackFactory.class)
+@FeignClient(name = "ZUUL", fallback =  ProductMapper.ProductFallback.class)
 public interface ProductMapper {
 
     @RequestMapping(value = "/product/getDetail", method = RequestMethod.GET)
@@ -34,4 +35,27 @@ public interface ProductMapper {
      */
     @RequestMapping(value = "/product/getStarProduct", method = RequestMethod.GET)
     ResponseEntity<List<Product>> getStarProduct();
+    @Component
+    static class ProductFallback implements ProductMapper{
+
+        @Override
+        public ResponseEntity<Product> getProduct(Long id) {
+            return new ResponseEntity<Product>().setErrMsg("网络繁忙");
+        }
+
+        @Override
+        public ResponseEntity<Pagination<Product>> search(String keyword, Long start, Integer quantity) {
+            return new ResponseEntity<Pagination<Product>>().setErrMsg("网络繁忙");
+        }
+
+        @Override
+        public ResponseEntity<Pagination<Product>> listByCategoryId(Integer categoryId, Integer sort, Long start, Integer quantity) {
+            return new ResponseEntity<Pagination<Product>>().setErrMsg("网络繁忙");
+        }
+
+        @Override
+        public ResponseEntity<List<Product>> getStarProduct() {
+            return new ResponseEntity<List<Product>>().setErrMsg("网络繁忙");
+        }
+    }
 }

@@ -1,16 +1,17 @@
 package com.play001.cloud.os.mapper;
 
 import com.play001.cloud.support.entity.Advert;
-import com.play001.cloud.support.entity.product.Product;
+import com.play001.cloud.support.entity.Product;
 import com.play001.cloud.support.entity.ResponseEntity;
 import com.play001.cloud.os.service.fallback.DefaultFallbackFactory;
 import org.springframework.cloud.netflix.feign.FeignClient;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.List;
 
-@FeignClient(value = "ZUUL", fallbackFactory = DefaultFallbackFactory.class)
+@FeignClient(value = "ZUUL", fallback = AdvertMapper.AdvertFallback.class)
 public interface AdvertMapper {
 
     /**
@@ -30,5 +31,22 @@ public interface AdvertMapper {
      */
     @RequestMapping(value = "/common/advert/getStarProduct", method = RequestMethod.GET)
     ResponseEntity<List<Product>> getStarProduct();
+    @Component
+    static class AdvertFallback implements AdvertMapper{
+        @Override
+        public ResponseEntity<List<Advert>> getSliderAdvert() {
+            return new ResponseEntity<List<Advert>>().setErrMsg("网络繁忙");
+        }
+
+        @Override
+        public ResponseEntity<List<Advert>> getUnderSliderAdvert() {
+            return new ResponseEntity<List<Advert>>().setErrMsg("网络繁忙");
+        }
+
+        @Override
+        public ResponseEntity<List<Product>> getStarProduct() {
+            return new ResponseEntity<List<Product>>().setErrMsg("网络繁忙");
+        }
+    }
 
 }

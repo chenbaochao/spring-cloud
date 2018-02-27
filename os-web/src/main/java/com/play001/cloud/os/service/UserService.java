@@ -4,7 +4,6 @@ import com.play001.cloud.support.entity.IException;
 import com.play001.cloud.support.entity.ResponseEntity;
 import com.play001.cloud.support.entity.user.User;
 import com.play001.cloud.os.mapper.UserMapper;
-import com.play001.cloud.support.entity.user.UserAddress;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,11 +26,11 @@ public class UserService {
 
 
     public void setCaptcha(HttpServletResponse response) throws Exception {
-        ResponseEntity<byte[]> responseEntityMsg = userMapper.getCaptcha();
+        ResponseEntity<Byte[]> responseEntityMsg = userMapper.getCaptcha();
         if(!ResponseEntity.SUCCESS.equals(responseEntityMsg.getStatus())){
             throw new IException(responseEntityMsg.getErrMsg());
         }
-        byte[] data = responseEntityMsg.getMessage();
+        Byte[] data = responseEntityMsg.getMessage();
         byte byteCookie[] = new byte[36];
         //获得输出流,将图片输出并设置cookie
         OutputStream os = response.getOutputStream();
