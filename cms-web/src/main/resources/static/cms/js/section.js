@@ -19,7 +19,7 @@ function actionFormatter(value, row, index) {
 			'</a>',
 			'<a class="remove m-r-sm text-danger" href="javascript:void(0)" title="删除">',
 			'<i class="glyphicon glyphicon-remove"></i>',
-			'</a>',
+			'</a>'
 		].join('');
 	} else {
 		return [
@@ -31,35 +31,31 @@ function actionFormatter(value, row, index) {
 			'</a>',
 			'<a class="remove m-r-sm text-danger" href="javascript:void(0)" title="删除">',
 			'<i class="glyphicon glyphicon-remove"></i>',
-			'</a>',
+			'</a>'
 		].join('');
 	}
 }
 
 window.actionEvents = {
 	'click .freeze' : function(e, value, row, index) {
-		var url = $('#table').attr('data-url');
-		status_stop(index, row.id, url);
+		status_stop(index, row.id);
 	},
 	'click .normal' : function(e, value, row, index) {
-		var url = $('#table').attr('data-url');
-		status_start(index, row.id, url);
+		status_start(index, row.id);
 	},
 	'click .edit' : function(e, value, row, index) {
-		var url = $('#table').attr('data-url');
-		layer_show(row.name, '../navigation/bar/update?id=' + row.id , 900, 650)
+		layer_show(row.name, '../section/update?id=' + row.id , 900, 650)
 	},
 	'click .remove' : function(e, value, row, index) {
-		var url = $('#table').attr('data-url');
-		admin_delete(index, row.id, url);
+		admin_delete(index, row.id);
 	},
 };
 
 /**
- * 隐藏导航栏
+ * 隐藏栏目
  */
-function status_stop(index, value, url) {
-	layer.confirm('确认要隐藏该导航栏吗？', {
+function status_stop(index, value) {
+	layer.confirm('确认要隐藏该栏目吗？', {
 		btn : [ '确定', '取消' ] //按钮
 	}, function() {
 		$.ajax({
@@ -68,7 +64,7 @@ function status_stop(index, value, url) {
 			data:{
 				id:value
 			},
-			url : '../navigation/bar/hidden',
+			url : '../section/setInvalid',
 			success : function(result) {
 				if (result.status === 'SUCCESS') {
 					$('#table').bootstrapTable('updateRow', {
@@ -77,7 +73,7 @@ function status_stop(index, value, url) {
 							status : 0,
 						}
 					});
-					layer.msg('该导航隐藏栏成功!', {
+					layer.msg('该栏目隐藏成功!', {
 						icon : 1,
 						time : 1000
 					});
@@ -92,10 +88,10 @@ function status_stop(index, value, url) {
 }
 
 /**
- * 显示导航栏
+ * 显示栏目
  */
-function status_start(index, value, url) {
-	layer.confirm('确认要显示该导航栏吗？', {
+function status_start(index, value) {
+	layer.confirm('确认要显示该栏目吗？', {
 		btn : [ '确定', '取消' ] //按钮
 	}, function() {
 		$.ajax({
@@ -104,7 +100,7 @@ function status_start(index, value, url) {
             data:{
                 id:value
             },
-            url : '../navigation/bar/show',
+            url : '../section/setValid',
 			success : function(result) {
 				if (result.status === 'SUCCESS') {
 					$('#table').bootstrapTable('updateRow', {
@@ -113,7 +109,7 @@ function status_start(index, value, url) {
 							status : 1,
 						}
 					});
-					layer.msg('该导航显示栏成功!', {
+					layer.msg('该栏目显示栏成功!', {
 						icon : 1,
 						time : 1000
 					});
@@ -128,10 +124,10 @@ function status_start(index, value, url) {
 }
 
 /**
- * 删除导航栏
+ * 删除栏目
  */
-function admin_delete(index, value, url) {
-	layer.confirm('确认要删除该导航栏吗？', {
+function admin_delete(index, value) {
+	layer.confirm('确认要删除该栏目吗？', {
 		btn : [ '确定', '取消' ] //按钮
 	}, function() {
 		$.ajax({
@@ -140,13 +136,13 @@ function admin_delete(index, value, url) {
             data:{
                 id:value
             },
-            url : '../navigation/bar/delete',
+            url : '../section/delete',
 			success : function(result) {
 				if (result.status === 'SUCCESS') {
 					$('#table').bootstrapTable('hideRow', {
 						index : index
 					});
-					layer.msg('该导航栏删除成功!', {
+					layer.msg('该栏目删除成功!', {
 						icon : 1,
 						time : 1000
 					});
@@ -160,6 +156,86 @@ function admin_delete(index, value, url) {
 	});
 }
 
+/**
+ * 初始化菜单树
+ */
+var ztreeObject;
+var setting = {
+    data : {
+        simpleData : {
+            enable : true,
+            idKey : "id",
+            pIdKey : "parentId",
+            rootPId : 0
+        },
+        key : {
+            name : 'name',
+            title : 'name'
+        }
+    },
+    check : {
+        enable : true,
+        nocheckInherit : true
+    }
+};
+var treeData = [];
+$(function() {
+    if(categoriesJson === '') return;
+    var categories = eval('(' + categoriesJson + ')');
+
+    for(var i  in categories){
+        var parentNode = {};
+        parentNode.id = categories[i].id;
+        parentNode.name =  categories[i].name;
+        treeData.push(parentNode);
+    }
+    ztreeObject = $.fn.zTree.init($("#ztree"), setting, treeData);
+    //展开所有节点
+    ztreeObject.expandAll(true);
+    //更新勾选操作
+    try{
+        if(sectionCategoriesJson !== undefined){
+            initTreeData();
+        }
+    }catch(e){
+
+    }
+});
+
+/**
+ * 选中数据
+ */
+function initTreeData(){
+    var sectionCategories = eval('(' + sectionCategoriesJson + ')');
+    for(var i = 0; i < sectionCategories.length; i++){
+        var node = ztreeObject.getNodeByParam("id", sectionCategories[i].id, null);
+        ztreeObject.checkNode(node, true, true);
+
+    }
+}
+
+/**
+ * 构建json数据并返回
+ */
+function bulidData(){
+    var section = {};
+    section.id = $('#id').val();
+    section.name = $('#name').val();
+    section.sort = $('#sort').val();
+    section.status = $('[name="status"]:checked').val();
+    ztreeObject = $.fn.zTree.getZTreeObj("ztree");
+    var nodes = ztreeObject.getCheckedNodes(true);
+    var categories = [];
+    if (nodes !== null && nodes.length > 0) {
+        for (var i = 0; i < nodes.length; i++) {
+            var category = {};
+            category.id = nodes[i].id;
+            categories.push(category);
+        }
+    }
+    section.categories = categories;
+    return section;
+}
 /**
  * 多选框插件
  */
@@ -201,14 +277,6 @@ $(function() {
 					}
 				}
 			},
-			'href' : {
-				message : '链接地址验证失败',
-				validators : {
-					notEmpty : {
-						message : '链接地址不能为空'
-					}
-				}
-			},	
 			'sort' : {
 				message : '排序验证失败',
 				validators : {
@@ -229,18 +297,24 @@ $(function() {
 
 			// Get the form instance
 			var $form = $(e.target);
-
+            var data = bulidData();
 			// Get the BootstrapValidator instance
 			var bv = $form.data('bootstrapValidator');
 			
-			var action = $form.attr('action');
+			var action = $form.data('action');
+			if(action === "create"){
+			    var sectionCategory = {};
+			    sectionCategory.id = $('#sectionCategoryId').val();
+			    data.sectionCategory = sectionCategory;
+            }
 			// Use Ajax to submit form data
 			if (action === 'update') {
 				$.ajax({
-					data : $form.serialize(),
+                    contentType:'application/json',
+                    data:JSON.stringify(data),
 					dataType : 'json',
 					type : 'post',
-					url : url,
+					url : '../section/update',
 					success : function(result) {
 						if (result.status ==='SUCCESS') {
 							parent.layer.msg("更新导航栏成功!", {
@@ -259,10 +333,11 @@ $(function() {
 				})
 			} else {
 				$.ajax({
-					data : $form.serialize(),
 					dataType : 'json',
 					type : 'post',
-					url :url,
+                    contentType:'application/json',
+                    data:JSON.stringify(data),
+                    url : '../section/create',
 					success : function(result) {
 						if (result.status === 'SUCCESS') {
 							parent.layer.msg("创建导航栏成功!", {
@@ -277,8 +352,15 @@ $(function() {
 								time : 1000
 							});
 						}
-					}
+					},
+                    error:function(){
+                        layer.msg('网络繁忙', {
+                            icon : 2,
+                            time : 1000
+                        });
+                    }
 				})
 			}
+			$('#action').removeAttr('disabled')
 		});
 })

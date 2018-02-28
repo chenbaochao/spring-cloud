@@ -1,4 +1,4 @@
-package com.play001.cloud.cms.controller.rest;
+package com.play001.cloud.cms.api;
 
 import com.play001.cloud.cms.service.CategoryService;
 import com.play001.cloud.support.entity.Category;

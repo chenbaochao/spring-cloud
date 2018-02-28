@@ -40,7 +40,7 @@ public class NavigationController {
     /**
      * 导航栏界面
      */
-    @RequestMapping(value = "/bar/list", method = RequestMethod.GET)
+    @RequestMapping(value = "/barList", method = RequestMethod.GET)
     public String barList(Model model,Integer navigationId){
         if(navigationId != null){
             model.addAttribute("navigation", navigationService.findById(navigationId));

@@ -35,4 +35,6 @@ public interface CategoryMapper {
 
     @Update("update os_category set name = #{name}, sort = #{sort}, status = #{status}, show_in_top = #{showInTop} where id = #{id}")
     int update(Category category);
+
+
 }

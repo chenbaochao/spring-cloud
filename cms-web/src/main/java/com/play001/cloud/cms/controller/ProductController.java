@@ -2,7 +2,7 @@ package com.play001.cloud.cms.controller;
 
 import com.play001.cloud.cms.service.CategoryService;
 import com.play001.cloud.cms.service.ProductService;
-import com.play001.cloud.support.entity.product.Product;
+import com.play001.cloud.support.entity.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -41,7 +41,7 @@ public class ProductController {
     public String update(Model model, Long id){
         model.addAttribute("categories", categoryService.findAll());
         Product product = productService.findById(id);
-        model.addAttribute("product", product);
+        model.addAttribute("product1", product);
         model.addAttribute("productJson", product.toJson());
         return "product/product_update";
     }

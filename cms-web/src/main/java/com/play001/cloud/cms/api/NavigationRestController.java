@@ -1,4 +1,4 @@
-package com.play001.cloud.cms.controller.rest;
+package com.play001.cloud.cms.api;
 
 import com.play001.cloud.cms.service.NavigationBarService;
 import com.play001.cloud.cms.service.NavigationService;
@@ -31,30 +31,6 @@ public class NavigationRestController {
         return navigationService.getList();
     }
 
-    /**
-     * 隐藏导航
-     */
-    @RequestMapping(value = "/hidden", method = RequestMethod.POST)
-    public ResponseEntity<Integer> hidden(Integer id){
-        return navigationService.setStatus(id, false);
-    }
-    /**
-     * 显示导航
-     */
-    @RequestMapping(value = "/show", method = RequestMethod.POST)
-    public ResponseEntity<Integer> show(Integer id){
-        return navigationService.setStatus(id, true);
-    }
-    /**
-     * 更新导航
-     */
-    @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public ResponseEntity<Integer> update(@Validated  Navigation navigation, BindingResult bindingResult){
-        if(bindingResult.hasErrors()){
-            return new ResponseEntity<Integer>().setErrMsg(bindingResult.getFieldError().getDefaultMessage());
-        }
-        return navigationService.update(navigation);
-    }
     /**
      * 导航栏分页
      */

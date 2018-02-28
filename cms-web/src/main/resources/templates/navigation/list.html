@@ -2,13 +2,13 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <title>导航管理 - 猫宁Morning</title>
-  <link rel="stylesheet" href="/common/bootstrap-table/bootstrap-table.min.css" />
-  <link rel="stylesheet" href="/common/icheck/flat/green.css" />
-  <link rel="stylesheet" href="/common/bootstrap/css/bootstrap.min.css" />
-  <link rel="stylesheet" href="/common/font-awesome/css/font-awesome.min.css" />
-  <link rel="stylesheet" href="/cms/css/animate.css" />
-  <link rel="stylesheet" href="/cms/css/style.css" />
-  <script src="/common/jquery/jquery-3.2.0.min.js"></script>
+  <link rel="stylesheet" href="../common/bootstrap-table/bootstrap-table.min.css" />
+  <link rel="stylesheet" href="../common/icheck/flat/green.css" />
+  <link rel="stylesheet" href="../common/bootstrap/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="../common/font-awesome/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="../cms/css/animate.css" />
+  <link rel="stylesheet" href="../cms/css/style.css" />
+  <script src="../common/jquery/jquery-3.2.0.min.js"></script>
 </head>
 
 <body class="gray-bg">
@@ -26,11 +26,6 @@
               <div class="example-wrap">
                 <div class="example">
                   <div id="toolbar" class="btn-group m-t-sm">
-                    <!--
-                      <button th:if="${session.admin.permission.navigation_create eq true}" type="button" class="btn btn-default"  title="创建导航" onclick="layer_show('创建导航','${ctx}/online/navigation/create','800','700')">
-                        <i class="glyphicon glyphicon-plus"></i>
-                      </button>
-                      -->
                   </div>
                   <table id="table"
                          data-toggle="table"
@@ -41,7 +36,7 @@
                          data-show-export="false"
                          data-show-pagination-switch="true"
                          data-show-columns="true"
-                         data-url="/navigation/getList"
+                         data-url="../navigation/getList"
                          data-page-size="20"
                          data-page-list="[20, 50, 100, 200]"
                          data-side-pagination="server"

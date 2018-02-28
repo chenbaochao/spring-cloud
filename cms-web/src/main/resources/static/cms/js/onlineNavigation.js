@@ -13,31 +13,11 @@ function statusFormatter(value) {
 }
 
 function actionFormatter(value, row, index) {
-	if (row.status) {
-		return [
-			'<a class="freeze m-r-sm text-info" href="javascript:void(0)" title="隐藏">',
-			'<i class="glyphicon glyphicon-pause"></i>',
-			'</a>',
-			'<a class="edit m-r-sm text-warning" href="javascript:void(0)" title="编辑">',
-			'<i class="glyphicon glyphicon-edit"></i>',
-			'</a>',
-			'<a class="log m-r-sm text-primary" href="javascript:void(0)" title="导航栏">',
-			'<i class="glyphicon glyphicon-sort-by-attributes-alt"></i>',
-			'</a>',
-		].join('');
-	} else {
-		return [
-			'<a class="normal m-r-sm text-info" href="javascript:void(0)" title="显示">',
-			'<i class="glyphicon glyphicon-play"></i>',
-			'</a>',
-			'<a class="edit m-r-sm text-warning" href="javascript:void(0)" title="编辑">',
-			'<i class="glyphicon glyphicon-edit"></i>',
-			'</a>',
-			'<a class="log m-r-sm text-primary" href="javascript:void(0)" title="导航栏">',
-			'<i class="glyphicon glyphicon-sort-by-attributes-alt"></i>',
-			'</a>',
-		].join('');
-	}
+    return [
+        '<a class="log m-r-sm text-primary" href="javascript:void(0)" title="导航栏">',
+        '<i class="glyphicon glyphicon-sort-by-attributes-alt"></i>',
+        '</a>'
+    ].join('');
 }
 
 window.actionEvents = {
@@ -54,106 +34,12 @@ window.actionEvents = {
 		admin_delete(index, row.id);
 	},
 	'click .log' : function(e, value, row, index) {
-		window.location.href =  '/navigation/bar/list?navigationId=' + row.id ;
+		window.location.href =  '../navigation/barList?navigationId=' + row.id ;
 	}
 };
 
-/**
- * 隐藏导航
- */
-function status_stop(index, value) {
-	layer.confirm('确认要隐藏该导航吗？', {
-		btn : [ '确定', '取消' ] //按钮
-	}, function() {
-		$.ajax({
-			dataType : 'json',
-			type : 'post',
-			url :  '/navigation/hidden?id=' + value ,
-			success : function(result) {
-				if (result.status == 'SUCCESS') {
-					$('#table').bootstrapTable('updateRow', {
-						index : index,
-						row : {
-							status : 0,
-						}
-					});
-					layer.msg('导航隐藏成功!', {
-						icon : 5,
-						time : 1000
-					});
-				} else {
-					layer.alert(result.errMsg, {
-						icon : 2
-					});
-				}
-			}
-		})
-	});
-}
 
-/**
- * 显示导航
- */
-function status_start(index, value) {
-	layer.confirm('确认要显示该导航吗？', {
-		btn : [ '确定', '取消' ] //按钮
-	}, function() {
-		$.ajax({
-			dataType : 'json',
-			type : 'post',
-			url : '/navigation/show?id=' + value,
-			success : function(result) {
-				if (result.status == 'SUCCESS') {
-					$('#table').bootstrapTable('updateRow', {
-						index : index,
-						row : {
-							status : 1,
-						}
-					});
-					layer.msg('导航显示成功!', {
-						icon : 6,
-						time : 1000
-					});
-				} else {
-					layer.alert(result.errMsg, {
-						icon : 2
-					});
-				}
-			}
-		})
-	});
-}
 
-/**
- * 删除导航
-
-function admin_delete(index, value) {
-	layer.confirm('确认要删除该导航吗？', {
-		btn : [ '确定', '取消' ] //按钮
-	}, function() {
-		$.ajax({
-			type : 'delete',
-			dataType : 'json',
-			url :  '/online/navigation/' + value,
-			success : function(result) {
-				if (result.status == 'SUCCESS') {
-					$('#table').bootstrapTable('hideRow', {
-						index : index
-					});
-					layer.msg('该导航删除成功!', {
-						icon : 1,
-						time : 1000
-					});
-				} else {
-					layer.alert(result.message, {
-						icon : 2
-					});
-				}
-			}
-		})
-	});
-}
- */
 /**
  * 多选框插件
  */

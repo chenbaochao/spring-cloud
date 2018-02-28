@@ -1,0 +1,92 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>栏目分类</title>
+    <link rel="stylesheet" href="../../common/bootstrap-table/bootstrap-table.min.css" />
+    <link rel="stylesheet" href="../../common/icheck/flat/green.css" />
+    <link rel="stylesheet" href="../../common/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../../common/font-awesome/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="../../cms/css/animate.css" />
+    <link rel="stylesheet" href="../../cms/css/style.css" />
+    <script src="../../common/jquery/jquery-3.2.0.min.js"></script>
+</head>
+
+<body class="gray-bg">
+<div class="wrapper wrapper-content">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="ibox float-e-margins">
+        <div class="ibox-title">
+          <h5>栏目分类</h5>
+          <div class="ibox-tools"> <a class="collapse-link"><i class="fa fa-chevron-up"></i></a> <a class="close-link"><i class="fa fa-times"></i></a> </div>
+        </div>
+        <div class="ibox-content">
+          <div class="row row-lg">
+            <div class="col-sm-12">
+              <div class="example-wrap">
+                <div class="example">
+                  <table id="table"
+                         data-toggle="table"
+                         data-height="600"
+                         data-search="false"
+                         data-show-refresh="true"
+                         data-show-pagination-switch="true"
+                         data-show-columns="true"
+                         data-url="../../section/category/getList"
+                         data-pagination="true"
+                         data-page-size="20"
+                         data-page-list="[20, 50, 100, 200]"
+                         data-side-pagination="client"
+                         data-striped="true"
+                         data-sort-order="desc"
+                         data-toolbar="#toolbar">
+                    <thead>
+                      <tr>
+                          <th data-field="id" data-halign="center" data-align="center">分类编号</th>
+                          <th data-field="name" data-halign="center" data-align="center" >分类名称</th>
+                          <th data-formatter="actionFormatter"  data-halign="center" data-align="center">查看详细信息</th>
+                      </tr>
+                    </thead>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<myfooter>
+  <!-- layer弹出框js -->
+  <script src="../../common/layer/layer.js"></script>
+  <script src="../../common/particleground/js/jquery.particleground.min.js"></script>
+  <!-- Bootstrap table -->
+  <script src="../../common/bootstrap-table/bootstrap-table.min.js"></script>
+  <script src="../../common/bootstrap-table/extensions/export/bootstrap-table-export.js"></script>
+  <script src="../../common/bootstrap-table/tableExport.js"></script>
+  <script src="../../common/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
+
+  <!-- iCheck -->
+  <script src="../../common/icheck/icheck.min.js"></script>
+
+  <!-- 全局js -->
+  <script src="../../common/bootstrap/js/bootstrap.min.js"></script>
+  <script src="../../common/metismenu/metisMenu.min.js"></script>
+  <script src="../../common/slimscroll/jquery.slimscroll.min.js"></script>
+  <!-- 自定义js -->
+  <script src="../../cms/js/hplus.js"></script>
+  <script src="../../cms/js/contabs.js"></script>
+  <script src="../../cms/js/content.js"></script>
+</myfooter>
+<script>
+    function actionFormatter(value, row, index) {
+        return [
+            '<a class="log m-r-sm text-primary" href="../../section/list?categoryId='+row.id+'" title="查看栏目列表">',
+            '<i class="glyphicon glyphicon-sort-by-attributes-alt"></i>',
+            '</a>'
+        ].join('');
+    }
+</script>
+</body>
+</html>

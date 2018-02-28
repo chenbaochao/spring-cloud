@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
  * 异常统一返回
  * 此拦截器针对的是@RestController注解
  */
-@ControllerAdvice(assignableTypes = {AdminController.class, CommonController.class})
+@ControllerAdvice(basePackages = "com.com.play001.cloud.cms.controller")
 public class ControllerHandleAdvice {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());

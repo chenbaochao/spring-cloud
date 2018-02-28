@@ -1,4 +1,4 @@
-package com.play001.cloud.cms.controller.rest;
+package com.play001.cloud.cms.api;
 
 import com.baidu.ueditor.ActionEnter;
 import com.play001.cloud.cms.entity.UploadImageResponse;
@@ -48,7 +48,6 @@ public class CommonRestController {
         if(Objects.equals(responseEntityImage.getStatus(), ResponseEntity.ERROR)){
             response.setError(responseEntityImage.getErrMsg());
         }else{
-            response.setInitialPreview(responseEntityImage.getMessage().getUrl());
             Image image = responseEntityImage.getMessage();
             response.setInitialPreview(image.getUrl());
             response.getInitialPreviewConfig()[0].setCaption(upFile.getOriginalFilename());

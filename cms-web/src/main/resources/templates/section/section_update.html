@@ -1,0 +1,97 @@
+<!DOCTYPE HTML>
+<html  xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>更新栏目</title>
+  <link rel="stylesheet" href="../common/icheck/flat/green.css" />
+  <link rel="stylesheet" href="../common/ztree/css/metroStyle/metroStyle.css" />
+  <link rel="stylesheet" href="../common/bootstrap/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="../common/font-awesome/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="../cms/css/animate.css" />
+  <link rel="stylesheet" href="../cms/css/style.css" />
+</head>
+
+<body class="gray-bg">
+<div class="wrapper wrapper-content">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="ibox float-e-margins">
+        <div class="ibox-title">
+          <h5>更新栏目<small> 栏目时应当遵循合法、正当、必要的原则，明示目的、方式和范围。</small></h5>
+          <div class="ibox-tools"> <a class="collapse-link"><i class="fa fa-chevron-up"></i></a> <a class="close-link"><i class="fa fa-times"></i></a> </div>
+        </div>
+        <div class="ibox-content">
+          <form id="form" class="form-horizontal" data-action="update" >
+            <div class="form-group m-t">
+              <label class="col-sm-2 col-xs-offset-1  control-label">栏目名称：</label>
+              <div class="col-sm-7">
+                <input type="hidden"  id="id" th:value="${section.id}">
+                <input type="text" maxlength="10" class="form-control" id="name" th:value="${section.name}">
+              </div>
+            </div>
+            <div class="hr-line-dashed"></div>
+            <div class="form-group m-t">
+              <label class="col-sm-2 col-xs-offset-1  control-label">栏目排序：</label>
+              <div class="col-sm-7">
+                <input type="number" maxlength="2" class="form-control" id="sort" th:value="${section.sort}">
+              </div>
+            </div>
+            <div class="hr-line-dashed"></div>
+            <div class="form-group">
+              <label class="col-sm-2 col-xs-offset-1 control-label">显示分类：</label>
+              <div class="col-sm-9">
+                <div id="ztree" class="ztree"></div>
+              </div>
+            </div>
+            <div class="hr-line-dashed"></div>
+            <div class="form-group">
+              <label class="col-sm-2 col-xs-offset-1 control-label">是否显示：</label>
+              <div class="col-sm-9">
+                <label class="radio-inline">
+                  <input type="radio" name="status" value="1" th:checked="${section.status eq 1?true:false}">
+                  开启</label>
+                <label class="radio-inline">
+                  <input type="radio" name="status" value="0" th:checked="${section.status eq 0?true:false}">
+                  冻结</label>
+                <label class="radio-inline status-tip"><strong>提示：</strong> 状态</label>
+              </div>
+            </div>
+            <div class="hr-line-dashed"></div>
+            <div class="form-group">
+              <div class="col-sm-12 text-center">
+                <button class="btn btn-primary" type="submit" id="action">提交</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<myfooter>
+  <script src="../common/jquery/jquery-3.2.0.min.js"></script>
+  <!-- 全局js -->
+  <script src="../common/bootstrap/js/bootstrap.min.js"></script>
+  <script src="../common/metismenu/metisMenu.min.js"></script>
+  <script src="../common/slimscroll/jquery.slimscroll.min.js"></script>
+  <!-- iCheck -->
+  <script src="../common/icheck/icheck.min.js"></script>
+  <!-- 自定义js -->
+  <script src="../cms/js/hplus.js"></script>
+  <script src="../cms/js/contabs.js"></script>
+  <script src="../cms/js/content.js"></script>
+  <!-- layer弹出框js -->
+  <script src="../common/layer/layer.js"></script>
+  <!-- bootstrapvalidator前端验证框架 -->
+  <script src="../common/bootstrapvalidator/js/bootstrapValidator.min.js"></script>
+  <!-- ztree -->
+  <script src="../common/ztree/js/jquery.ztree.all.min.js"></script>
+
+  <!-- 自定义js -->
+  <script type="text/javascript" th:inline="javascript">
+      var categoriesJson = /*[[${categoriesJson}]]*/null;
+      var sectionCategoriesJson = /*[[${sectionCategoriesJson}]]*/null;
+  </script>
+  <script src="../cms/js/section.js"></script>
+</myfooter>
+</body>
+</html>

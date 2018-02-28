@@ -2,11 +2,9 @@ package com.play001.cloud.cms.service;
 
 import com.play001.cloud.cms.mapper.*;
 import com.play001.cloud.support.entity.*;
-import com.play001.cloud.support.entity.product.*;
+import com.play001.cloud.support.entity.Product.*;
 import com.play001.cloud.support.enums.RedisMessageEnum;
-import com.play001.cloud.support.enums.StorageTypeEnum;
 import com.play001.cloud.support.util.DateUtil;
-import com.play001.cloud.cms.util.storage.IBaseStorageUtil;
 import com.play001.cloud.cms.util.storage.StorageFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;

@@ -1,22 +1,18 @@
-package com.play001.cloud.cms.controller.rest;
+package com.play001.cloud.cms.api;
 
 import com.play001.cloud.cms.service.AdvertCategoryService;
 import com.play001.cloud.cms.service.AdvertService;
 import com.play001.cloud.support.entity.Advert;
 import com.play001.cloud.support.entity.AdvertCategory;
 import com.play001.cloud.support.entity.ResponseEntity;
-import jdk.nashorn.internal.runtime.linker.LinkerCallSite;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/advert")
