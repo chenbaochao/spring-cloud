@@ -14,14 +14,14 @@ import java.util.List;
 public class ProductService {
 
     @Autowired
-    private ProductMapper productService;
+    private ProductMapper productMapper;
 
     /**
      * 获取商品详情
      * @param id 商品Id
      */
     public Product getDetail(Long id) throws IException {
-        ResponseEntity<Product> responseEntity = productService.getProduct(id);
+        ResponseEntity<Product> responseEntity = productMapper.getProduct(id);
         if(responseEntity.getStatus().equals(ResponseEntity.ERROR)) throw new IException(responseEntity.getErrMsg());
         return responseEntity.getMessage();
     }
@@ -36,15 +36,14 @@ public class ProductService {
         final Integer pageSize = 20;
         //计算开始位置
         Long start = (long)(pageNo-1)*pageSize;
-        ResponseEntity<Pagination<Product>> responseEntity =  productService.search(keyword, start, pageSize);
+        ResponseEntity<Pagination<Product>> responseEntity =  productMapper.search(keyword, start, pageSize);
         if(ResponseEntity.ERROR.equals(responseEntity.getStatus())){
             throw new IException(responseEntity.getErrMsg());
         }
         Pagination<Product> pagination = responseEntity.getMessage();
         pagination.setPageNo(pageNo);
-        pagination.setPageSize(pageSize);
         //计算总共有多少页
-        pagination.setPageQuantity((pagination.getDataQuantity().intValue()+pageSize-1)/pageSize.intValue());
+        pagination.setTotalPage((pagination.getTotalData().intValue()+pageSize-1)/pageSize);
         return pagination;
     }
 
@@ -60,22 +59,21 @@ public class ProductService {
 
         final Integer pageSize = 20;
         Long start = (long)((pageNo-1)*pageSize);
-        ResponseEntity<Pagination<Product>> responseEntity =  productService.listByCategoryId(categoryId, sort, start, pageSize);
+        ResponseEntity<Pagination<Product>> responseEntity =  productMapper.listByCategoryId(categoryId, sort, start, pageSize);
         if(ResponseEntity.ERROR.equals(responseEntity.getStatus())){
             throw new IException(responseEntity.getErrMsg());
         }
         Pagination<Product> pagination = responseEntity.getMessage();
         pagination.setPageNo(pageNo);
-        pagination.setPageSize(pageSize);
         //计算总共有多少页
-        pagination.setPageQuantity((pagination.getDataQuantity().intValue()+pageSize-1)/pageSize.intValue());
+        pagination.setTotalPage((pagination.getTotalData().intValue()+pageSize-1)/pageSize);
         return pagination;
     }
     /**
      * 首页明星产品
      */
     public List<Product> getStarProduct() throws IException {
-        ResponseEntity<List<Product>> responseEntity = productService.getStarProduct();
+        ResponseEntity<List<Product>> responseEntity = productMapper.getStarProduct();
         if(ResponseEntity.ERROR.equals(responseEntity.getStatus())) throw new IException(responseEntity.getErrMsg());
         return responseEntity.getMessage();
     }

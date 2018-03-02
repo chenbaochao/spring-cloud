@@ -1,0 +1,46 @@
+<html lang="zh-CN" xml:lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+  <li th:each="comment:${comments}" th:attr="data-id=${comment.id}">
+    <div class="user-image"> <img th:src="${comment.user.profilePhoto}" th:alt="${comment.user.username}"> </div>
+      <div class="user-emoj" th:if="${comment.star eq 1}">❤</div>
+      <div class="user-emoj" th:if="${comment.star eq 2}">❤❤</div>
+      <div class="user-emoj" th:if="${comment.star eq 3}">❤❤❤</div>
+      <div class="user-emoj" th:if="${comment.star eq 4}">❤❤❤❤</div>
+      <div class="user-emoj" th:if="${comment.star eq 5}">❤❤❤❤❤</div>
+    <div class="user-name-info"> <span class="user-name" th:text="${comment.user.username}"> ${comment.userName}</span>
+        <span class="user-time" th:text="${comment.createTime}"><span class="pro-info">白色</span> </div>
+    <div class="user-hand-block">
+        <a href="javascript:void(0);" data-commentid="${comment.commentId}" class="J_hasHelp">
+        <i class="glyphicon glyphicon-thumbs-up"></i>&nbsp;&nbsp;赞&nbsp;&nbsp;<span class="amount">0</span></a>
+    </div>
+    <dl class="user-comment">
+      <dt class="user-comment-content J_commentContent">
+        <p class="content-detail"><a href="" target="_blank" th:text="${comment.content}"> 评价内容 </a> </p>
+      </dt>
+    </dl>
+  </li>
+<script type="text/javascript">
+/**
+ * input 聚焦事件
+ */
+$(function() {
+	$(" input[ type='text' ] ").focus(function() {
+		$(this).parent().parent().addClass('showIn');
+	});
+	$(" input[ type='text' ] ").blur(function() {
+		$(this).parent().parent().removeClass('showIn');
+	});
+});
+/**
+ * 随机分配评论颜色（最有帮助）
+ */
+$(function() {
+	var $elements = $('#J_supComment').children('li');
+	var len = $elements.length;
+	// alert('有 ' + len + ' 个相同class');
+	$elements.each(function() {
+		var $this = $(this);
+		var num = (Math.floor(Math.random() * 10) + 1); //输出1-10的随机数搜索
+		$this.addClass('item-rainbow-' + num);
+	});
+})
+</script>

@@ -1,7 +1,7 @@
 $(function() {
 	//question_help(); // 默认显示最有帮助商品提问
-	//comment_sup(); // 最有帮助评价
-	//comment_time_line(); // 最新评价
+
+    showComment();
     show_header();
     siteHeaderInit();
 });
@@ -143,62 +143,21 @@ $(function() {
 	}
 })
 
-/**
- * 最有帮助商品提问
- */
-function question_help() {
-	$.ajax({
-		type : 'get',
-		dataType : 'text',
-		url :  '/question/askList?productId=' + productId + '&sort=1&page=1',
-		success : function(result) {
-			$("#J_goodsQuestionBlock").html(result);
-		}
-	})
-	$('.J_questionHelp').addClass('current').siblings("a").removeClass("current");
-}
+
 
 /**
- * 最新商品提问
+ * 评论
  */
-function question_new() {
+function showComment() {
 	$.ajax({
 		type : 'get',
 		dataType : 'text',
-		url :  '/question/askList?productId=' + productId + '&sort=0&page=1',
-		success : function(result) {
-			$("#J_goodsQuestionBlock").html(result);
-		}
-	})
-	$('.J_questionNew').addClass('current').siblings("a").removeClass("current");
-}
-
-/**
- * 最有帮助评论
- */
-function comment_sup() {
-	$.ajax({
-		type : 'get',
-		dataType : 'text',
-		url :  '/comment/supList?productId=' + productId + '&sort=1&page=1',
+		url :  '../comment/itemList?productId=' + $('#id').val(),
 		success : function(result) {
 			$("#J_supComment").html(result);
 		}
-	})
-}
+	});
 
-/**
- * 最新评论
- */
-function comment_time_line() {
-	$.ajax({
-		type : 'get',
-		dataType : 'text',
-		url :  '/comment/tileLineList?productId=' + productId + '&sort=0&page=1',
-		success : function(result) {
-			$("#J_timelineComment").html(result);
-		}
-	})
 }
 
 /**
@@ -227,7 +186,22 @@ function add_cart(obj) {
 		}
 	})
 }
-
+//查看全部评论
+$('#allComments').click(function(){
+    var id = $('#id').val();
+    layer.open({
+        type : 2,
+        area : [ '900px','650px' ],
+        shadeClose : true,
+        shade : false,
+        anim : 1, //0-6的动画形式，-1不开启
+        maxmin : false, //开启最大化最小化按钮
+        fix : false, //不固定
+        scrollbar : false, //屏蔽游览器滚动条
+        title : '产品评价',
+        content : '../comment/list?productId='+id+'&pageNo=1'
+    });
+});
 /**
  * 商品提问
  */

@@ -76,4 +76,10 @@ public class OrderController {
         model.addAttribute("order", orderService.findById(id, userJwt));
         return "order/order_view";
     }
+    //评论页面
+    @RequestMapping(value = "/comment", method = RequestMethod.GET)
+    public String comment(Long id, Model model, @CookieValue("userJwt")String userJwt) throws IException {
+        model.addAttribute("order", orderService.findById(id, userJwt));
+        return "order/order_comment";
+    }
 }

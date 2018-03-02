@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>评论商品</title>
+  <link rel="stylesheet" href="../common/bootstrap/css/bootstrap.min.css" />
+</head>
+<body>
+
+<div>
+  <h3>评论商品</h3>
+  <hr/>
+  <form class="form-horizontal">
+      <input type="hidden" id="orderId" th:value="${order.id}">
+        <div th:each="product:${order.orderProducts}">
+          <div class="form-group">
+            <p class="col-sm-2"></p>
+            <p class="col-sm-8" th:text="${product.productName}+' ' +${product.productSpecName}">小米6S 4G+64G</p>
+              <input type="hidden" name="productId" th:value="${product.productId}">
+              <input type="hidden" name="orderProductId" th:value="${product.id}">
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">评分</label>
+            <div class="col-sm-10" style="width:150px;">
+              <select class="form-control" name="star">
+                <option value='1'>一星</option>
+                <option value='2'>二星</option>
+                <option value='3'>三星</option>
+                <option value='4'>四星</option>
+                <option value='5' selected>五星</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">内容</label>
+            <div class="col-sm-10">
+              <textarea class="form-control" rows="3" name="content"></textarea>
+            </div>
+          </div>
+          <hr/>
+        </div>
+
+      <div class="col-sm-2"></div>
+      <div class="col-sm-10">
+        <input type="button" class="btn btn-small btn-primary" style="width:80px;" id="action" value="提交" />
+      </div>
+  </form>
+</div>
+
+<script src="../common/jquery/jquery-3.2.0.min.js"></script>
+<!-- layer javascript -->
+<script src="../common/layer/layer.js"></script>
+<script>
+
+
+    $('#action').click(function () {
+        alert('111');
+        var data = buildData();
+        $.ajax({
+            url:'../order/comment',
+            method:'post',
+            dataType:'json',
+            contentType:'application/json',
+            data:JSON.stringify(data),
+            success:function(result){
+                if(result.status === 'SUCCESS'){
+                    layer.msg("评价成功", {
+                        icon : 1,
+                        time : 2000
+                    },function(){
+                        window.parent.location.reload();
+                    });
+                }else{
+                    layer.msg(result.errMsg, {
+                        icon : 2
+                    });
+                }
+            }
+        });
+    });
+    //构造数据结构
+    function buildData(){
+        var comments = [];
+        var orderId = $('#orderId').val();
+        $('[name="productId"]').each(function (i) {
+            var comment = {};
+            comment.orderId = orderId;
+            comment.orderProductId = $('[name="orderProductId"]')[i].value;
+            comment.star = $('[name="star"]')[i].value;
+            comment.content = $('[name="content"]')[i].value;
+            comments.push(comment);
+        });
+        return comments;
+    }
+</script>
+</body>
+</html>

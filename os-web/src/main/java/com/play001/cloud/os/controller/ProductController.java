@@ -47,4 +47,5 @@ public class ProductController {
         model.addAttribute("url","/product/list?categoryId="+categoryId+"&sort="+sort+"&pageNo=");
         return "product/list";
     }
+
 }

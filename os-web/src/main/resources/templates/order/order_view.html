@@ -2,22 +2,24 @@
 <html lang="zh-CN" xml:lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
 <head>
 <title>订单详情 - 猫宁商城</title>
-<link rel="stylesheet" href="../os/css/address.css">
-<link rel="stylesheet" href="../os/area/css/select2.css" />
+  <link rel="stylesheet" href="../os/css/address.css">
+  <link rel="stylesheet" href="../common/bootstrap/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="../os/css/base.min.css">
+  <link rel="stylesheet" href="../os/css/base.css">
 </head>
-<body>
-<div class="span16">
+<body>x`
+<div class="span16" style="width: 500px;">
   <div class="uc-box uc-main-box">
     <div class="uc-content-box order-view-box">
       <div class="box-hd">
-        <h1 class="title"><span class="text">订单详情</span><small>请谨防钓鱼链接或诈骗电话，<a href="" target="_blank">了解更多&gt;</a></small></h1>
+        <h1 class="title"><span class="text">订单详情</span><small>&nbsp;&nbsp;&nbsp;&nbsp;请谨防钓鱼链接或诈骗电话</small></h1>
         <div class="more clearfix">
           <h2 class="subtitle" th:text="|订单号：${order.id}|"><span class="tag tag-subsidy"></span> </h2>
-          <div class="actions">
-            <a id="J_cancelOrder" th:if="${order.status == 1}" class="btn btn-small btn-line-gray" title="取消订单" th:attr="|data-order-id=${order.id}|" href="javascript:;" data-confirm="你真的要取消此订单吗?">取消订单</a>
+<!--          <div class="actions">
+            <a id="J_cancelOrder" th:if="${order.status == 1}" class="btn btn-small btn-line-gray" title="取消订单" th:attr="data-order-id=${order.id}" href="javascript:;" data-confirm="你真的要取消此订单吗?">取消订单</a>
             <a id="J_payOrder" th:if="${order.status == 1}"  class="btn btn-small btn-primary" title="立即支付" th:href="|../order/orderSuccess?id=${order.id}|" target="_blank" >立即支付</a>
-            <a title="申请售后" href="" class="btn btn-small btn-line-gray" >申请售后</a>
-          </div>
+            &lt;!&ndash;<a title="申请售后" href="" class="btn btn-small btn-line-gray" >申请售后</a>&ndash;&gt;
+          </div>-->
         </div>
       </div>
       <div class="box-bd">
@@ -34,63 +36,15 @@
               </div>
               <div class="order-progress">
                 <ol class="progress-list clearfix">
-                  <!--<li class="step step-first ${status == true ? 'step-done':''}">-->
-                    <!--<div><span class="text">下单</span></div>-->
-                    <!--<div class="info">-->
-                      <!--<fmt:formatDate value="${info}" pattern="yyyy年MM月dd日 hh:mm" />-->
-                    <!--</div>-->
-                  <!--</li>-->
-                  <li class="step" th:>
-                    <div><span class="text">付款</span></div>
+                  <li class="step">
+                    <div><span class="text">创建时间</span></div>
                     <div class="info" th:text="${order.createTime}">
                     </div>
                   </li>
-                  <!--<li class="step ${status == true ? 'step-done':''}">-->
-                    <!--<div><span class="text">出库</span></div>-->
-                    <!--<div class="info">-->
-                      <!--<fmt:formatDate value="${info}" pattern="yyyy年MM月dd日 hh:mm" />-->
-                    <!--</div>-->
-                  <!--</li>-->
-                  <!--<li class="step step-last ${status == true ? 'step-done':''}">-->
-                    <!--<div><span class="text">交易成功</span></div>-->
-                    <!--<div class="info">-->
-                      <!--<fmt:formatDate value="${info}" pattern="yyyy年MM月dd日 hh:mm" />-->
-                    <!--</div>-->
-                  <!--</li>-->
                 </ol>
               </div>
             </div>
-<!--            &lt;!&ndash; 首次查看密码 &ndash;&gt;
-            <div class="order-liwu J_giftcard_active hide">
-              <div class="box">
-                <h3>激活并获取 小米礼物码 密码</h3>
-                <p>点击获取密码后，我们将向账户绑定的手机  发送一条验证码<br>
-                  由于密码的特殊性，获取后不再支持7天无理由退货</p>
-                <a href="javascript:void(0);" class="btn btn-primary J_getGiftViewcode" data-stat-id="a23d55b9e18fc08a" onclick="_msq.push(['trackEvent', 'ad6d0503ac0c92d8-a23d55b9e18fc08a', 'javascript:void0', 'pcpid', '']);">获取密码</a> </div>
-            </div>
-            &lt;!&ndash; 账号未绑定手机号 &ndash;&gt;
-            <div class="order-liwu J_giftcard_bind hide">
-              <div class="box">
-                <h3>您的账号尚未绑定手机号</h3>
-                <p>为了密码的安全性，获取密码以及每次查看密码都需要通过小米账号绑定的手机号进行验证<br>
-                  您的账号尚未绑定手机号，需要绑定手机号后继续操作</p>
-                <a href="//account.xiaomi.com/" target="_blank" class="btn btn-primary " data-stat-id="045af825eddc79cb" onclick="_msq.push(['trackEvent', 'ad6d0503ac0c92d8-045af825eddc79cb', '//account.xiaomi.com/', 'pcpid', '']);">前往 账号中心</a> </div>
-            </div>
-            &lt;!&ndash; Token已过期，再次查看密码 &ndash;&gt;
-            <div class="order-liwu J_giftcard_view hide">
-              <div class="box">
-                <h3>查看 小米礼物码 密码</h3>
-                <p>点击查看密码后，我们将向账户绑定的手机  发送一条验证码</p>
-                <a href="javascript:void(0);" class="btn btn-primary J_getGiftcode" data-stat-id="b95059948ec21a01" onclick="_msq.push(['trackEvent', 'ad6d0503ac0c92d8-b95059948ec21a01', 'javascript:void0', 'pcpid', '']);">查看密码</a> </div>
-            </div>
-            &lt;!&ndash; 礼物码领取后 &ndash;&gt;
-            <div class="order-liwu-list J_liwulist hide">
-              <h3>小米礼物码 密码</h3>
-              <table>
-              </table>
-              <p>* 电脑访问 <a href="//www.mi.com/giftcode/" target="_blank" data-stat-id="6636cdbc657762ae" onclick="_msq.push(['trackEvent', 'ad6d0503ac0c92d8-6636cdbc657762ae', '//www.mi.com/giftcode/', 'pcpid', '']);">http://www.mi.com/giftcode/</a> 根据提示使用礼物码，或在小米商城App中以此点击「服务」-「使用礼物码」</p>
-            </div>-->
-            <table class="order-items-table">
+            <table class="table" >
               <tbody>
                   <tr th:each="orderProduct:${order.orderProducts}">
                     <td class="col col-thumb">
@@ -201,14 +155,5 @@
   </div>
 </div>
 <div class="modal-backdrop in" style="display: none; width: 100%; height: 1854px;"></div>
-<myfooter> 
-  <!-- layer javascript --> 
-  <script src="../common/layer/layer.js"></script>
-  <script src="../os/area/js/area.js"></script>
-  <script src="../os/area/js/location.js"></script>
-  <script src="../os/area/js/select2.js"></script>
-  <script src="../os/area/js/select2_locale_zh-CN.js"></script>
-  <script src="../os/js/order.js"></script>
-</myfooter>
 </body>
 </html>

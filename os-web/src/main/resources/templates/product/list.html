@@ -66,11 +66,10 @@
             </div>
             <div class="notice"></div>
           </div>
-        </c:forEach>
       </div>
       <!--分页 -->
       <div class="xm-pagenavi">
-          <div id="pager"   th:attr="data-pager-totalPage=${pagination.pageQuantity}, data-pager-current=${pagination.pageNo},data-pager-href=${url}" ></div>
+          <div id="pager"   th:attr="data-pager-totalPage=${pagination.totalPage}, data-pager-current=${pagination.pageNo},data-pager-href=${url}" ></div>
       </div>
     </div>
   </div>
@@ -96,10 +95,10 @@
 <div id="site-footer"></div>
 
 <!-- layer javascript -->
-<script src="/common/layer/layer.js"></script>
+<script src="../common/layer/layer.js"></script>
 <!-- 分页 javascript -->
-<script src="/common/pager/jquery.pager.js"></script>
-<script src="/os/js/list.js"></script>
+<script src="../common/pager/jquery.pager.js"></script>
+<script src="../os/js/list.js"></script>
 <script type="text/javascript">
 
     // 收藏商品
@@ -128,7 +127,7 @@
                 dataType : 'json',
                 url : baselocation + '/favorite/' + productNumber,
                 success : function(result) {
-                    if (result.success == true) {
+                    if (result.success === true) {
                         $(obj).toggleClass("btn-liked");
                     } else {
                         layer.alert(result.msgType, {

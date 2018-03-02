@@ -65,6 +65,8 @@
                            <div class="order-status" th:if="${order.status == 5}">待评价</div>
                            <div class="order-status" th:if="${order.status == 6}">已完成</div>
                             <p class="order-desc J_deliverDesc" th:if="${order.status == 2}"> 我们将尽快为您发货 </p>
+                          <button th:if="${order.status == 4}" th:attr="data-id=${order.id}" name="receive" class="btn btn-small btn-primary">确认收货</button>
+                          <button th:if="${order.status == 5}" th:attr="data-id=${order.id}" name="comment" class="btn btn-small btn-primary">评价商品</button>
                       </div>
                       <table class="order-detail-table">
                         <thead>
@@ -94,7 +96,7 @@
                           </ul></td>
                           <td class="order-actions">
                               <a class="btn btn-small btn-primary" th:if="${order.status == 1}" th:href="'../order/orderSuccess?id='+${order.id}" target="_blank">立即支付</a>
-                              <a class="btn btn-small btn-line-gray" th:href="'../order/detail?id='+${order.id}" >订单详情</a></td>
+                              <a class="btn btn-small btn-line-gray" th:attr="data-id=${order.id}" href="javascript:;" name = "view">订单详情</a></td>
                         </tr>
                         </tbody>
                       </table>
@@ -116,7 +118,66 @@
 </body>
 
 
+
+<!-- layer javascript -->
+<script src="../common/layer/layer.js"></script>
 <script src="../common/bootstrap/js/bootstrap.min.js"></script>
 <script src="../os/js/zySearch.js"></script>
 <script src="../os/js/jump.js"></script>
+
+<script>
+    //确认收货
+    $('[name="receive"]').click(function () {
+        var id = $(this).data('id');
+        $.ajax({
+            url:'../order/setReceive',
+            method:'post',
+            data:{
+                id:id
+            },
+            dataType:'json',
+            success:function(result){
+                if(result.status === 'SUCCESS'){
+                    location.reload();
+                }else{
+                    layer.alert(result.errMsg, {
+                        icon : 2
+                    });
+                }
+            }
+        })
+    });
+    //去评价
+    $('[name="comment"]').click(function () {
+        var id = $(this).data('id');
+        layer.open({
+            type : 2,
+            area : [ '900px','650px' ],
+            shadeClose : true,
+            shade : false,
+            anim : 1, //0-6的动画形式，-1不开启
+            maxmin : false, //开启最大化最小化按钮
+            fix : false, //不固定
+            scrollbar : false, //屏蔽游览器滚动条
+            title : '评价产品',
+            content : '../order/comment?id='+id
+        });
+    });
+    //详细
+    $('[name="view"]').click(function () {
+        var id = $(this).data('id');
+        layer.open({
+            type : 2,
+            area : [ '800px','600px' ],
+            shadeClose : true,
+            shade : false,
+            anim : 1, //0-6的动画形式，-1不开启
+            maxmin : false, //开启最大化最小化按钮
+            fix : false, //不固定
+            scrollbar : false, //屏蔽游览器滚动条
+            title : '评价产品',
+            content : '../order/view?id='+id
+        });
+    });
+</script>
 </html>

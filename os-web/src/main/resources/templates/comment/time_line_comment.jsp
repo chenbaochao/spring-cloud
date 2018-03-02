@@ -31,6 +31,8 @@ $(function() {
  * 商品评论点赞
  */
 function comment_like(obj, commentId) {
+    alert('功能还没做o(╯□╰)o');
+    return;
 	var data = {};
 	data.commentId = commentId;
 	$.ajax({

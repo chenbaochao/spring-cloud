@@ -1,17 +1,16 @@
 package com.play001.cloud.os.mapper;
 
 import com.play001.cloud.os.service.fallback.DefaultFallbackFactory;
+import com.play001.cloud.support.entity.Comment;
 import com.play001.cloud.support.entity.Order;
 import com.play001.cloud.support.entity.Pagination;
 import com.play001.cloud.support.entity.ResponseEntity;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @FeignClient(name = "ZUUL", fallback = OrderMapper.OrderFallback.class)
 public interface OrderMapper {
@@ -40,6 +39,13 @@ public interface OrderMapper {
     //获取待评价的订单数量
     @RequestMapping(value = "/product/order/getUnCommentOrderAmount", method = RequestMethod.GET)
     ResponseEntity<Integer> getUnCommentOrderAmount(@RequestHeader("userJwt")String userJwt);
+    //确认收货
+    @RequestMapping(value = "/product/order/setReceive", method = RequestMethod.POST)
+    ResponseEntity<Integer> setReceive(@RequestParam("id")Long id, @RequestHeader("userJwt")String userJwt);
+    //评论商品
+    @RequestMapping(value = "/product/order/comment", method = RequestMethod.POST)
+    ResponseEntity<Integer> comment(@RequestBody List<Comment> comments, @RequestHeader("userJwt")String userJwt);
+
     @Component
     static class OrderFallback implements OrderMapper{
 
@@ -75,6 +81,16 @@ public interface OrderMapper {
 
         @Override
         public ResponseEntity<Integer> getUnCommentOrderAmount(String userJwt) {
+            return new ResponseEntity<Integer>().setErrMsg("网络繁忙");
+        }
+
+        @Override
+        public ResponseEntity<Integer> setReceive(Long id ,String userJwt) {
+            return new ResponseEntity<Integer>().setErrMsg("网络繁忙");
+        }
+
+        @Override
+        public ResponseEntity<Integer> comment(List<Comment> comments, String userJwt) {
             return new ResponseEntity<Integer>().setErrMsg("网络繁忙");
         }
     }

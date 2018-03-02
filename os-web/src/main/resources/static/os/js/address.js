@@ -143,7 +143,7 @@ function updateAddress() {
 
 
 /**
- * 删除收获地址
+ * 删除收货地址
  */
 function del(obj) {
 	layer.confirm('确认要删除吗？', {

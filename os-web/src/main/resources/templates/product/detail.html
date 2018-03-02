@@ -31,6 +31,7 @@
                     <div class="goods-pic-box" id="J_mi_goodsPicBox">
                         <div class="goods-big-pic J_bigPicBlock"> <img class="J_goodsBigPic" id="J_BigPic"></div>
                         <div class="goods-pic-loading">
+                            <input type="hidden" id="id" th:value="${product.id}" />
                             <div class="loader loader-gray"></div>
                         </div>
                         <div class="goods-small-pic clearfix">
@@ -169,18 +170,20 @@
                     <div class="span14 goods-detail-comment-list">
                         <div class="comment-order-title">
                             <div class="left-title">
-                                <h3 class="comment-name">最有帮助的评价</h3>
+                                <h3 class="comment-name">最新评价</h3>
                             </div>
                         </div>
                         <ul class="comment-box-list" id="J_supComment">
+                            <li>
+                                <div>
+                                    <label>用户名</label>
+                                </div>
+                            </li>
                         </ul>
                     </div>
-                    <div class="span6 goods-detail-comment-timeline">
-                        <h3 class="comment-name">最新评价</h3>
-                        <ul class="comment-timeline-list" id="J_timelineComment">
-                        </ul>
+                    <div class="span20 goods-detail-comment-more" id="J_loadMoreHref">
+                        <a target="_blank" id="allComments">查看更多评价</a>
                     </div>
-                    <div class="span20 goods-detail-comment-more" style1="display:${productAttribute.commentNumber gt 10?'block':'none'}"   id="J_loadMoreHref"> <a target="_blank" href="${ctx}/comment/list?productNumber=${product.productNumber}">查看更多评价</a> </div>
                 </div>
             </div>
         </div>
@@ -218,7 +221,7 @@
                     <p>对商品还不太了解，问问看吧</p>
                 </div>
             </div>
-            <div class="more-question"> <a href="${ctx}/question/asklist?productNumber=${product.productNumber}" target="_blank" >查看全部 <span id="J_goodsQuestionAmount"></span>18条已回答的问题 &gt;</a> </div>
+            <div class="more-question"> <a  target="_blank" >查看全部 <span id="J_goodsQuestionAmount"></span>18条已回答的问题 &gt;</a> </div>
         </div>
     </div>
     <!-- 商品详情商品提问 end -->
@@ -308,76 +311,14 @@
 
 
 <!-- layer javascript -->
-<script src="/common/layer/layer.js"></script>
-<script src="/os/js/goodsDetail.js"></script>
+<script src="../common/layer/layer.js"></script>
+<script src="../os/js/goodsDetail.js"></script>
 
 <script>
     var _score=123;
     var sys_item ={};
     sys_item['default'] = {};
     sys_item['default']['score']='123';
-    var default_price=2;
-    var default_score=3;
-    var productNumber=4;
-    var productId=5;
-    // 判断是否收藏商品
-    $(function(){
-        $.ajax({
-            type : 'get',
-            dataType : 'json',
-            url : '/favorite/' + productNumber,
-            success : function(result) {
-                if (result.success == true) {
-                    if(result.data != null) {
-                        $('#goodsDetailCollectBtn').attr('data-isfavorite',true);
-                        $('#goodsDetailCollectBtn i').addClass("red");
-                    }else {
-                        $('#goodsDetailCollectBtn').attr('data-isfavorite',false);
-                        $('#goodsDetailCollectBtn i').removeClass("red");
-                    }
-                } else {
-                    $('#goodsDetailCollectBtn').attr('data-isfavorite',false);
-                    $('#goodsDetailCollectBtn i').removeClass("red");
-                }
-            }
-        })
-    })
-    // 收藏商品
-    function add_favorite(obj) {
-        var productNumber = $(obj).attr("data-pid");
-        var result = Boolean($(obj).attr('data-isfavorite'));
-        if(result) {
-            $.ajax({
-                type : 'delete',
-                dataType : 'json',
-                url : '/favorite/' + productNumber,
-                success : function(result) {
-                    if (result.success === true) {
-                        $('#goodsDetailCollectBtn i').toggleClass("red");
-                    } else {
-                        layer.alert(result.msgType, {
-                            icon : 2
-                        });
-                    }
-                }
-            })
-        }else {
-            $.ajax({
-                type : 'post',
-                dataType : 'json',
-                url : '/favorite/' + productNumber,
-                success : function(result) {
-                    if (result.success === true) {
-                        $('#goodsDetailCollectBtn i').toggleClass("red");
-                    } else {
-                        layer.alert(result.msgType, {
-                            icon : 2
-                        });
-                    }
-                }
-            })
-        }
-    }
 
 
 </script>
