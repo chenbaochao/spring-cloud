@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.play001.cloud.cms.mapper.OrderMapper">
+    <resultMap id="orderResult" type="com.play001.cloud.support.entity.Order">
+        <id property="id" column="id"/>
+        <result property="amount" column="amount"/>
+        <result property="createTime" column="create_time"/>
+        <!-- 订单用户 -->
+        <association property="user"  column="user_id" select="com.play001.cloud.cms.mapper.UserMapper.findById"/>
+        <!-- 订单地址 -->
+        <association property="orderAddress"  column="id"  select="com.play001.cloud.cms.mapper.OrderAddressMapper.findByOrderId"/>
+        <!-- 订单产品 -->
+        <collection property="orderProducts" column = "id" select="com.play001.cloud.cms.mapper.OrderProductMapper.findByOrderId" />
+
+    </resultMap>
+
+
+    <select id="count" resultType="Long">
+        SELECT
+            count(id)
+        FROM os_order
+        <if test="status != 0">
+            where status = #{status}
+        </if>
+    </select>
+
+    <select id="list" resultMap="orderResult" >
+        SELECT
+            id, user_id, amount, status, create_time
+        FROM os_order
+        <if test="status != 0">
+            where status = #{status}
+        </if>
+        <include refid="common_order_if"/>
+        LIMIT #{offset}, #{limit}
+    </select>
+
+
+
+
+
+    <sql id="common_order_if">
+
+        <if test="sort == null">
+            order by id
+        </if>
+        <if test="sort == 'amount'">
+            order by amount
+        </if>
+       <if test="sort == 'id'">
+           order by id
+       </if>
+        <if test="order == 'desc'">
+            desc
+        </if>
+
+    </sql>
+</mapper>

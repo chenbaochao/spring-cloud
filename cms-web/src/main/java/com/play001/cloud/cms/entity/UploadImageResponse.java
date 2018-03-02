@@ -12,12 +12,11 @@ public class UploadImageResponse implements Serializable {
 
     private String error;
     private String []initialPreview;
-    private InitialPreviewConfig []initialPreviewConfig;
+    private InitialPreviewConfig []initialPreviewConfig = new InitialPreviewConfig[1];
 
     public UploadImageResponse() {
         initialPreview = new String[1];
-        initialPreviewConfig = new InitialPreviewConfig[1];
-        initialPreviewConfig = new InitialPreviewConfig[1];
+        initialPreviewConfig[0] = new InitialPreviewConfig();
     }
 
     public UploadImageResponse setError(String error) {

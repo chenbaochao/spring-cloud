@@ -1,7 +1,6 @@
 package com.play001.cloud.cms.mapper;
 
-import com.play001.cloud.support.entity.Section;
-import com.play001.cloud.support.entity.user.SectionCategory;
+import com.play001.cloud.support.entity.SectionCategory;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;

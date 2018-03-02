@@ -99,13 +99,13 @@ Date.prototype.Format = function(fmt) {
  * h		弹出层高度（缺省调默认值）
  */
 function layer_show(title, url, w, h) {
-	if (title == null || title == '') {
+	if (title === null || title === '') {
 		title = false;
 	}
-	if (w == null || w == '') {
+	if (w === null || w === '') {
 		w = 800;
 	}
-	if (h == null || h == '') {
+	if (h === null || h === '') {
 		h = ($(window).height() - 50);
 	}
 	layer.open({

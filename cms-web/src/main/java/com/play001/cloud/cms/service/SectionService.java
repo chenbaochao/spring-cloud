@@ -7,7 +7,7 @@ import com.play001.cloud.support.entity.Category;
 import com.play001.cloud.support.entity.IException;
 import com.play001.cloud.support.entity.ResponseEntity;
 import com.play001.cloud.support.entity.Section;
-import com.play001.cloud.support.entity.user.SectionCategory;
+import com.play001.cloud.support.entity.SectionCategory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.stereotype.Service;
@@ -15,7 +15,6 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service

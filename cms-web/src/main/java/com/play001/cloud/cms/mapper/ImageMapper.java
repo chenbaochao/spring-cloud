@@ -18,7 +18,7 @@ public interface ImageMapper {
     /**
      * 通过ID查找
      */
-    @Select("select id, url, path, used, storage_name as storageName, create_time as createTime from support_image_log where id = #{id}")
+    @Select("select id, url, path, count, storage_name as storageName, create_time as createTime from support_image_log where id = #{id}")
     Image findById(Long id);
 
     //图片引用数+1
