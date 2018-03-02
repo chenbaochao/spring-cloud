@@ -27,5 +27,9 @@ public interface OrderMapper {
                            @Param("status")Integer status);
     //订单数量
     @Select("select count(*) from os_order where status = #{status} and user_id = #{userId}")
-    Integer countByStatus(@Param("status") Byte status, @Param("userId")Long userId);;
+    Integer countByStatus(@Param("status") Byte status, @Param("userId")Long userId);
+    //获取订单状态
+    @Select("select status from os_order where  user_id = #{userId} and id = #{id} limit 1")
+    Byte getStatus(@Param("id")Long id, @Param("userId")Long userId);
+
 }

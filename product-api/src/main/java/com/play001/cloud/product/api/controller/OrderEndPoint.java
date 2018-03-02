@@ -1,16 +1,14 @@
 package com.play001.cloud.product.api.controller;
 
 import com.play001.cloud.product.api.serivce.OrderService;
-import com.play001.cloud.support.entity.IException;
-import com.play001.cloud.support.entity.Order;
-import com.play001.cloud.support.entity.Pagination;
-import com.play001.cloud.support.entity.ResponseEntity;
+import com.play001.cloud.support.entity.*;
 import com.play001.cloud.support.interceptor.UserPermissionVerify;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/order")
@@ -75,6 +73,18 @@ public class OrderEndPoint {
     @RequestMapping(value = "/getUnCommentOrderAmount", method = RequestMethod.GET)
     public  ResponseEntity<Integer> getUnCommentOrderAmount(@RequestHeader("userJwt")String userJwt) throws IOException {
         return orderService.countByStatus(Order.STATUS_UNCOMMENT,userJwt);
+    }
+    //评价
+    @UserPermissionVerify
+    @RequestMapping(value = "/comment", method = RequestMethod.POST)
+    public ResponseEntity<Integer> comment(@RequestBody List<Comment> comments, @RequestHeader("userJwt")String userJwt) throws IException {
+        return orderService.comment(comments,userJwt);
+    }
+    //确认收货
+    @UserPermissionVerify
+    @RequestMapping(value = "/setReceive", method = RequestMethod.POST)
+    public ResponseEntity<Integer> setReceive(Long id, @RequestHeader("userJwt")String userJwt) throws IOException {
+        return orderService.setReceive(id,userJwt);
     }
 
 }

@@ -15,6 +15,7 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import java.io.IOException;
@@ -39,7 +40,12 @@ public class OrderService {
     @Autowired
     private OrderProductMapper orderProductMapper;
     @Autowired
+    private UserMapper userMapper;
+    @Autowired
+    private CommentMapper commentMapper;
+    @Autowired
     private DataSourceTransactionManager transactionManager;
+
 
     //下单
     public ResponseEntity<Long> order(ArrayList<Long> cartIds, String userJwt, Long addressId){
@@ -179,13 +185,10 @@ public class OrderService {
         int totalCount = orderMapper.count(userCredential.getUserId(), type);
         long start = (long)(pageNo-1) * defaultPageSize;
         List<Order> orders = orderMapper.pagination(userCredential.getUserId(), start, defaultPageSize, type);
-        //数据总条数
-        pagination.setDataQuantity((long)totalCount);
         //当前页面
         pagination.setPageNo(pageNo);
         //总页数
-        pagination.setPageQuantity((totalCount+totalCount-1)/defaultPageSize);
-        pagination.setPageSize(defaultPageSize);
+        pagination.setTotalPage((totalCount+totalCount-1)/defaultPageSize);
         pagination.setData(orders);
         return responseEntity.setMessage(pagination);
     }
@@ -204,5 +207,69 @@ public class OrderService {
     public ResponseEntity<Integer> countByStatus(byte status, String userJwt) throws IOException {
         UserCredential userCredential = JwtUtil.getCredentialByJwt(userJwt);
         return new ResponseEntity<Integer>().setMessage(orderMapper.countByStatus(status, userCredential.getUserId()));
+    }
+
+    //评价商品
+    @Transactional
+    public ResponseEntity<Integer> comment(List<Comment> comments, String  userJwt) throws IException {
+        ResponseEntity<Integer> responseEntity = new ResponseEntity<>();
+        if(comments == null || comments.size() == 0){
+            return responseEntity.setErrMsg("数据为空");
+        }
+        ResponseEntity<User> userResponseEntity = userMapper.getInfo(userJwt);
+        if(userResponseEntity.getStatus().equals(ResponseEntity.ERROR)){
+            return responseEntity.setErrMsg(userResponseEntity.getErrMsg());
+        }
+        User user = userResponseEntity.getMessage();
+
+        Long orderId = comments.get(0).getOrderId();
+        //获取订单
+        Order order = orderMapper.findById(orderId, user.getId());
+        if(order == null){
+            return responseEntity.setErrMsg("订单不存在");
+        }
+        Byte status = orderMapper.getStatus(orderId, user.getId());
+        if(status == null || status != Order.STATUS_UNCOMMENT){
+            return responseEntity.setErrMsg("订单状态错误");
+        }
+        List<OrderProduct> orderProducts = order.getOrderProducts();
+        //订单产品必须一次性全部评论
+        for(OrderProduct orderProduct:orderProducts){
+            boolean flag = false;
+            //循环保存每个评论
+            for(Comment comment : comments){
+                if(comment.getOrderProductId().equals(orderProduct.getId())){
+                    flag = true;
+                    if(!comment.getOrderId().equals(orderId)){
+                        throw new IException("数据错误:订单编号不唯一");
+                    }
+                    comment.setProductId(orderProduct.getProductId());
+                    //用户数据
+                    comment.setUser(user);
+                    comment.setCreateTime(DateUtil.getTime());
+                    //设置为显示
+                    comment.setStatus(Comment.STATUS_SHOW);
+                    //保存评论
+                    commentMapper.add(comment);
+                }
+            }
+            //订单产品为一次性全部评论
+            if(!flag){
+                throw new IException("数据缺少:订单产品必须一次性全部评论");
+            }
+        }
+        //设置订单状态为已完成
+        orderMapper.setStatus(orderId, Order.STATUS_COMPLETE, user.getId());
+        return responseEntity.setStatus(ResponseEntity.SUCCESS);
+    }
+    //确认收货
+    public ResponseEntity<Integer> setReceive(Long id, String userJwt) throws IOException {
+        ResponseEntity<Integer> responseEntity = new ResponseEntity<>();
+        if(id == null){
+            return responseEntity.setErrMsg("参数错误");
+        }
+        UserCredential user = JwtUtil.getCredentialByJwt(userJwt);
+        orderMapper.setStatus(id, Order.STATUS_UNCOMMENT, user.getUserId());
+        return responseEntity.setStatus(ResponseEntity.SUCCESS);
     }
 }

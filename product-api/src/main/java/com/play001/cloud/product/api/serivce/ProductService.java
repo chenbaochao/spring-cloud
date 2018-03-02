@@ -57,7 +57,7 @@ public class ProductService {
 
     public Pagination<Product> search(String keyword, Long start, Integer quantity){
         Pagination<Product> pagination = new Pagination<>();
-        pagination.setDataQuantity(productMapper.countSearch(keyword));//数据总条数
+        pagination.setTotalData(productMapper.countSearch(keyword));//数据总条数
         List<Product> products =  productMapper.search(keyword, start, quantity);
         pagination.setData(products);
         return pagination;
@@ -72,7 +72,7 @@ public class ProductService {
      */
     public Pagination<Product> listByCategoryId(Integer categoryId, Integer sort, Long start, Integer quantity){
         Pagination<Product> pagination = new Pagination<>();
-        pagination.setDataQuantity(productMapper.countByCategory(categoryId));//数据总条数
+        pagination.setTotalData(productMapper.countByCategory(categoryId));//数据总条数
         List<Product> products =  productMapper.listByCategoryId(categoryId, sort, start, quantity);
         pagination.setData(products);
         return pagination;
