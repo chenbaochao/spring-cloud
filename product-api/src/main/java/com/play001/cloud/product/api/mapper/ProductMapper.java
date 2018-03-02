@@ -3,6 +3,7 @@ package com.play001.cloud.product.api.mapper;
 import com.play001.cloud.support.entity.Product;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -37,5 +38,7 @@ public interface ProductMapper {
                                    @Param("start")Long start,
                                    @Param("quantity")Integer quantity);
 
-
+    //售出数量+1
+    @Update("update os_product set sold_number = sold_number+1 where id = #{id} limit 1")
+    Integer increaseSoldNumer(Long id);
 }

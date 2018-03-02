@@ -193,6 +193,7 @@ public class OrderService {
         return responseEntity.setMessage(pagination);
     }
     //模拟付款
+    @Transactional
     public ResponseEntity<Integer> pay(Long id, String userJwt) throws IOException {
         ResponseEntity<Integer> responseEntity = new ResponseEntity<>();
         UserCredential userCredential = JwtUtil.getCredentialByJwt(userJwt);
@@ -201,6 +202,11 @@ public class OrderService {
             return responseEntity;
         }
         orderMapper.setStatus(id, Order.STATUS_PAID, userCredential.getUserId());
+        //付款成功后产品售出数量+1
+        List<OrderProduct> orderProducts = orderProductMapper.findByOrderId(id);
+        for(OrderProduct orderProduct:orderProducts){
+            productMapper.increaseSoldNumer(orderProduct.getId());
+        }
         return responseEntity.setStatus(ResponseEntity.SUCCESS);
     }
     //订单数量
