@@ -2,6 +2,7 @@ package com.play001.cloud.support.entity;
 
 
 import com.google.gson.Gson;
+import com.play001.cloud.support.entity.user.User;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.constraints.Max;
@@ -362,5 +363,5 @@ public class Product  implements Serializable {
         return new Gson().toJson(this);
     }
 
-    
+
 }

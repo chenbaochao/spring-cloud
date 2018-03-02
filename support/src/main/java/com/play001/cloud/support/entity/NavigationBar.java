@@ -26,7 +26,6 @@ public class NavigationBar  implements Serializable {
 
     private String remarks;
     //导航
-    @NotNull(message = "所属导航错误")
     private Navigation navigation;
 
     public Integer getId() {

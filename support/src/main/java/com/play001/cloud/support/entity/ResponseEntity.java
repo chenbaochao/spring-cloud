@@ -41,7 +41,7 @@ public class ResponseEntity<T> {
     }
 
     public ResponseEntity<T> setErrMsg(String errMsg) {
-        //重大BUG, feign请求返回数据时,errMsg,也会调用setErrMsg方法
+        //重大BUG, feign请求返回数据时,errMsg为NULL,也会调用setErrMsg方法
         if(errMsg != null) {
             this.status = ERROR;
             this.errMsg = errMsg;

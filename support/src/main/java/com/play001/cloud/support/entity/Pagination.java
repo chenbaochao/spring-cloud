@@ -6,27 +6,25 @@ import java.util.List;
  * 分页类
  */
 public class Pagination<T> {
-    private Long dataQuantity;//数据总数
-    private Integer pageQuantity;//页面总数
+    private Long totalData;//数据总数
+    private Integer totalPage;//页面总数
     private Integer pageNo;//当前页面编号
-    private Integer pageSize;//一页显示多少条数据
+    private List<T> data;//附带数据
 
-    List<T> data;//附带数据
-
-    public Long getDataQuantity() {
-        return dataQuantity;
+    public Long getTotalData() {
+        return totalData;
     }
 
-    public void setDataQuantity(Long dataQuantity) {
-        this.dataQuantity = dataQuantity;
+    public void setTotalData(Long totalData) {
+        this.totalData = totalData;
     }
 
-    public Integer getPageQuantity() {
-        return pageQuantity;
+    public Integer getTotalPage() {
+        return totalPage;
     }
 
-    public void setPageQuantity(Integer pageQuantity) {
-        this.pageQuantity = pageQuantity;
+    public void setTotalPage(Integer totalPage) {
+        this.totalPage = totalPage;
     }
 
     public Integer getPageNo() {
@@ -35,14 +33,6 @@ public class Pagination<T> {
 
     public void setPageNo(Integer pageNo) {
         this.pageNo = pageNo;
-    }
-
-    public Integer getPageSize() {
-        return pageSize;
-    }
-
-    public void setPageSize(Integer pageSize) {
-        this.pageSize = pageSize;
     }
 
     public List<T> getData() {

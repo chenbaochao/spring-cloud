@@ -1,5 +1,8 @@
 package com.play001.cloud.support.entity;
 
+import org.hibernate.validator.constraints.NotBlank;
+
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.List;
 
@@ -7,12 +10,20 @@ import java.util.List;
  * 首页各种商品栏目
  */
 public class Section  implements Serializable {
+    public static final Byte INVALID = 0;
+    public static final Byte VALID = 1;
     private Integer id;
+    @NotNull
     private Integer sort;
+    @NotBlank
     private String name;
-    private Boolean status;
+    @NotNull
+    private Byte status;
+    @NotNull
     private List<Category> categories;
     private List<Advert> advert;//广告
+    //栏目分类
+    private SectionCategory sectionCategory;
 
     public Integer getId() {
         return id;
@@ -54,11 +65,19 @@ public class Section  implements Serializable {
         this.advert = advert;
     }
 
-    public Boolean getStatus() {
+    public Byte getStatus() {
         return status;
     }
 
-    public void setStatus(Boolean status) {
+    public void setStatus(Byte status) {
         this.status = status;
+    }
+
+    public SectionCategory getSectionCategory() {
+        return sectionCategory;
+    }
+
+    public void setSectionCategory(SectionCategory sectionCategory) {
+        this.sectionCategory = sectionCategory;
     }
 }
