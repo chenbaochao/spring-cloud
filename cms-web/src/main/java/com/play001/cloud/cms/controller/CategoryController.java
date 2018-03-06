@@ -1,5 +1,6 @@
 package com.play001.cloud.cms.controller;
 
+import com.play001.cloud.cms.Interceptor.PermissionCode;
 import com.play001.cloud.cms.service.CategoryService;
 import com.play001.cloud.support.entity.IException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ public class CategoryController {
     /**
      * 分类列表
      */
+    @PermissionCode("category_view")
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public String list(){
         return "category/category_list";
@@ -26,6 +28,7 @@ public class CategoryController {
     /**
      * 编辑更新
      */
+    @PermissionCode("category_update")
     @RequestMapping(value = "/update", method = RequestMethod.GET)
     public String update(Model model, Integer id) throws IException {
         model.addAttribute("category", categoryService.findById(id));
@@ -34,6 +37,7 @@ public class CategoryController {
     /**
      * 创建
      */
+    @PermissionCode("category_create")
     @RequestMapping(value = "/create", method = RequestMethod.GET)
     public String create(){
         return "category/category_create";

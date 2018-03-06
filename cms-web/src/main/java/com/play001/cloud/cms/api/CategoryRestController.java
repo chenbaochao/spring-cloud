@@ -1,5 +1,6 @@
 package com.play001.cloud.cms.api;
 
+import com.play001.cloud.cms.Interceptor.PermissionCode;
 import com.play001.cloud.cms.service.CategoryService;
 import com.play001.cloud.support.entity.Category;
 import com.play001.cloud.support.entity.ResponseEntity;
@@ -22,6 +23,7 @@ public class CategoryRestController {
     /**
      * 列表
      */
+    @PermissionCode("category_view")
     @RequestMapping(value = "/getList", method = RequestMethod.GET)
     public List<Category> getList(){
         return categoryService.findAll();
@@ -30,6 +32,7 @@ public class CategoryRestController {
     /**
      * 设置状态
      */
+    @PermissionCode("category_update")
     @RequestMapping(value = "/setStatus", method = RequestMethod.POST)
     public ResponseEntity<Integer> setStatus(Integer id, Byte status){
         return categoryService.setStatus(id, status);
@@ -37,6 +40,7 @@ public class CategoryRestController {
     /**
      * 删除
      */
+    @PermissionCode("category_delete")
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     public ResponseEntity<Integer> delete(Integer id){
         return categoryService.delete(id);
@@ -44,6 +48,8 @@ public class CategoryRestController {
     /**
      * update
      */
+
+    @PermissionCode("category_update")
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public ResponseEntity<Integer> update(@Valid Category category, BindingResult bindingResult){
         if(bindingResult.hasErrors()){
@@ -54,6 +60,7 @@ public class CategoryRestController {
     /**
      * 创建
      */
+    @PermissionCode("category_create")
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public ResponseEntity<Integer> create(@Valid Category category, BindingResult bindingResult){
         if(bindingResult.hasErrors()){

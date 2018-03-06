@@ -1,6 +1,7 @@
 package com.play001.cloud.cms.controller;
 
 import com.google.gson.Gson;
+import com.play001.cloud.cms.Interceptor.PermissionCode;
 import com.play001.cloud.cms.entity.Role;
 import com.play001.cloud.cms.service.MenuService;
 import com.play001.cloud.cms.service.RoleService;
@@ -29,6 +30,7 @@ public class RoleController {
     /**
      * 创建role
      */
+    @PermissionCode("role_create")
     @RequestMapping(value = "/create", method = RequestMethod.GET)
     public String create(Model model){
         List<Menu> menus = menuService.getAllMenus();
@@ -36,11 +38,13 @@ public class RoleController {
         return "role/role_create";
     }
     //列表
+    @PermissionCode("role_view")
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public String list(){
         return "role/role_list";
     }
     //更新
+    @PermissionCode("role_update")
     @RequestMapping(value = "/update", method = RequestMethod.GET)
     public String update(Model model, Integer id){
         Role role = roleService.findById(id);

@@ -1,5 +1,6 @@
 package com.play001.cloud.cms.api;
 
+import com.play001.cloud.cms.Interceptor.PermissionCode;
 import com.play001.cloud.cms.entity.Role;
 import com.play001.cloud.cms.service.RoleService;
 import com.play001.cloud.support.entity.ResponseEntity;
@@ -24,6 +25,7 @@ public class RoleRestController {
     /**
      * 创建
      */
+    @PermissionCode("role_create")
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public ResponseEntity<Integer> create(@RequestBody @Valid Role role, BindingResult bindingResult){
         if(bindingResult.hasErrors()){
@@ -33,6 +35,7 @@ public class RoleRestController {
     }
 
     //更新
+    @PermissionCode("role_update")
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public ResponseEntity<Integer> update(@RequestBody @Valid Role role, BindingResult bindingResult){
         if(bindingResult.hasErrors()){
@@ -41,12 +44,14 @@ public class RoleRestController {
         return roleService.update(role);
     }
     //列表
+    @PermissionCode("role_view")
     @RequestMapping(value = "/getList", method = RequestMethod.GET)
     public List<Role> getList(){
         return roleService.findAll();
     }
 
     //删除
+    @PermissionCode("role_delete")
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     public ResponseEntity<Integer> delete(Integer id){
         return roleService.delete(id);

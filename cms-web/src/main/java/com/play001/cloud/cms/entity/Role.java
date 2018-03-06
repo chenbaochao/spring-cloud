@@ -32,6 +32,7 @@ public class Role implements Serializable{
      * 权限
      */
     private List<MenuPermission> permissions;
+
     public Integer getId() {
         return id;
     }
@@ -71,4 +72,6 @@ public class Role implements Serializable{
     public void setPermissions(List<MenuPermission> permissions) {
         this.permissions = permissions;
     }
+
+
 }

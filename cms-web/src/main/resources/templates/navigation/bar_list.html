@@ -37,7 +37,7 @@
                 <div class="example">
                   <div id="toolbar" class="btn-group m-t-sm">
                     <!--th:if="${session.admin.premission.navigation_bar_create eq true}"-->
-                    <button type="button" class="btn btn-default"  title="创建导航栏"
+                    <button type="button"  th:if="${session.admin.hasPermission('navigation_create') eq true}"  class="btn btn-default"  title="创建导航栏"
                               onclick="show()">
                         <i class="glyphicon glyphicon-plus"></i>
                       </button>

@@ -2,6 +2,7 @@ package com.play001.cloud.cms.entity;
 
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * 存放于session的数据
@@ -11,11 +12,6 @@ public class AdminSessionData implements Serializable {
     private String username;
     private Role role;
     private String realName;
-    /**
-     * 菜单code对应权限true or false
-     */
-    private HashMap<String, Boolean> permission;
-
 
     public Integer getId() {
         return id;
@@ -49,11 +45,21 @@ public class AdminSessionData implements Serializable {
         this.realName = realName;
     }
 
-    public HashMap<String, Boolean> getPermission() {
-        return permission;
-    }
 
-    public void setPermission(HashMap<String, Boolean> permission) {
-        this.permission = permission;
+    /**
+     * 判断是否有权限
+     * @param menuCode 标志
+     */
+    public boolean hasPermission(String menuCode){
+        System.out.println("menuCode="+menuCode);
+        if(role == null) return false;
+        List<MenuPermission> menuPermissions = role.getPermissions();
+        if(menuPermissions == null || menuPermissions.size() == 0) return false;
+        for(MenuPermission menuPermission : menuPermissions){
+            if(menuPermission.getMenu().getCode().equals(menuCode)){
+                return menuPermission.getFlag().equals((byte)1);
+            }
+        }
+        return false;
     }
 }

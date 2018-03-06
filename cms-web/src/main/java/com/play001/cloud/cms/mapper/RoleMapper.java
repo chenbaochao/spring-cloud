@@ -53,8 +53,9 @@ public interface RoleMapper {
     @Results({
             @Result(column = "id", property = "menu.id"),
             @Result(column = "menu_type", property = "menu.type"),
+            @Result(column = "menu_code", property = "menu.code"),
     })
-    @Select("select m.id, m.menu_type, rm.flag from cms_role_menu rm, cms_menu m where rm.role_id = #{roleId} and m.id = rm.menu_id")
+    @Select("select m.id, m.menu_type,  m.menu_code, rm.flag from cms_role_menu rm, cms_menu m where rm.role_id = #{roleId} and m.id = rm.menu_id")
     List<MenuPermission> findPermissions(Integer roleId);
 
     //删除

@@ -26,7 +26,7 @@
               <div class="example-wrap">
                 <div class="example">
                   <div id="toolbar" class="btn-group m-t-sm">
-                      <button th:if="${session?.admin?.permission?.admin_create eq true}" type="button" class="btn btn-default"  title="创建管理员" onclick="layer_show('创建管理员','/admin/create','900','700')">
+                      <button th:if="${session.admin.hasPermission('admin_create') eq true}" type="button" class="btn btn-default"  title="创建管理员" onclick="layer_show('创建管理员','/admin/create','900','700')">
                         <i class="glyphicon glyphicon-plus"></i>
                       </button>
                   </div>

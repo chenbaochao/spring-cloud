@@ -1,5 +1,6 @@
 package com.play001.cloud.cms.controller;
 
+import com.play001.cloud.cms.Interceptor.PermissionCode;
 import com.play001.cloud.cms.entity.Admin;
 import com.play001.cloud.cms.entity.AdminSessionData;
 import com.play001.cloud.cms.entity.Role;
@@ -30,6 +31,7 @@ public class AdminController {
     @Autowired
     private AdminService adminService;
 
+    @PermissionCode
     @RequestMapping(value = "/index", method = RequestMethod.GET)
     public String index(Model model, HttpSession session ){
         AdminSessionData adminSessionData = (AdminSessionData)session.getAttribute("admin");
@@ -39,12 +41,13 @@ public class AdminController {
         return "webfront/main";
     }
 
+    @PermissionCode("admin_create")
     @RequestMapping(value = "/create", method = RequestMethod.GET)
     public String create(Model model ) {
         model.addAttribute("roles", roleService.findAll());
         return "admin/create";
     }
-
+    @PermissionCode("admin_view")
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public String list(HttpSession session) {
         return "admin/list";
@@ -58,12 +61,13 @@ public class AdminController {
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
     public void logout(HttpSession session, HttpServletResponse response) throws IOException {
         session.setAttribute("admin", null);
-        response.sendRedirect("/admin/login");
+        response.sendRedirect("/session/login");
     }
 
     /**
      * 修改信息页面
      */
+    @PermissionCode
     @RequestMapping(value = "/update", method = RequestMethod.GET)
     public String update(Model model, Integer id) throws IException {
         if(id == null) throw new IException("参数错误");
@@ -77,6 +81,7 @@ public class AdminController {
     /**
      * 登陆日志界面
      */
+    @PermissionCode
     @RequestMapping(value = "/loginLog", method = RequestMethod.GET)
     public String loginLog(Integer adminId, Model model)  {
         model.addAttribute("adminId", adminId);
@@ -86,6 +91,7 @@ public class AdminController {
     /**
      * 个人信息界面
      */
+    @PermissionCode
     @RequestMapping(value = "/personalInfo", method = RequestMethod.GET)
     public String info(Model model, HttpSession session){
         AdminSessionData adminSessionData  = (AdminSessionData)session.getAttribute("admin");
@@ -95,6 +101,7 @@ public class AdminController {
     /**
      * 修改头像界面
      */
+    @PermissionCode
     @RequestMapping(value = "/avatar", method = RequestMethod.GET)
     public String avatar(HttpSession session, Model model){
         AdminSessionData adminSessionData  = (AdminSessionData)session.getAttribute("admin");

@@ -1,6 +1,7 @@
 package com.play001.cloud.cms.api;
 
 
+import com.play001.cloud.cms.Interceptor.PermissionCode;
 import com.play001.cloud.cms.entity.Admin;
 import com.play001.cloud.cms.entity.AdminSessionData;
 import com.play001.cloud.cms.service.AdminService;
@@ -35,6 +36,7 @@ public class AdminRestController {
     /**
      * 创建管理员
      */
+    @PermissionCode("admin_create")
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public ResponseEntity<Integer> create(@Validated Admin admin, BindingResult result, HttpSession session) throws IException {
         if(result.hasErrors()) throw new IException(result.getFieldError().getDefaultMessage());
@@ -61,6 +63,7 @@ public class AdminRestController {
      * @param offset 开始位置
      * @param limit 条数
      */
+    @PermissionCode("admin_view")
     @RequestMapping(value = "/getList", method = RequestMethod.GET)
     public Map<String, Object> getList(Integer offset, Integer limit){
         return adminService.Pagination(offset, limit);
@@ -69,6 +72,8 @@ public class AdminRestController {
     /**
      * @param id 要删除的管理员ID, 不能为1,
      */
+
+    @PermissionCode("admin_delete")
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     public ResponseEntity<Integer> delete(Integer id) throws IException {
         if(id == null) throw new IException("ID不能为空");
@@ -79,6 +84,8 @@ public class AdminRestController {
     /**
      * 更新管理员
      */
+
+    @PermissionCode("admin_update")
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public ResponseEntity<Integer> update(Admin admin, HttpSession session) throws IException {
         return adminService.update(admin, session);
@@ -87,15 +94,18 @@ public class AdminRestController {
     /**
      * 冻结管理员
      */
+    @PermissionCode("admin_update")
     @RequestMapping(value = "/freeze", method = RequestMethod.PUT)
     public ResponseEntity<Integer> freeze(Integer id) throws IException {
         if(id == null) throw new IException("参数错误");
         adminService.setStatus(id, (byte)0);
         return new ResponseEntity<>(ResponseEntity.SUCCESS);
     }
+
     /**
      * 启用管理员
      */
+    @PermissionCode("admin_update")
     @RequestMapping(value = "/unFreeze", method = RequestMethod.PUT)
     public ResponseEntity<Integer> unFreeze(Integer id) throws IException {
         if(id == null) throw new IException("参数错误");
@@ -109,6 +119,7 @@ public class AdminRestController {
      * @param offset 开始位置
      * @param limit 数据条数
      */
+    @PermissionCode
     @RequestMapping(value = "/getLoginLogs", method = RequestMethod.GET)
     public Map<String, Object> getLoginLogs(Integer adminId, Long offset, Integer limit){
         return loginLogService.getPagination(adminId, offset, limit);
@@ -116,6 +127,7 @@ public class AdminRestController {
     /**
      * 修改个人信息
      */
+    @PermissionCode
     @RequestMapping(value = "/updatePersonalInfo", method = RequestMethod.POST)
     public ResponseEntity<Integer> updatePersonalInfo(@Validated Admin admin, BindingResult result, HttpSession session){
         if(result.hasErrors()){
@@ -134,6 +146,8 @@ public class AdminRestController {
     /**
      * 修改头像
      */
+
+    @PermissionCode
     @RequestMapping(value = "/updateAvatar", method = RequestMethod.POST)
     public ResponseEntity<Integer> updateAvatar(Long imageId, HttpSession session){
         AdminSessionData adminSessionData = (AdminSessionData)session.getAttribute("admin");

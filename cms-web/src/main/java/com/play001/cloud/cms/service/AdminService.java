@@ -36,6 +36,7 @@ import java.util.Objects;
 public class AdminService {
 
     public static final int ADMIN_ROOT_ID = 1;
+
     @Autowired
     private AdminMapper adminMapper;
     @Autowired
@@ -121,12 +122,12 @@ public class AdminService {
         adminSessionData.setRole(admin.getRole());
         adminSessionData.setRealName(admin.getRealName());
         //读取权限
-        List<Map<String, Object>> permission = permissionMapper.getMenuPermission(admin.getId());
+/*        List<Map<String, Object>> permission = permissionMapper.getMenuPermission(admin.getId());
         Map<String, Boolean> adminPermission = new HashMap<>();
         for(Map<String, Object> item : permission){
             adminPermission.put(item.get("menuCode").toString(), (Boolean)item.get("flag"));
         }
-        adminSessionData.setPermission((HashMap<String, Boolean>) adminPermission);
+        adminSessionData.setPermission((HashMap<String, Boolean>) adminPermission);*/
         session.setAttribute("admin", adminSessionData);
 
         return responseEntity.setStatus(ResponseEntity.SUCCESS);

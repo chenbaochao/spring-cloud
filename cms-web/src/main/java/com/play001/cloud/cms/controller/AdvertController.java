@@ -1,6 +1,7 @@
 package com.play001.cloud.cms.controller;
 
 
+import com.play001.cloud.cms.Interceptor.PermissionCode;
 import com.play001.cloud.cms.service.AdvertCategoryService;
 import com.play001.cloud.cms.service.AdvertService;
 import com.play001.cloud.cms.service.SectionService;
@@ -23,6 +24,8 @@ public class AdvertController {
     @Autowired
     private SectionService sectionService;
 
+
+    @PermissionCode("advert_view")
     @RequestMapping(value = "/categoryList", method = RequestMethod.GET)
     public String categoryList(){
         return "advert/advert_category_list";
@@ -32,7 +35,9 @@ public class AdvertController {
         model.addAttribute("advertCategory", advertCategoryService.findById(categoryId));
         return "advert/advert_list";
     }
+
     //编辑页面
+    @PermissionCode("advert_update")
     @RequestMapping(value = "/update", method = RequestMethod.GET)
     public String update(Model model, Integer id) throws IException {
         Advert advert = advertService.findById(id);
@@ -45,6 +50,8 @@ public class AdvertController {
         return "advert/advert_update";
     }
     //新增
+
+    @PermissionCode("advert_create")
     @RequestMapping(value = "/add", method = RequestMethod.GET)
     public String add(Model model, Integer categoryId) throws IException {
         model.addAttribute("advertCategory", advertCategoryService.findById(categoryId));

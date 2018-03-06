@@ -1,5 +1,6 @@
 package com.play001.cloud.cms.api;
 
+import com.play001.cloud.cms.Interceptor.PermissionCode;
 import com.play001.cloud.cms.service.NavigationBarService;
 import com.play001.cloud.cms.service.NavigationService;
 import com.play001.cloud.support.entity.Navigation;
@@ -26,6 +27,7 @@ public class NavigationRestController {
     /**
      * 获取所有导航
      */
+    @PermissionCode("navigation_view")
     @RequestMapping(value = "/getList", method = RequestMethod.GET)
     public Map<String, Object> getList(){
         return navigationService.getList();
@@ -34,6 +36,7 @@ public class NavigationRestController {
     /**
      * 导航栏分页
      */
+    @PermissionCode("navigation_view")
     @RequestMapping(value = "/bar/getList", method = RequestMethod.GET)
     public Map<String, Object> getBarList(Integer navigationId, Integer offset, Integer limit){
         return navigationBarService.getList(navigationId, offset, limit);
@@ -42,13 +45,15 @@ public class NavigationRestController {
     /**
      * 隐藏导航栏
      */
+    @PermissionCode("navigation_update")
     @RequestMapping(value = "/bar/hidden", method = RequestMethod.POST)
     public ResponseEntity<Integer> hiddenBar(Integer id){
         return navigationBarService.setStatus(id, false);
     }
     /**
-     * 隐藏导航栏
+     * 显示导航栏
      */
+    @PermissionCode("navigation_update")
     @RequestMapping(value = "/bar/show", method = RequestMethod.POST)
     public ResponseEntity<Integer> showBar(Integer id){
         return navigationBarService.setStatus(id, true);
@@ -56,6 +61,7 @@ public class NavigationRestController {
     /**
      * 更新导航栏
      */
+    @PermissionCode("navigation_update")
     @RequestMapping(value = "/bar/update", method = RequestMethod.POST)
     public ResponseEntity<Integer> updateBar(@Validated NavigationBar navigationBar, BindingResult bindingResult){
         if(bindingResult.hasErrors()){
@@ -66,6 +72,7 @@ public class NavigationRestController {
     /**
      * 删除导航栏
      */
+    @PermissionCode("navigation_delete")
     @RequestMapping(value = "/bar/delete", method = RequestMethod.POST)
     public ResponseEntity<Integer> deleteBar(Integer id){
         return navigationBarService.delete(id);
@@ -73,6 +80,7 @@ public class NavigationRestController {
     /**
      * 创建导航栏
      */
+    @PermissionCode("navigation_create")
     @RequestMapping(value = "/bar/create", method = RequestMethod.POST)
     public ResponseEntity<Integer> createBar(@Validated NavigationBar navigationBar, BindingResult bindingResult){
         if(bindingResult.hasErrors()){

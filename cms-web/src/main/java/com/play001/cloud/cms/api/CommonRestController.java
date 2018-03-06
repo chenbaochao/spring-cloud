@@ -1,6 +1,7 @@
 package com.play001.cloud.cms.api;
 
 import com.baidu.ueditor.ActionEnter;
+import com.play001.cloud.cms.Interceptor.PermissionCode;
 import com.play001.cloud.cms.entity.UploadImageResponse;
 import com.play001.cloud.cms.service.ImageService;
 import com.play001.cloud.cms.service.MenuService;
@@ -40,6 +41,7 @@ public class CommonRestController {
      * 上传图片
      * @param avatar_data 图片裁剪参数
      */
+    @PermissionCode
     @RequestMapping(value = "/uploadImage", method = RequestMethod.POST)
     public UploadImageResponse uploadImage(MultipartFile upFile , String avatar_data){
         UploadImageResponse response = new UploadImageResponse();
@@ -60,6 +62,7 @@ public class CommonRestController {
      * 删除图片
      * 返回NULL删除成功,返回map中error存储出错信息
      */
+    @PermissionCode
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     public Map<String, String> delete(Long key){
         return imageService.delete(key);
@@ -68,6 +71,7 @@ public class CommonRestController {
     /***
      * 获取Ueditor配置文件
      */
+    @PermissionCode
     @RequestMapping(value = "/getUeditorConf", method = RequestMethod.GET)
     public String getUeditorConf(HttpServletRequest request){
         String rootPath = CommonRestController.class.getClassLoader().getResource("").getPath();
@@ -79,6 +83,7 @@ public class CommonRestController {
      * Ueditor 上传图片
      * Ueditor上传图片和其它框架上传图片所上传的参数和返回信息格式有所不同,但是流程一样,故分开所写.调用同一个service函数
      */
+    @PermissionCode
     @RequestMapping(value = "/ueditor/uploadImage", method = RequestMethod.POST)
     public Map<String, String> ueditorUploadImage(MultipartFile upFile){
         ResponseEntity<Image> responseEntity = imageService.upload(upFile, null);
@@ -98,8 +103,7 @@ public class CommonRestController {
 
     @RequestMapping(value = "/test")
     public List<Menu> test(){
-        List<Menu> menus=null;
-        return menus;
+        return null;
     }
     /**
      * 编辑产品中,删除相册旧图片时(已保存在数据库中图片)时不能直接删除图片,必须点击保存后在后台进行处理

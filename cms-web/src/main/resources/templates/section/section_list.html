@@ -40,7 +40,7 @@
                       <button type="button" class="btn btn-default"  title="返回上一页" onclick="javascript:window.history.back();">
                           <i class="glyphicon glyphicon-circle-arrow-left"></i>
                       </button>
-                      <button type="button" class="btn btn-default"  title="创建栏目" onclick="show()">
+                      <button type="button" class="btn btn-default"  th:if="${session.admin.hasPermission('section_create') eq true}"   title="创建栏目" onclick="show()">
                         <i class="glyphicon glyphicon-plus"></i>
                       </button>
                   </div>

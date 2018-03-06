@@ -1,6 +1,7 @@
 package com.play001.cloud.cms.controller;
 
 import com.google.gson.Gson;
+import com.play001.cloud.cms.Interceptor.PermissionCode;
 import com.play001.cloud.cms.service.CategoryService;
 import com.play001.cloud.cms.service.SectionService;
 import com.play001.cloud.support.entity.IException;
@@ -21,24 +22,28 @@ public class SectionController {
     private CategoryService categoryService;
 
     //分类列表
+    @PermissionCode("section_view")
     @RequestMapping(value = "/category/list", method = RequestMethod.GET)
     public String categoryList(){
         return "section/section_category_list";
     }
 
     //栏目列表
+    @PermissionCode("section_view")
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public String list(Integer categoryId, Model model) throws IException {
         model.addAttribute("sectionCategory", sectionService.findCategoryById(categoryId));
         return "section/section_list";
     }
     //显示产品分类列表
+    @PermissionCode("section_view")
     @RequestMapping(value = "/detail/list", method = RequestMethod.GET)
     public String detailList(Integer categoryId, Model model) throws IException {
         model.addAttribute("sectionCategory", sectionService.findCategoryById(categoryId));
         return "section/section_list";
     }
     //修改栏目
+    @PermissionCode("section_update")
     @RequestMapping(value = "/update", method = RequestMethod.GET)
     public String update(Integer id, Model model) throws IException {
         Section section = sectionService.findById(id);
@@ -49,6 +54,7 @@ public class SectionController {
         return "section/section_update";
     }
     //创建栏目
+    @PermissionCode("section_create")
     @RequestMapping(value = "/create", method = RequestMethod.GET)
     public String create(Integer categoryId, Model model) throws IException {
         Gson gson = new Gson();

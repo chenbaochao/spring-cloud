@@ -1,6 +1,7 @@
 package com.play001.cloud.cms.controller;
 
 
+import com.play001.cloud.cms.Interceptor.PermissionCode;
 import com.play001.cloud.cms.service.NavigationBarService;
 import com.play001.cloud.cms.service.NavigationService;
 import com.play001.cloud.support.entity.NavigationBar;
@@ -31,6 +32,7 @@ public class NavigationController {
     /**
      * 更新导航界面
      */
+    @PermissionCode("navigation_update")
     @RequestMapping(value = "/update", method = RequestMethod.GET)
     public String update(Integer id, Model model){
         model.addAttribute("navigation",  navigationService.findById(id));
@@ -40,6 +42,7 @@ public class NavigationController {
     /**
      * 导航栏界面
      */
+    @PermissionCode("navigation_list")
     @RequestMapping(value = "/barList", method = RequestMethod.GET)
     public String barList(Model model,Integer navigationId){
         if(navigationId != null){
@@ -51,6 +54,7 @@ public class NavigationController {
     /**
      * 导航栏更新界面
      */
+    @PermissionCode("navigation_update")
     @RequestMapping(value = "/bar/update", method = RequestMethod.GET)
     public String updateBar(Integer id, Model model){
         NavigationBar navigationBar = navigationBarService.findWithNavigation(id);
@@ -60,6 +64,7 @@ public class NavigationController {
     /**
      * 创建导航栏
      */
+    @PermissionCode("navigation_create")
     @RequestMapping(value = "/bar/create", method = RequestMethod.GET)
     public String createBar(Integer navigationId, Model model){
         model.addAttribute("navigation",  navigationService.findById(navigationId));

@@ -1,5 +1,6 @@
 package com.play001.cloud.cms.api;
 
+import com.play001.cloud.cms.Interceptor.PermissionCode;
 import com.play001.cloud.cms.service.ProductService;
 import com.play001.cloud.support.entity.Product;
 import com.play001.cloud.support.entity.ResponseEntity;
@@ -23,6 +24,7 @@ public class ProductRestController {
     /**
      * 添加
      */
+    @PermissionCode("product_create")
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public ResponseEntity<Integer> create(@Valid @RequestBody Product product, BindingResult bindingResult){
         if(bindingResult.hasErrors()){
@@ -39,6 +41,7 @@ public class ProductRestController {
      * @param order 排序方式 desc/asc
      * @param categoryId 目录ID
      */
+    @PermissionCode("product_view")
     @RequestMapping(value = "/getList", method = RequestMethod.GET)
     public Map<String, Object> getList(Long offset, Integer limit, String sort, String order, Integer categoryId){
         return productService.getList(offset, limit, sort, order, categoryId);
@@ -46,6 +49,7 @@ public class ProductRestController {
     /**
      * 修改产品
      */
+    @PermissionCode("product_update")
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public ResponseEntity<Integer> update(@Valid @RequestBody Product product, BindingResult bindingResult){
         if(bindingResult.hasErrors()){

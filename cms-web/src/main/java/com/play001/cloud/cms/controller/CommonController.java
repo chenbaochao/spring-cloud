@@ -30,6 +30,7 @@ public class CommonController {
             ImageIO.write(bi, "JPG", response.getOutputStream());
         }
     }
+
     @RequestMapping(value = "/message", method = RequestMethod.GET)
     public String message(Model model, String message){
         message = message == null?"":message;
