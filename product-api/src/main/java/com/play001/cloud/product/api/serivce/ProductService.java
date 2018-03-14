@@ -93,6 +93,10 @@ public class ProductService {
         return responseEntity;
     }
 
+    /**
+     * 移除已经被删除或者修改的产品缓存
+     * @param productId 产品Id
+     */
     public void removeCachingById(Long productId){
         if(productId == null) return;
         redisTemplate.delete(productId);
