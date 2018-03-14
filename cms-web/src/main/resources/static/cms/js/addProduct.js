@@ -33,7 +33,7 @@ $(function () {
         if(!checkData()) return ;
         var data = initData();
         $.ajax({
-            url:'../product/create',
+            url:'/product',
             method:'post',
             dataType:"json",
             contentType:'application/json',
@@ -146,7 +146,7 @@ function initGalleryUpload(){
         maxFilesNum: 10,
         allowedFileExtensions: ['jpg', 'png', 'gif'],
         overwriteInitial: false,
-        uploadUrl:"../uploadImage",
+        uploadUrl:"/image",
         fileActionSettings:{
             //showDrag:false //设置不能拖动
         },
@@ -180,7 +180,7 @@ function initThumbUpload(){
     $("#thumb").fileinput({
         theme: "gly",
         overwriteInitial: true,
-        uploadUrl:"../uploadImage",
+        uploadUrl:"/image",
         maxFileSize: 99999,
         showClose: false,
         showCaption: false,
@@ -211,7 +211,7 @@ function initUeditor(){
     UE.Editor.prototype._bkGetActionUrl = UE.Editor.prototype.getActionUrl;
     UE.Editor.prototype.getActionUrl = function(action) {
         if (action === 'uploadImage') {
-            return '/ueditor/uploadImage';
+            return '/ueditor/image';
         } else {
             return this._bkGetActionUrl.call(this, action);
         }

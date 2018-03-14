@@ -47,7 +47,7 @@ window.actionEvents = {
 	},
 	'click .edit' : function(e, value, row, index) {
 		var url = $('#table').attr('data-url');
-		layer_show(row.name, '../navigation/bar/update?id=' + row.id , 900, 650)
+		layer_show(row.name, '/navigation/bar/update?id=' + row.id , 900, 650)
 	},
 	'click .remove' : function(e, value, row, index) {
 		var url = $('#table').attr('data-url');
@@ -64,17 +64,14 @@ function status_stop(index, value, url) {
 	}, function() {
 		$.ajax({
 			dataType : 'json',
-			type : 'post',
-			data:{
-				id:value
-			},
-			url : '../navigation/bar/hidden',
+			type : 'put',
+			url : '/navigation/bar/'+id+'/status/0',
 			success : function(result) {
 				if (result.status === 'SUCCESS') {
 					$('#table').bootstrapTable('updateRow', {
 						index : index,
 						row : {
-							status : 0,
+							status : 0
 						}
 					});
 					layer.msg('该导航隐藏栏成功!', {
@@ -100,17 +97,14 @@ function status_start(index, value, url) {
 	}, function() {
 		$.ajax({
             dataType : 'json',
-            type : 'post',
-            data:{
-                id:value
-            },
-            url : '../navigation/bar/show',
+            type : 'put',
+            url : '/navigation/bar/'+id+'/status/1',
 			success : function(result) {
 				if (result.status === 'SUCCESS') {
 					$('#table').bootstrapTable('updateRow', {
 						index : index,
 						row : {
-							status : 1,
+							status : 1
 						}
 					});
 					layer.msg('该导航显示栏成功!', {
@@ -136,11 +130,8 @@ function admin_delete(index, value, url) {
 	}, function() {
 		$.ajax({
             dataType : 'json',
-            type : 'post',
-            data:{
-                id:value
-            },
-            url : '../navigation/bar/delete',
+            type : 'delete',
+            url : '/navigation/bar/'+value,
 			success : function(result) {
 				if (result.status === 'SUCCESS') {
 					$('#table').bootstrapTable('hideRow', {
@@ -239,8 +230,8 @@ $(function() {
 				$.ajax({
 					data : $form.serialize(),
 					dataType : 'json',
-					type : 'post',
-					url : url,
+					type : 'put',
+					url : '/navigation/bar',
 					success : function(result) {
 						if (result.status ==='SUCCESS') {
 							parent.layer.msg("更新导航栏成功!", {
@@ -262,7 +253,7 @@ $(function() {
 					data : $form.serialize(),
 					dataType : 'json',
 					type : 'post',
-					url :url,
+                    url : '/navigation/bar',
 					success : function(result) {
 						if (result.status === 'SUCCESS') {
 							parent.layer.msg("创建导航栏成功!", {
@@ -281,4 +272,4 @@ $(function() {
 				})
 			}
 		});
-})
+});

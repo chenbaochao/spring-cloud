@@ -67,7 +67,7 @@ $(function() {
     ztreeObject.expandAll(true);
     //更新勾选操作
 	try{
-        if(permissionsJson !== undefined){
+        if(permissionsJson !== null){
             initTreeData();
         }
 	}catch(e){
@@ -80,7 +80,6 @@ $(function() {
  */
 function initTreeData(){
     var permissions = eval('(' + permissionsJson + ')');
-    console.log(permissions);
     for(var i = 0; i < permissions.length; i++){
         if(permissions[i].flag === 1 && permissions[i].menu.type === 0){
            var node = ztreeObject.getNodeByParam("id", permissions[i].menu.id, null);
@@ -130,7 +129,7 @@ $(function() {
 			// Get the BootstrapValidator instance
 			var bv = $form.data('bootstrapValidator');
 
-			var data = bulidData();
+			var data = buildData();
 			var action = $('#form').attr('data-action');
 
 			if (action === 'create') {
@@ -139,7 +138,7 @@ $(function() {
                     contentType:'application/json',
 					dataType : 'json',
 					type : 'post',
-					url : '../role/create',
+					url : '/role',
 					success : function(result) {
 						if (result.status === 'SUCCESS') {
 							parent.layer.msg("创建成功!", {
@@ -161,8 +160,8 @@ $(function() {
 				$.ajax({
 					data : JSON.stringify(data),
 					dataType : 'json',
-					type : 'post',
-					url : '../role/update',
+					type : 'put',
+					url : '/role',
                     contentType:'application/json',
 					success : function(result) {
 						if (result.status === 'SUCCESS') {
@@ -189,7 +188,7 @@ $(function() {
 /**
  * 构建json数据并返回
  */
-function bulidData(){
+function buildData(){
     var role = {};
     role.id = $('#id').val();
     role.name = $('#name').val();

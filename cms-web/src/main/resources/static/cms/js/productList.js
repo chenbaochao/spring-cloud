@@ -46,13 +46,10 @@ window.actionEvents = {
         setStatus(row.id,1);
 	},
 	'click .edit' : function(e, value, row, index) {
-		layer_show(row.name,  '../category/update?id=' + row.id , 900, 650)
+		window.location.href='/product/update?id=' + row.id;
 	},
 	'click .remove' : function(e, value, row, index) {
 		del(index, row.id);
-	},
-	'click .log' : function(e, value, row, index) {
-		layer_show(row.name, '../category/' + row.id + '/create', 900, 650)
 	}
 };
 
@@ -65,18 +62,14 @@ function setStatus(id, status) {
 	}, function() {
 		$.ajax({
 			dataType : 'json',
-			type : 'post',
-			url : '../category/setStatus',
-			data:{
-				id:id,
-				status:status
-			},
+			type : 'put',
+			url : '/product/category/'+id+'/status/'+status,
 			success : function(result) {
 				if (result.status === 'SUCCESS') {
 					$('#table').bootstrapTable('refresh', {
 						silent : true
 					});
-					layer.msg('隐藏成功!', {
+					layer.msg('更改成功!', {
 						icon : 5,
 						time : 1000
 					});
@@ -104,12 +97,9 @@ function del(index, id) {
 		btn : [ '确定', '取消' ] //按钮
 	}, function() {
 		$.ajax({
-			type : 'post',
+			type : 'delete',
 			dataType : 'json',
-			url : '/category/delete',
-			data:{
-				id:id
-			},
+			url : '/product/category/'+id,
 			success : function(result) {
 				if (result.status === 'SUCCESS') {
 					$('#table').bootstrapTable('hideRow', {

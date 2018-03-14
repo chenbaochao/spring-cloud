@@ -28,8 +28,8 @@ $(function () {
         if(!checkData()) return ;
         var data = bulidData();
         $.ajax({
-            url:'../product/update',
-            method:'post',
+            url:'/product',
+            type:'put',
             dataType:"json",
             contentType:'application/json',
             data:JSON.stringify(data),
@@ -143,7 +143,7 @@ function initGalleryUpload(){
         initialPreviewData.push(pics[i].image.url);
         //这里没有给删除的url,所以图片并没有被真正删除,需要在后台处理
         var item = {};
-        item.url = '../deleteSuccess';
+        item.url = '/deleteSuccess';
         item.key = pics[i].image.id;
         initialPreviewConfigData.push(item);
     }
@@ -155,7 +155,7 @@ function initGalleryUpload(){
         maxFilesNum: 10,
         allowedFileExtensions: ['jpg', 'png', 'gif'],
         overwriteInitial: false,
-        uploadUrl:"../uploadImage",
+        uploadUrl:"/image",
         fileActionSettings:{
             //showDrag:false //设置不能拖动
         },
@@ -190,7 +190,7 @@ function initThumbUpload(){
     $("#thumb").fileinput({
         theme: "gly",
         overwriteInitial: true,
-        uploadUrl:"../uploadImage",
+        uploadUrl:"/image",
         maxFileSize: 99999,
         showClose: false,
         showCaption: false,
@@ -349,11 +349,11 @@ var paraImpl = '<div class="form-group parameter">' +
     '<input type="hidden" value="0" name="paraId" />' +
     '<label class="col-sm-1 col-xs-offset-2 control-label">参数名：</label>' +
     '<div class="col-sm-2">' +
-    '<input type="text" maxlength="18"  class="form-control" name="paraName" >' +
+    '<input type="text" maxlength="20"  class="form-control" name="paraName" >' +
     '</div>' +
     '<label class="col-sm-1 col-xs-offset-1 control-label">参数值：</label>' +
     '<div class="col-sm-2">' +
-    '<input type="text" maxlength="18"  class="form-control" name="paraValue" >' +
+    '<input type="text" maxlength="50"  class="form-control" name="paraValue" >' +
     '</div>' +
     '<a class="remove m-r-sm text-danger"  onclick="del(this)" title="删除">' +
     '<i class="glyphicon glyphicon-remove" style="margin-top:8px;"></i>' +
@@ -364,7 +364,7 @@ var specImpl='<div class="form-group specification">' +
     '<input type="hidden" name="specId" value="0" />'+
     '<label class="col-sm-1 col-xs-offset-2 control-label">规格名：</label>' +
     '<div class="col-sm-2">' +
-    '<input type="text" maxlength="18"  class="form-control" name="specName" >' +
+    '<input type="text" maxlength="20"  class="form-control" name="specName" >' +
     '</div>' +
     '<label class="col-sm-1 col-xs-offset-1 control-label">价格：</label>' +
     '<div class="col-sm-1">' +
@@ -382,7 +382,7 @@ var specImpl='<div class="form-group specification">' +
 var labelImpl = '<div class="col-sm-2 labels">' +
     '<div class="col-sm-8">' +
     '<input type="hidden" name="labelId" value="0"/>'+
-    '<input type="text" maxlength="10"  class="form-control" name="labelName" >' +
+    '<input type="text" maxlength="20"  class="form-control" name="labelName" >' +
     '</div>' +
     '<div class="col-sm-4">' +
     '<a class="remove m-r-sm text-danger"  onclick="delLabel(this)" title="删除">' +

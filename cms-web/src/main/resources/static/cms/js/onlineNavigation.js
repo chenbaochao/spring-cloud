@@ -34,7 +34,7 @@ window.actionEvents = {
 		admin_delete(index, row.id);
 	},
 	'click .log' : function(e, value, row, index) {
-		window.location.href =  '../navigation/barList?navigationId=' + row.id ;
+		window.location.href =  '/navigation/bar/list/view?navigationId=' + row.id ;
 	}
 };
 
@@ -95,14 +95,14 @@ $(function() {
 			
 			var method = $('#form').attr('data-method');
 			// Use Ajax to submit form data
-			if (method == 'post') {
+			if (method === 'post') {
 				$.ajax({
 					data : $form.serialize(),
 					dataType : 'json',
-					type : 'post',
+					type : 'put',
 					url : $form.attr('action'),
 					success : function(result) {
-						if (result.status == 'SUCCESS') {
+						if (result.status === 'SUCCESS') {
 							parent.layer.msg("更新导航成功!", {
 								shade : 0.3,
 								time : 1500

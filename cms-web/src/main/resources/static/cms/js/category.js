@@ -1,9 +1,3 @@
-/**
- * 进行格式转换
- */
-function timeFormatter(value) {
-	return new Date(value).Format("yyyy-MM-dd HH:mm:ss");
-}
 
 function statusFormatter(value) {
 	if (value === 1) {
@@ -60,13 +54,13 @@ window.actionEvents = {
         setStatus(row.id,1);
 	},
 	'click .edit' : function(e, value, row, index) {
-		layer_show(row.name,  '../category/update?id=' + row.id , 900, 650)
+		layer_show(row.name,  '/product/category/update?id=' + row.id , 900, 650)
 	},
 	'click .remove' : function(e, value, row, index) {
 		del(index, row.id);
 	},
 	'click .log' : function(e, value, row, index) {
-		layer_show(row.name, '../category/' + row.id + '/create', 900, 650)
+		layer_show(row.name, '/product/category/create', 900, 650)
 	}
 };
 
@@ -79,18 +73,14 @@ function setStatus(id, status) {
 	}, function() {
 		$.ajax({
 			dataType : 'json',
-			type : 'post',
-			url : '../category/setStatus',
-			data:{
-				id:id,
-				status:status
-			},
+			type : 'put',
+			url : '/product/category/'+id+'/status/'+status,
 			success : function(result) {
 				if (result.status === 'SUCCESS') {
 					$('#table').bootstrapTable('refresh', {
 						silent : true
 					});
-					layer.msg('隐藏成功!', {
+					layer.msg('更改成功!', {
 						icon : 5,
 						time : 1000
 					});
@@ -114,12 +104,9 @@ function del(index, id) {
 		btn : [ '确定', '取消' ] //按钮
 	}, function() {
 		$.ajax({
-			type : 'post',
+			type : 'delete',
 			dataType : 'json',
-			url : '/category/delete',
-			data:{
-				id:id
-			},
+			url : '/product/category/'+id,
 			success : function(result) {
 				if (result.status === 'SUCCESS') {
 					$('#table').bootstrapTable('hideRow', {
@@ -204,8 +191,8 @@ $(function() {
 				$.ajax({
 					data : data,
 					dataType : 'json',
-					type : 'post',
-					url : '../category/update',
+					type : 'put',
+					url : '/product/category',
 					success : function(result) {
 						if (result.status === 'SUCCESS') {
 							parent.layer.msg("更新分类成功!", {
@@ -227,7 +214,7 @@ $(function() {
 					data : data,
 					dataType : 'json',
 					type : 'post',
-					url : '../category/create',
+					url : '/product/category',
 					success : function(result) {
 						if (result.status === 'SUCCESS') {
 							parent.layer.msg("创建分类成功!", {

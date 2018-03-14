@@ -88,11 +88,8 @@ function setStatus(id) {
 	}, function() {
 		$.ajax({
 			dataType : 'json',
-			type : 'post',
-			url : '../order/setStatusUnReceive',
-			data:{
-				id:id
-			},
+			type : 'put',
+			url : '/order/'+id+'/status/4',
 			success : function(result) {
 				if (result.status === 'SUCCESS') {
 					$('#table').bootstrapTable('refresh', {

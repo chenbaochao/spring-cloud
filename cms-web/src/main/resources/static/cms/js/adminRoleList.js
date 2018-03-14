@@ -115,7 +115,7 @@ function status_start(index, value) {
 		$.ajax({
 			dataType : 'json',
 			type : 'put',
-			url : '/administrator/role/' + value + '/audit',
+			url : '/administrator/role/' + value + '/status/1',
 			success : function(result) {
 				if (result.code === 1) {
 					$('#table').bootstrapTable('updateRow', {

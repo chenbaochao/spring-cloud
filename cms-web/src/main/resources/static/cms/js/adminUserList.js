@@ -1,24 +1,16 @@
 /**
  * 进行格式转换
  */
-function loginTimeFormatter(value) {
-	return new Date(value).Format("yyyy-MM-dd HH:mm:ss");
-}
-function registerTimeFormatter(value) {
-	return new Date(value).Format("yyyy-MM-dd");
-}
-function nameFormatter(value, row) {
-	return '<a href="javascript:void(0)" onclick="layer_show(\'' + row.userName + '\',\'' + baselocation + '/administrator/list/' + row.userId + '\',\'500\',\'425\')">' + value + '</a>';
-}
+
 function statusFormatter(value) {
-	if (value == 1) {
+	if (value === 1) {
 		return '<span class="label label-primary">正常</span>'
-	} else if (value == 0) {
+	} else if (value === 0) {
 		return '<span class="label label-danger">冻结</span>'
 	}
 }
 function actionFormatter(value, row, index) {
-	if (row.status == 1) {
+	if (row.status === 1) {
 		return [
 			'<a class="freeze m-r-sm text-info" href="javascript:void(0)" title="冻结">',
 			'<i class="glyphicon glyphicon-pause"></i>',
@@ -31,7 +23,7 @@ function actionFormatter(value, row, index) {
 			'</a>',
 			'<a class="log m-r-sm text-primary" href="javascript:void(0)" title="日志">',
 			'<i class="glyphicon glyphicon-list-alt"></i>',
-			'</a>',
+			'</a>'
 		].join('');
 	} else {
 		return [
@@ -46,7 +38,7 @@ function actionFormatter(value, row, index) {
 			'</a>',
 			'<a class="log m-r-sm text-primary" href="javascript:void(0)" title="日志">',
 			'<i class="glyphicon glyphicon-list-alt"></i>',
-			'</a>',
+			'</a>'
 		].join('');
 	}
 }
@@ -59,13 +51,13 @@ window.actionEvents = {
 		status_start(index, row.id);
 	},
 	'click .edit' : function(e, value, row, index) {
-		layer_show(row.userName,  '/admin/update?id=' + row.id , 900, 650)
+		layer_show(row.userName,  '/administrator/update?id=' + row.id , 900, 650)
 	},
 	'click .remove' : function(e, value, row, index) {
 		admin_delete(index, row.id);
 	},
 	'click .log' : function(e, value, row, index) {
-		layer_show(row.username + '登录日志',  '/admin/loginLog?adminId='+row.id, 900, 650)
+		layer_show(row.username + '登录日志',  '/administrator/loginLog?adminId='+row.id, 900, 650)
 	}
 };
 
@@ -73,23 +65,19 @@ window.actionEvents = {
  * 冻结管理员
  */
 function status_stop(index, value) {
-	console.log(value)
 	layer.confirm('确认要冻结该管理员吗？', {
 		btn : [ '确定', '取消' ] //按钮
 	}, function() {
 		$.ajax({
 			dataType : 'json',
 			type : 'put',
-			data:{
-				'id':value
-			},
-			url :  '/admin/freeze'  ,
+			url :  '/administrator/'+value+'status/0',
 			success : function(result) {
-				if (result.status == 'SUCCESS') {
+				if (result.status === 'SUCCESS') {
 					$('#table').bootstrapTable('updateRow', {
 						index : index,
 						row : {
-							status : 0,
+							status : 0
 						}
 					});
 					layer.msg('该管理员冻结成功!', {
@@ -116,16 +104,13 @@ function status_start(index, value) {
 		$.ajax({
 			dataType : 'json',
 			type : 'put',
-            data:{
-                'id':value
-            },
-			url :  '/admin/unFreeze',
+            url :  '/administrator/'+value+'status/1',
 			success : function(result) {
-				if (result.status == 'SUCCESS') {
+				if (result.status === 'SUCCESS') {
 					$('#table').bootstrapTable('updateRow', {
 						index : index,
 						row : {
-							status : 1,
+							status : 1
 						}
 					});
 					layer.msg('该管理员启用成功!', {
@@ -150,14 +135,11 @@ function admin_delete(index, value) {
 		btn : [ '确定', '取消' ] //按钮
 	}, function() {
 		$.ajax({
-			type : 'post',
+			type : 'delete',
 			dataType : 'json',
-			data:{
-				'id':value
-			},
-			url : '/admin/delete',
+			url : '/administrator/'+value,
 			success : function(result) {
-				if (result.status == 'SUCCESS') {
+				if (result.status === 'SUCCESS') {
 					$('#table').bootstrapTable('hideRow', {
 						index : index
 					});

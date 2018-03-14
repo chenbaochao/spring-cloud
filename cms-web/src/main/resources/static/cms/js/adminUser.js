@@ -70,16 +70,14 @@ $(function() {
 
 			// Get the BootstrapValidator instance
 			var bv = $form.data('bootstrapValidator');
-
-			var method = $('#form').attr('data-method');
-			var url = $form.attr('action');
+			var action = $form.data('action');
 			// 更新
-			if ('/admin/update' === url) {
+			if ('update' === action) {
 				$.ajax({
 					data : $form.serialize(),
 					dataType : 'json',
-					type : 'post',
-					url : url,
+					type : 'put',
+					url : '/administrator',
 					success : function(result) {
 						if (result.status === 'SUCCESS') {
 							parent.layer.msg("更新管理员成功!", {
@@ -97,12 +95,12 @@ $(function() {
 					}
 				})
 
-			} else if ('/admin/create' === url) {
+			} else if ('create' === url) {
 				$.ajax({
 					data : $form.serialize(),
 					dataType : 'json',
 					type : 'post',
-					url : url,
+                    url : '/administrator',
 					success : function(result) {
 						if (result.status === 'SUCCESS') {
 							parent.layer.msg("创建管理员成功!", {

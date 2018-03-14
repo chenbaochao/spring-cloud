@@ -1,15 +1,15 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<title>产品管理</title>
-  <link rel="stylesheet" href="../common/bootstrap-table/bootstrap-table.min.css" />
-  <link rel="stylesheet" href="../common/bootstrap-table/bootstrap-table.min.css" />
-  <link rel="stylesheet" href="../common/icheck/flat/green.css" />
-  <link rel="stylesheet" href="../common/bootstrap/css/bootstrap.min.css" />
-  <link rel="stylesheet" href="../common/font-awesome/css/font-awesome.min.css" />
-  <link rel="stylesheet" href="../cms/css/animate.css" />
-  <link rel="stylesheet" href="../cms/css/style.css" />
-  <script src="../common/jquery/jquery-3.2.0.min.js"></script>
+  <title>产品管理</title>
+  <link rel="stylesheet" href="/common/bootstrap-table/bootstrap-table.min.css" />
+  <link rel="stylesheet" href="/common/bootstrap-table/bootstrap-table.min.css" />
+  <link rel="stylesheet" href="/common/icheck/flat/green.css" />
+  <link rel="stylesheet" href="/common/bootstrap/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="/common/font-awesome/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="/cms/css/animate.css" />
+  <link rel="stylesheet" href="/cms/css/style.css" />
+  <script src="/common/jquery/jquery-3.2.0.min.js"></script>
 </head>
 
 <body class="gray-bg">
@@ -27,16 +27,16 @@
               <div class="example-wrap">
                 <div class="example">
                   <div id="toolbar" class="btn-group m-t-sm">
-                      <form class="form-inline">
-                        <button  th:if="${session.admin.hasPermission('product_create') eq true}"  type="button" class="btn btn-default"  title="添加产品"  onclick="window.location.href='../product/create'">
-                          <i class="glyphicon glyphicon-plus"></i>
-                        </button>
-                        &nbsp;&nbsp;&nbsp;&nbsp;
-                        <select class="form-control" style="display:inline" id="category" >
-                          <option value="0">请选择分类</option>
-                          <option th:each="category:${categories}" th:text="${category.name}" th:value="${category.id}"></option>
-                        </select>
-                      </form>
+                    <form class="form-inline">
+                      <button  th:if="${session.admin?.hasPermission('product_create') eq true}"  type="button" class="btn btn-default"  title="添加产品"  onclick="window.location.href='/product/create'">
+                        <i class="glyphicon glyphicon-plus"></i>
+                      </button>
+                      &nbsp;&nbsp;&nbsp;&nbsp;
+                      <select class="form-control" style="display:inline" id="category" >
+                        <option value="0">请选择分类</option>
+                        <option th:each="category:${categories}" th:text="${category.name}" th:value="${category.id}"></option>
+                      </select>
+                    </form>
                   </div>
                   <table id="table"
                          data-toggle="table"
@@ -48,7 +48,7 @@
                          data-query-params = "queryParameters"
                          data-show-pagination-switch="true"
                          data-show-columns="true"
-                         data-url="../product/getList"
+                         data-url="/product/list"
                          data-pagination="true"
                          data-uniqueId="id"
                          data-page-size="12"
@@ -57,16 +57,16 @@
                          data-striped="true"
                          data-toolbar="#toolbar">
                     <thead>
-                      <tr>
-                        <th data-field="id" data-halign="center" data-align="center">编号</th>
-                        <th data-field="category.name" data-halign="center" data-align="center" >分类</th>
-                        <th data-field="name" data-halign="center" data-align="center" >名称</th>
-                        <th data-field="showPrice" data-halign="center" data-align="center" data-sortable="true">价格</th>
-                        <th data-field="soldNumber" data-halign="center" data-align="center" data-sortable="true">销量</th>
-                        <th data-field="createTime" data-halign="center" data-align="center" data-sortable="true">创建时间</th>
-                        <th data-field="status" data-formatter="statusFormatter" data-halign="center" data-align="center" data-sortable="true" >状态</th>
-                        <th data-formatter="actionFormatter" data-events="actionEvents" data-halign="center" data-align="center">操作</th>
-                      </tr>
+                    <tr>
+                      <th data-field="id" data-halign="center" data-align="center">编号</th>
+                      <th data-field="category.name" data-halign="center" data-align="center" >分类</th>
+                      <th data-field="name" data-halign="center" data-align="center" >名称</th>
+                      <th data-field="showPrice" data-halign="center" data-align="center" data-sortable="true">价格</th>
+                      <th data-field="soldNumber" data-halign="center" data-align="center" data-sortable="true">销量</th>
+                      <th data-field="createTime" data-halign="center" data-align="center" data-sortable="true">创建时间</th>
+                      <th data-field="status" data-formatter="statusFormatter" data-halign="center" data-align="center" data-sortable="true" >状态</th>
+                      <th data-formatter="actionFormatter" data-events="actionEvents" data-halign="center" data-align="center">操作</th>
+                    </tr>
                     </thead>
                   </table>
                 </div>
@@ -80,28 +80,28 @@
 </div>
 <myfooter>
   <!-- layer弹出框js -->
-  <script src="../common/layer/layer.js"></script>
-  <script src="../common/particleground/js/jquery.particleground.min.js"></script>
+  <script src="/common/layer/layer.js"></script>
+  <script src="/common/particleground/js/jquery.particleground.min.js"></script>
   <!-- Bootstrap table -->
-  <script src="../common/bootstrap-table/bootstrap-table.min.js"></script>
-  <script src="../common/bootstrap-table/extensions/export/bootstrap-table-export.js"></script>
-  <script src="../common/bootstrap-table/tableExport.js"></script>
-  <script src="../common/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
+  <script src="/common/bootstrap-table/bootstrap-table.min.js"></script>
+  <script src="/common/bootstrap-table/extensions/export/bootstrap-table-export.js"></script>
+  <script src="/common/bootstrap-table/tableExport.js"></script>
+  <script src="/common/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
 
   <!-- iCheck -->
-  <script src="../common/icheck/icheck.min.js"></script>
+  <script src="/common/icheck/icheck.min.js"></script>
   <!-- bootstrapvalidator-master前端验证框架 -->
-  <script src="../common/bootstrapvalidator/js/bootstrapValidator.min.js"></script>
+  <script src="/common/bootstrapvalidator/js/bootstrapValidator.min.js"></script>
 
   <!-- 全局js -->
-  <script src="../common/bootstrap/js/bootstrap.min.js"></script>
-  <script src="../common/metismenu/metisMenu.min.js"></script>
-  <script src="../common/slimscroll/jquery.slimscroll.min.js"></script>
+  <script src="/common/bootstrap/js/bootstrap.min.js"></script>
+  <script src="/common/metismenu/metisMenu.min.js"></script>
+  <script src="/common/slimscroll/jquery.slimscroll.min.js"></script>
   <!-- 自定义js -->
-  <script src="../cms/js/hplus.js"></script>
-  <script src="../cms/js/contabs.js"></script>
-  <script src="../cms/js/content.js"></script>
-  <script src="../cms/js/productList.js"></script>
+  <script src="/cms/js/hplus.js"></script>
+  <script src="/cms/js/contabs.js"></script>
+  <script src="/cms/js/content.js"></script>
+  <script src="/cms/js/productList.js"></script>
 </myfooter>
 </body>
 </html>

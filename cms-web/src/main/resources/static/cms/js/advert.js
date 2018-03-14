@@ -64,11 +64,8 @@ function status_stop(index, value) {
 	}, function() {
 		$.ajax({
 			dataType : 'json',
-			type : 'post',
-            data:{
-			  id:value
-            },
-			url : '../advert/setInvalid',
+			type : 'put',
+			url : '/advert/'+id+'/status/0',
 			success : function(result) {
 				if (result.status === 'SUCCESS') {
 					$('#table').bootstrapTable('updateRow', {
@@ -100,11 +97,8 @@ function status_start(index, value) {
 	}, function() {
 		$.ajax({
 			dataType : 'json',
-			type : 'post',
-            data:{
-                id:value
-            },
-            url : '../advert/setValid',
+			type : 'put',
+            url : '/advert/'+id+'/status/1',
 			success : function(result) {
 				if (result.status === 'SUCCESS') {
 					$('#table').bootstrapTable('updateRow', {
@@ -135,12 +129,9 @@ function admin_delete(index, value) {
 		btn : [ '确定', '取消' ] //按钮
 	}, function() {
 		$.ajax({
-			type : 'post',
+			type : 'delete',
 			dataType : 'json',
-            data:{
-			    id:value
-            },
-			url : '../advert/delete',
+			url : '/advert/'+id,
 			success : function(result) {
 				if (result.status === 'SUCCESS') {
 					$('#table').bootstrapTable('hideRow', {
@@ -203,7 +194,7 @@ $(function() {
 		var formData = new FormData();
 		formData.append('upFile', $('input[type="file"]')[0].files[0]);
 		$.ajax({
-			url : '../ueditor/uploadImage',
+			url : '/ueditor/image',
 			type : 'post',
 			cache : false,
 			data : formData,
@@ -291,8 +282,8 @@ $(function() {
 				$.ajax({
 					data : $form.serialize(),
 					dataType : 'json',
-					type : 'post',
-					url : $form.attr('action'),
+					type : 'put',
+					url :'/advert',
 					success : function(result) {
 						if (result.status === 'SUCCESS') {
 							parent.layer.msg("更新广告详情成功!", {
@@ -319,7 +310,7 @@ $(function() {
 					data : $form.serialize(),
 					dataType : 'json',
 					type : 'post',
-					url : '../advert/add',
+					url : '/advert',
 					success : function(result) {
 						if (result.status === 'SUCCESS') {
 							parent.layer.msg("创建广告详情成功!", {

@@ -44,7 +44,7 @@ window.actionEvents = {
 		status_start(index, row.id);
 	},
 	'click .edit' : function(e, value, row, index) {
-		layer_show(row.name, '../section/update?id=' + row.id , 900, 650)
+		layer_show(row.name, '/section/update?id=' + row.id , 900, 650)
 	},
 	'click .remove' : function(e, value, row, index) {
 		admin_delete(index, row.id);
@@ -60,17 +60,14 @@ function status_stop(index, value) {
 	}, function() {
 		$.ajax({
 			dataType : 'json',
-			type : 'post',
-			data:{
-				id:value
-			},
-			url : '../section/setInvalid',
+			type : 'put',
+			url : '/section/'+value+'/status/0',
 			success : function(result) {
 				if (result.status === 'SUCCESS') {
 					$('#table').bootstrapTable('updateRow', {
 						index : index,
 						row : {
-							status : 0,
+							status : 0
 						}
 					});
 					layer.msg('该栏目隐藏成功!', {
@@ -96,20 +93,17 @@ function status_start(index, value) {
 	}, function() {
 		$.ajax({
             dataType : 'json',
-            type : 'post',
-            data:{
-                id:value
-            },
-            url : '../section/setValid',
+            type : 'put',
+            url : '/section/'+value+'/status/1',
 			success : function(result) {
 				if (result.status === 'SUCCESS') {
 					$('#table').bootstrapTable('updateRow', {
 						index : index,
 						row : {
-							status : 1,
+							status : 1
 						}
 					});
-					layer.msg('该栏目显示栏成功!', {
+					layer.msg('该栏目显示成功!', {
 						icon : 1,
 						time : 1000
 					});
@@ -132,11 +126,8 @@ function admin_delete(index, value) {
 	}, function() {
 		$.ajax({
             dataType : 'json',
-            type : 'post',
-            data:{
-                id:value
-            },
-            url : '../section/delete',
+            type : 'delete',
+            url : '/section/'+value,
 			success : function(result) {
 				if (result.status === 'SUCCESS') {
 					$('#table').bootstrapTable('hideRow', {

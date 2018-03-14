@@ -2,9 +2,9 @@
 <html  xmlns:th="http://www.thymeleaf.org">
 <head>
 <title>后台管理系统</title>
-  <meta name="author" content="猫宁Morning. - 但行好事，莫问前程。" />
-  <meta name="keywords" content="猫宁商城,猫宁Morning,猫宁公益商城,公益,电子商城,猫宁社区,公益商城,在线购物,社会责任">
-  <meta name="description" content="猫宁Morning公益商城是中国公益性在线电子商城，以商城B2C模式运营的公益在线商城，是一家致力于将传统公益商城互联网化的创新公益商城。">
+  <meta name="author" content="小米. - 但行好事，莫问前程。" />
+  <meta name="keywords" content="小米商城,小米公益商城,公益,电子商城,猫宁社区,公益商城,在线购物,社会责任">
+  <meta name="description" content="小米公益商城是中国公益性在线电子商城，以商城B2C模式运营的公益在线商城，是一家致力于将传统公益商城互联网化的创新公益商城。">
   <link rel="shortcut icon" href="/default/ico/favicon.ico" type="image/x-icon" />
   <link rel="stylesheet" href="/common/bootstrap/css/bootstrap.min.css" />
   <link rel="stylesheet" href="/common/font-awesome/css/font-awesome.min.css" />
@@ -35,20 +35,20 @@
                 <li><a class="J_menuItem" href="contacts.html">联系我们</a> </li>
                 <!--<li><a class="J_menuItem" href="mailbox.html">信箱</a> </li> -->
                 <li class="divider"></li>
-                <li><a href="/admin/logout">退出</a> </li>
+                <li><a href="/logout">退出</a> </li>
               </ul>
             </div>
           </li>
               <li th:each="menu, status:${menus}">
                 <a th:href="${menu.href}">
-                  <i th:class="'fa fa-' + ${menu.icon}" ></i>
+                  <i th:class="${menu.icon}" ></i>
                   <span class="nav-label" th:text="${menu.name}"></span>
                   <span class="fa arrow"></span>
                 </a>
                 <ul class="nav nav-second-level">
                     <li th:each="childMenu, status:${menu.childMenus}">
                       <a class="J_menuItem" th:href="${childMenu.href}">
-                        <i th:class="'fa fa-' + ${childMenu.icon}" style="width: 11px;"></i><span th:text="${childMenu.name}">菜单名字</span></a>
+                        <i th:class="${childMenu.icon}" style="width: 11px;"></i><span th:text="${childMenu.name}">菜单名字</span></a>
                     </li>
                 </ul>
             </li>
@@ -142,12 +142,12 @@
             <li class="J_tabCloseOther"><a>关闭其他选项卡</a> </li>
           </ul>
         </div>
-        <a href="/admin/logout" class="roll-nav roll-right J_tabExit"><i class="fa fa fa-sign-out"></i> 退出</a> </div>
+        <a href="/logout" class="roll-nav roll-right J_tabExit"><i class="fa fa fa-sign-out"></i> 退出</a> </div>
       <div class="row J_mainContent" id="content-main">
         <iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="" frameborder="0" data-id="" seamless></iframe>
       </div>
       <div class="footer">
-        <div class="pull-right">© 2016-2017<a href="http://wpa.qq.com/msgrd?v=3&uin=810170512&site=qq&menu=yes" target="_Blank"> 穿鞋子的猫 </a>
+        <div class="pull-right">© 2016-2017<a href="#" target="_Blank"> 小米商城 </a>
       </div>
     </div>
     <!--右侧部分结束-->

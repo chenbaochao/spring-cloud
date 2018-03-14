@@ -69,7 +69,7 @@ $(function() {
 			return false;
 		}
 		$.ajax({
-			url : '/admin/login',
+			url : '/login',
 			type : 'post',
 			dataType : 'json',
 			data : {
@@ -79,8 +79,8 @@ $(function() {
 			},
 			success : function(result) {
 				console.info(result);
-				if (result.status == 'SUCCESS') {
-					window.top.location.href = '/admin/index';
+				if (result.status === 'SUCCESS') {
+					window.top.location.href = '/index';
 				} else{
 					$('#captchaImage').attr('src', '/captcha?model=login&' + Math.floor(Math.random() * 100));
 					layer.alert(result.errMsg, {
@@ -96,7 +96,7 @@ $(function() {
  * 回车登录实现
  */
 $(document).keyup(function(event) {
-	if (event.keyCode == 13) {
+	if (event.keyCode === 13) {
 		$(".submit_btn").trigger("click");
 	}
 });

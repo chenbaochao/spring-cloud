@@ -93,10 +93,10 @@ function save_info() {
 	$.ajax({
 		data : params,
 		dataType : "json",
-		type : "post",
-		url :  '/admin/updatePersonalInfo',
+		type : "put",
+		url :  '/administrator/self',
 		success : function(result) {
-			if (result.status == 'SUCCESS') {
+			if (result.status === 'SUCCESS') {
                 layer.msg('修改成功!', {
                     icon : 6,
                     time : 800
@@ -104,7 +104,7 @@ function save_info() {
 			} else {
 				layer.alert(result.errMsg, {
 					title : '提示框',
-					icon : 0,
+					icon : 0
 				});
 			}
 		}
@@ -159,12 +159,12 @@ function change_Password() {
 				data : params,
 				dataType : "json",
 				type : "post",
-				url : '/admin/updatePersonalPwd',
+				url : '/administrator/self/password',
 				success : function(result) {
-					if (result.status == 'SUCCESS') {
+					if (result.status === 'SUCCESS') {
 						layer.alert("密码修改成功!", {
 							title : '提示框',
-							icon : 1,
+							icon : 1
 						});
 						layer.close(index);
 						$("input[name='confirmPwd']").val("");
