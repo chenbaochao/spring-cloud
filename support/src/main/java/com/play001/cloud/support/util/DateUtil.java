@@ -1,9 +1,10 @@
 package com.play001.cloud.support.util;
 
 
+import sun.util.resources.LocaleData;
+
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
@@ -36,5 +37,13 @@ public class DateUtil {
      */
     public static String getTime(){
         return  formatter.format(LocalDateTime.now());
+    }
+    /**
+     * @param time 当前时间戳
+     * @return return for example 1997-01-01 02:02:02
+     */
+    public static String getTime(Long time) {
+        Instant instant = Instant.ofEpochSecond(System.currentTimeMillis()/1000);
+        return formatter.format(LocalDateTime.ofInstant(instant, ZoneId.systemDefault()));
     }
 }
