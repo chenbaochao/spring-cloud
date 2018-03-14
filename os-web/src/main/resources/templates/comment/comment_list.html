@@ -9,39 +9,17 @@
     <script src="../common/jquery/jquery.cookie.js"></script>
     <script src="../os/js/base.js"></script>
 </head>
-<body>
-<div id="site-topBar"></div>
-<div id="site-header"></div>
-
-<!--     分类导航栏 begin       -->
-<div class="breadcrumbs">
-    <div class="container-fluid"><a href='${ctx}/index'>首页</a>
-        <span class="sep">&gt;</span><a th:href="|/product/list?categoryId=${product.category.id}|">上一级目录</a>
-        <span class="sep">&gt;</span><a href="javascript:;" th:text="${product.name}"></a> </div>
-</div>
-<!--     分类导航栏 end       -->
-
+<body style="width: 880px;min-width: 880px;">
 
 <!--     商品评论 begin       -->
 <div class="goods-comment">
-  <div class="goods-comment-groom" id="J_recommendComment" style="display:${productAttribute.commentNumber eq 0?'none':'black'}">
-    <div class="container-fluid">
-      <ul class="main-block">
-        <li class="percent">
-          <div class="per-num"> <i>5</i>% </div>
-          <div class="per-title"> 购买后满意 </div>
-          <div class="per-amount"> <i th:text="${pagination.totalData}">${productAttribute.commentNumber}</i>名用户投票 </div>
-        </li>
-      </ul>
-    </div>
-  </div>
   <div class="goods-comment-list-detail-block">
-    <div class="container-fluid">
+    <div class="container-fluid" style="width: 880px;min-width: 880px;">
       <div class="row">
-        <div class="span14 goods-comment-list-detail">
+        <div class="span14 goods-comment-list-detail" style="width: 880px;min-width: 880px;">
           <ul class="comment-box-list" id="J_supComment">
-              <li class="" th:each="comment:${pagination.message}" th:attr="data-id=${comment.id}"  >
-                <div class="user-image"> <img th:src="${comment.user.profilePhoro}" th:alt="${comment.user.username}"> </div>
+              <li class="" th:each="comment:${pagination.data}" th:attr="data-id=${comment.id}"  >
+                <div class="user-image"> <img th:src="${comment.user.profilePhoto}" th:alt="${comment.user.username}"> </div>
 
                   <div class="user-emoj" th:if="${comment.star eq 1}">❤</div>
                   <div class="user-emoj" th:if="${comment.star eq 2}">❤❤</div>
@@ -49,13 +27,13 @@
                   <div class="user-emoj" th:if="${comment.star eq 4}">❤❤❤❤</div>
                   <div class="user-emoj" th:if="${comment.star eq 5}">❤❤❤❤❤</div>
 
-                <div class="user-name-info"> <span class="user-name" th:text="${comment.user.userename}"> </span>
+                <div class="user-name-info"> <span class="user-name" th:text="${comment.user.username}"> </span>
                     <span class="user-time"  th:text="${comment.createTime}"></span>
                     <span class="pro-info">蓝色</span>
                 </div>
                 <div class="user-hand-block">
                     <a href="javascript:void(0);" th:attr="data-commentid=${comment.id}" class="J_hasHelp" onclick="comment_like(this)">
-                        <i class="glyphicon glyphicon-thumbs-up"></i>&nbsp;赞&nbsp;<span class="amount"> ${comment.goodCount}</span></a> </div>
+                        <i class="glyphicon glyphicon-thumbs-up"></i>&nbsp;赞&nbsp;<span class="amount">0</span></a> </div>
                 <dl class="user-comment">
                   <dt class="user-comment-content J_commentContent">
                     <p class="content-detail"><a href="" target="_blank" th:text="${comment.content}"></a></p>
@@ -63,7 +41,7 @@
                 </dl>
               </li>
           </ul>
-          <div class="goods-detail-null-content" th:if="${#lists.isEmpty(pagination.message)}"  id="J_commentTipInfo">
+          <div class="goods-detail-null-content" th:if="${#lists.isEmpty(pagination.data)}"  id="J_commentTipInfo">
             <h3>暂时还没有更多评价</h3>
             <p>期待你分享科技带来的乐趣</p>
           </div>
@@ -71,14 +49,6 @@
               <div id="pager" th:attr="data-pager-totalPage=${pagination.totalPage},data-pager-current=${pagination.pageNo},data-pager-href=${url}" ></div>
           </div>
         </div>
-<!--        <div class="span6 goods-detail-info-block">
-          <div class="goods-detail-info">
-            <div class="goods-img-block"> <a target="_blank" href="${ctx}/item/${product.productNumber}" title="${product.name}"> <img src="${ctximg}/${product.picImg}" class="J_cartBigImg" alt="${product.name}"> </a> </div>
-            <div class="goods-name J_cartGoodsName"> 产品名称</div>
-            <div class="goods-price"> <b>2999</b><i>&nbsp;元</i> </div>
-          </div>
-          <div class="goods-cart-btn-block" id="J_cartBtnBlock"> <a target="_blank" href="${ctx}/detail/${product.productNumber}" class="btn btn-primary goods-add-cart-btn">加入购物车</a> </div>
-        </div>-->
       </div>
     </div>
   </div>

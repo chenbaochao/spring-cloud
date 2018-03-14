@@ -5,7 +5,7 @@ var addressId = null;
 $(function() {
 	$(".J_addressItem").on("click", function() {
 		$(this).addClass("selected").siblings().removeClass("selected");
-		addressId = $(this).data("address_id");
+		addressId = $(this).data("address-id");
 /*		var html = '<div class="seleced-address" id="J_confirmAddress">' + c + '&nbsp;&nbsp;' + l + '<br>'
 			+ e + '&nbsp;&nbsp;' + g + '&nbsp;&nbsp;' + i + '&nbsp;&nbsp;' + j + '&nbsp;&nbsp;';
 		$(".section-bar").find(".fl:first-child").html(html);*/
@@ -89,7 +89,7 @@ $(function() {
             });
             return ;
         }
-
+		console.log('addrid='+addressId);
 		$.ajax({
 			url : '../order/order',
 			type : 'post',

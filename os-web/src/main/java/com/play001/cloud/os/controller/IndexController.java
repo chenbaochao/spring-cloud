@@ -32,7 +32,7 @@ public class IndexController {
         model.addAttribute("navigationBars", navigationService.getChannelNavigationBars());
         //轮播下面三个小广告
         model.addAttribute("underSliderAdvert", advertService.getUnderSliderAdvert());
-        return "webfront/index";
+        return "index/index";
     }
 
 
@@ -49,7 +49,7 @@ public class IndexController {
     @RequestMapping(value = "/section", method = RequestMethod.GET)
     public String hotProduct(Model model) throws IException {
         model.addAttribute("sections", sectionService.getIndexSections());
-        return "webfront/section";
+        return "index/section";
     }
 
     @RequestMapping(value = "/siteHeader", method = RequestMethod.GET)

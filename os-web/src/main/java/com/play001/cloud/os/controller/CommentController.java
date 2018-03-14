@@ -35,6 +35,6 @@ public class CommentController {
         pagination.setTotalPage(totalPage);
         model.addAttribute("pagination", pagination);
         model.addAttribute("url", "/comment/list?productId="+productId+"&pageNo=");
-        return "comment/comment_item";
+        return "comment/comment_list";
     }
 }
