@@ -21,7 +21,7 @@ public class NavigationBar  implements Serializable {
     @NotBlank(message = "链接不能为空")
     private String href;
     @NotNull(message = "状态错误")
-    private Boolean status;
+    private Byte status;
     private String createTime;
 
     private String remarks;
@@ -68,11 +68,11 @@ public class NavigationBar  implements Serializable {
         this.href = href;
     }
 
-    public Boolean getStatus() {
+    public Byte getStatus() {
         return status;
     }
 
-    public void setStatus(Boolean status) {
+    public void setStatus(Byte status) {
         this.status = status;
     }
 
