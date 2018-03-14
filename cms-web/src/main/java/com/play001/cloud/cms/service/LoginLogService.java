@@ -1,7 +1,7 @@
 package com.play001.cloud.cms.service;
 
 import com.play001.cloud.cms.entity.LoginLog;
-import com.play001.cloud.cms.mapper.LoginLogMapper;
+import com.play001.cloud.cms.mapper.admin.LoginLogMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

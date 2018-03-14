@@ -3,7 +3,6 @@ package com.play001.cloud.cms.Interceptor;
 import java.lang.annotation.*;
 
 @Documented
-@Inherited
 @Target(value = ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 /**

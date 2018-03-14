@@ -1,11 +1,14 @@
 package com.play001.cloud.cms.service;
 
 
-import com.play001.cloud.cms.mapper.NavigationMapper;
+import com.play001.cloud.cms.mapper.navigation.NavigationMapper;
 import com.play001.cloud.support.entity.Navigation;
+import com.play001.cloud.support.entity.RabbitMessage.NavigationRabbitMessage;
 import com.play001.cloud.support.entity.RedisMessage;
 import com.play001.cloud.support.entity.ResponseEntity;
+import com.play001.cloud.support.enums.RabbitEnum;
 import com.play001.cloud.support.enums.RedisMessageEnum;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -20,7 +23,7 @@ public class NavigationService {
     @Autowired
     private NavigationMapper navigationMapper;
     @Autowired
-    private RedisTemplate redisTemplate;
+    private RabbitTemplate rabbitTemplate;
     /**
      * 获取所有的导航
      */
@@ -39,7 +42,8 @@ public class NavigationService {
             navigationMapper.setStatus(id, status);
             return new ResponseEntity<Integer>().setStatus(ResponseEntity.SUCCESS);
         }
-        redisTemplate.convertAndSend(RedisMessage.CHANNEL, new RedisMessage(RedisMessageEnum.NAVIGATION_CHANGE));
+        NavigationRabbitMessage rabbitMessage = new NavigationRabbitMessage(System.currentTimeMillis());
+        rabbitTemplate.convertAndSend("defaultExchange", RabbitEnum.NAVIGATION_CHANGE.getRouteKey(), rabbitMessage);
         return new ResponseEntity<Integer>().setErrMsg("参数错误");
     }
 
@@ -49,7 +53,10 @@ public class NavigationService {
      */
     public ResponseEntity<Integer> update(Navigation navigation){
         navigationMapper.update(navigation);
-        redisTemplate.convertAndSend(RedisMessage.CHANNEL, new RedisMessage(RedisMessageEnum.NAVIGATION_CHANGE));
+        //redisTemplate.convertAndSend(RedisMessage.CHANNEL, new RedisMessage(RedisMessageEnum.NAVIGATION_CHANGE));
+        //通知其它微服务更新缓存
+        NavigationRabbitMessage rabbitMessage = new NavigationRabbitMessage(System.currentTimeMillis());
+        rabbitTemplate.convertAndSend("defaultExchange", RabbitEnum.NAVIGATION_CHANGE.getRouteKey(), rabbitMessage);
         return new ResponseEntity<Integer>().setStatus(ResponseEntity.SUCCESS);
     }
 

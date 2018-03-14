@@ -55,7 +55,7 @@ public class UploadImageResponse implements Serializable {
         private String caption;
         //宽度
         private String width;
-        public final String url = "../delete";
+        public  String url;
         //主键ID
         private Long key;
         private String extra;
@@ -78,6 +78,7 @@ public class UploadImageResponse implements Serializable {
 
         public void setKey(Long key) {
             this.key = key;
+            this.url = "/image/"+key;
         }
 
         public String getExtra() {

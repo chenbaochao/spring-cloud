@@ -2,8 +2,8 @@ package com.play001.cloud.cms.service;
 
 import com.play001.cloud.cms.entity.MenuPermission;
 import com.play001.cloud.cms.entity.Role;
-import com.play001.cloud.cms.mapper.AdminMapper;
-import com.play001.cloud.cms.mapper.RoleMapper;
+import com.play001.cloud.cms.mapper.admin.AdminMapper;
+import com.play001.cloud.cms.mapper.admin.RoleMapper;
 import com.play001.cloud.support.entity.IException;
 import com.play001.cloud.support.entity.ResponseEntity;
 import org.springframework.beans.factory.annotation.Autowired;

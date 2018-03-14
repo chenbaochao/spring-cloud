@@ -39,10 +39,11 @@ public class RoleController {
     }
     //列表
     @PermissionCode("role_view")
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    @RequestMapping(value = "/list/view", method = RequestMethod.GET)
     public String list(){
         return "role/role_list";
     }
+
     //更新
     @PermissionCode("role_update")
     @RequestMapping(value = "/update", method = RequestMethod.GET)

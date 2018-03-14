@@ -3,12 +3,15 @@ package com.play001.cloud.cms.api;
 import com.baidu.ueditor.ActionEnter;
 import com.play001.cloud.cms.Interceptor.PermissionCode;
 import com.play001.cloud.cms.entity.UploadImageResponse;
+import com.play001.cloud.cms.service.AdminService;
 import com.play001.cloud.cms.service.ImageService;
 import com.play001.cloud.cms.service.MenuService;
+import com.play001.cloud.support.entity.IException;
 import com.play001.cloud.support.entity.Image;
 import com.play001.cloud.support.entity.Menu;
 import com.play001.cloud.support.entity.ResponseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,12 +32,14 @@ public class CommonRestController {
 
 
     private ImageService imageService;
-    private MenuService menuService;
+
 
     @Autowired
-    public void init(ImageService imageService, MenuService menuService){
+    private AdminService adminService;
+
+    @Autowired
+    public void init(ImageService imageService){
         this.imageService = imageService;
-        this.menuService = menuService;
     }
 
     /**
@@ -42,7 +47,7 @@ public class CommonRestController {
      * @param avatar_data 图片裁剪参数
      */
     @PermissionCode
-    @RequestMapping(value = "/uploadImage", method = RequestMethod.POST)
+    @RequestMapping(value = "/image", method = RequestMethod.POST)
     public UploadImageResponse uploadImage(MultipartFile upFile , String avatar_data){
         UploadImageResponse response = new UploadImageResponse();
         ResponseEntity<Image> responseEntityImage =  imageService.upload(upFile, HtmlUtils.htmlUnescape(avatar_data));
@@ -63,8 +68,8 @@ public class CommonRestController {
      * 返回NULL删除成功,返回map中error存储出错信息
      */
     @PermissionCode
-    @RequestMapping(value = "/delete", method = RequestMethod.POST)
-    public Map<String, String> delete(Long key){
+    @RequestMapping(value = "/image/{key}", method = RequestMethod.POST)
+    public Map<String, String> delete(@PathVariable Long key){
         return imageService.delete(key);
     }
 
@@ -72,11 +77,12 @@ public class CommonRestController {
      * 获取Ueditor配置文件
      */
     @PermissionCode
-    @RequestMapping(value = "/getUeditorConf", method = RequestMethod.GET)
+    @RequestMapping(value = "/ueditor/config", method = RequestMethod.GET)
     public String getUeditorConf(HttpServletRequest request){
         String rootPath = CommonRestController.class.getClassLoader().getResource("").getPath();
-        rootPath+="static/common/ueditor/config";
+        rootPath+="static/common";
         rootPath = rootPath.substring(1);
+        System.out.println(rootPath);
         return new ActionEnter(request, rootPath).exec();
     }
     /**
@@ -84,7 +90,7 @@ public class CommonRestController {
      * Ueditor上传图片和其它框架上传图片所上传的参数和返回信息格式有所不同,但是流程一样,故分开所写.调用同一个service函数
      */
     @PermissionCode
-    @RequestMapping(value = "/ueditor/uploadImage", method = RequestMethod.POST)
+    @RequestMapping(value = "/ueditor/image", method = RequestMethod.POST)
     public Map<String, String> ueditorUploadImage(MultipartFile upFile){
         ResponseEntity<Image> responseEntity = imageService.upload(upFile, null);
         Map<String, String> responseMap = new HashMap<>();
@@ -115,6 +121,13 @@ public class CommonRestController {
         Map<String, String> response = new HashMap<>();
         response.put("error","");
         return response;
+    }
+    /**
+     * 登陆
+     */
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    public ResponseEntity<Integer> login(String username, String password, String captchaCode, HttpServletRequest request) throws IException {
+        return  adminService.login(username, password, captchaCode, request);
     }
 
 }

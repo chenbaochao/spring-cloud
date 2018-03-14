@@ -1,6 +1,6 @@
 package com.play001.cloud.cms.service;
 
-import com.play001.cloud.cms.mapper.CategoryMapper;
+import com.play001.cloud.cms.mapper.product.ProductCategoryMapper;
 import com.play001.cloud.support.entity.Category;
 import com.play001.cloud.support.entity.IException;
 import com.play001.cloud.support.entity.ResponseEntity;
@@ -13,7 +13,7 @@ import java.util.List;
 public class CategoryService {
 
     @Autowired
-    private CategoryMapper categoryMapper;
+    private ProductCategoryMapper categoryMapper;
 
 
     public List<Category> findAll(){

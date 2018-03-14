@@ -11,14 +11,15 @@ import java.util.List;
 public class MenuService {
 
     private final Integer TOP_MENU_ID = 1;
+
     @Autowired
     private MenuMapper menuMapper;
 
-    public List<Menu> getAdminMenus(Integer adminId){
-        return menuMapper.getAdminMenus(adminId,TOP_MENU_ID);
+    public List<Menu> getMenusByRoleId(Integer roleId){
+        return menuMapper.getMenusByRoleId(roleId,TOP_MENU_ID);
     }
 
     public List<Menu> getAllMenus(){
-        return menuMapper.getAllMenus(TOP_MENU_ID);
+        return menuMapper.findAll(TOP_MENU_ID);
     }
 }

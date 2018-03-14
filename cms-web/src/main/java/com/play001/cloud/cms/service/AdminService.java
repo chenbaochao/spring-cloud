@@ -1,21 +1,21 @@
 package com.play001.cloud.cms.service;
 
 import com.play001.cloud.cms.entity.AdminSessionData;
-import com.play001.cloud.cms.entity.LoginLog;
-import com.play001.cloud.cms.mapper.AdminMapper;
+import com.play001.cloud.cms.mapper.admin.AdminMapper;
 import com.play001.cloud.cms.entity.Admin;
 import com.play001.cloud.cms.mapper.ImageMapper;
-import com.play001.cloud.cms.mapper.LoginLogMapper;
-import com.play001.cloud.cms.mapper.PermissionMapper;
-import com.play001.cloud.cms.util.CommonUtil;
+import com.play001.cloud.cms.mapper.admin.LoginLogMapper;
 import com.play001.cloud.support.entity.IException;
 import com.play001.cloud.support.entity.Image;
+import com.play001.cloud.support.entity.RabbitMessage.LoginRabbitMessage;
 import com.play001.cloud.support.entity.ResponseEntity;
+import com.play001.cloud.support.enums.RabbitEnum;
 import com.play001.cloud.support.enums.StorageTypeEnum;
 import com.play001.cloud.support.util.DateUtil;
 import com.play001.cloud.cms.util.storage.IBaseStorageUtil;
 import com.play001.cloud.cms.util.storage.StorageFactory;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.stereotype.Service;
@@ -27,7 +27,6 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -35,20 +34,19 @@ import java.util.Objects;
 @Service
 public class AdminService {
 
-    public static final int ADMIN_ROOT_ID = 1;
 
     @Autowired
     private AdminMapper adminMapper;
     @Autowired
     private DataSourceTransactionManager transactionManager;
     @Autowired
-    private PermissionMapper permissionMapper;
-    @Autowired
     private LoginLogMapper loginLogMapper;
     @Autowired
     private ImageMapper imageMapper;
     @Autowired
     private StorageFactory storageFactory;
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
 
     @Transactional(rollbackFor = Exception.class)
     public ResponseEntity<Integer> create(Admin admin ) throws IException {
@@ -65,14 +63,22 @@ public class AdminService {
         //设置创建时间
         admin.setCreateTime(DateUtil.getTime());
         adminMapper.add(admin);
-        //根据用户组设置权限
-        permissionMapper.add(admin.getId(), admin.getRole().getId());
         return responseEntity.setStatus(ResponseEntity.SUCCESS);
     }
 
     //设置用户状态,启用或冻结=1/0
-    public void setStatus(Integer id, byte status){
+    public ResponseEntity<Integer> setStatus(Integer id, byte status){
+        ResponseEntity<Integer> responseEntity = new ResponseEntity<>();
+        if(id == null){
+            return responseEntity.setErrMsg("参数错误");
+        }
+        if(id.equals(Admin.ROOT_ID)){
+            return responseEntity.setErrMsg("ROOT用户无法被别人修改");
+        }
+        //0或者1
+        status=status==1?status:0;
         adminMapper.setStatus(id, status);
+        return new ResponseEntity<Integer>().setStatus(ResponseEntity.SUCCESS);
     }
     /**
      * 登陆
@@ -104,32 +110,27 @@ public class AdminService {
         if(!admin.getPassword().equals(password)) {
             return responseEntity.setErrMsg("用户名或密码错误!");
         }
-        //将登陆信息写进login_log
-        LoginLog loginLog = new LoginLog();
-        loginLog.setAdminId(admin.getId());
         String ip;
         if ((ip = request.getHeader("x-forwarded-for")) == null) {
             ip= request.getRemoteAddr();
         }
-        loginLog.setIp(ip);
-        loginLog.setTime(DateUtil.getTime());
-        loginLog.setLocation(CommonUtil.getLocationByIp(ip));
-        loginLogMapper.add(loginLog);
+        //将登陆信息写进login_log
+        LoginRabbitMessage loginMessage = new LoginRabbitMessage(System.currentTimeMillis(), admin.getId(), ip);
+
+        /**
+         * 登陆通过CommonUtil.getLocationByIp(ip)查询登陆地址非常耗时
+         * 所以发送消息异步保存登陆日志
+         */
+        rabbitTemplate.convertAndSend("defaultExchange", RabbitEnum.LOGIN.getRouteKey(), loginMessage);
         //登陆成功后,将用户的权限信息读出来放在session中
         AdminSessionData adminSessionData = new AdminSessionData();
         adminSessionData.setId(admin.getId());
         adminSessionData.setUsername(admin.getUsername());
         adminSessionData.setRole(admin.getRole());
         adminSessionData.setRealName(admin.getRealName());
-        //读取权限
-/*        List<Map<String, Object>> permission = permissionMapper.getMenuPermission(admin.getId());
-        Map<String, Boolean> adminPermission = new HashMap<>();
-        for(Map<String, Object> item : permission){
-            adminPermission.put(item.get("menuCode").toString(), (Boolean)item.get("flag"));
-        }
-        adminSessionData.setPermission((HashMap<String, Boolean>) adminPermission);*/
         session.setAttribute("admin", adminSessionData);
-
+        //设置有效期为60*60一小时
+        session.setMaxInactiveInterval(60*60);
         return responseEntity.setStatus(ResponseEntity.SUCCESS);
     }
 
@@ -161,13 +162,6 @@ public class AdminService {
         if(oldAdmin == null){
             return responseEntity.setErrMsg("用户不存在");
         }
-        //不一致,需要更新权限
-        if(!oldAdmin.getRole().getId().equals(admin.getRole().getId())){
-            //先删除该用户的权限
-            permissionMapper.deletePermission(admin.getId());
-            //再根据该用户的用户组,加入权限
-            permissionMapper.add(admin.getId(), admin.getRole().getId());
-        }
         //更新基本信息
         adminMapper.update(admin);
         return responseEntity.setStatus(ResponseEntity.SUCCESS);
@@ -187,8 +181,13 @@ public class AdminService {
      * 删除
      * @param id 管理员ID
      */
-    public boolean delete(Integer id) throws IException {
-        if(id  == ADMIN_ROOT_ID) throw new IException("无法删除ROOT用户");
+    public ResponseEntity<Integer> delete(Integer id) {
+        ResponseEntity<Integer> responseEntity = new ResponseEntity<>();
+        if(id == null){
+            return responseEntity.setErrMsg("参数错误");
+        }else if(id.equals(Admin.ROOT_ID)){
+            return responseEntity.setErrMsg("ROOT用户不能被删除");
+        }
         //2.获取事务定义
         DefaultTransactionDefinition def = new DefaultTransactionDefinition();
         //3.设置事务隔离级别，开启新事务
@@ -198,19 +197,16 @@ public class AdminService {
         try {
             //删除基本信息
             adminMapper.delete(id);
-            //删除权限信息
-            permissionMapper.deletePermission(id);
             //删除登陆日志记录
             loginLogMapper.deleteByAdminId(id);
             //提交
             transactionManager.commit(status);
-            return true
-                    ;
+            return responseEntity.setStatus(ResponseEntity.SUCCESS);
         }catch (Exception e){
             e.printStackTrace();
             //回滚
             transactionManager.rollback(status);
-            return false;
+            return responseEntity.setErrMsg("网络繁忙请重试");
         }
 
     }

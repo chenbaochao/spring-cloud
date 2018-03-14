@@ -5,6 +5,7 @@ import com.play001.cloud.cms.service.OrderService;
 import com.play001.cloud.support.entity.Order;
 import com.play001.cloud.support.entity.ResponseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,7 +20,7 @@ public class OrderRestController {
     private OrderService orderService;
 
     @PermissionCode("order_view")
-    @RequestMapping(value = "/getList", method = RequestMethod.GET)
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
     public Map<String, Object> getList(Long offset, Integer limit, String sort, String order, Byte status){
         return orderService.getList(offset, limit, sort, order, status);
     }
@@ -30,8 +31,8 @@ public class OrderRestController {
      * @param id 订单Id
      */
     @PermissionCode("order_update")
-    @RequestMapping(value = "/setStatusUnReceive", method = RequestMethod.POST)
-    public ResponseEntity<Integer> setStatusUnReceive(Long id){
+    @RequestMapping(value = "/{id}/status/", method = RequestMethod.PUT)
+    public ResponseEntity<Integer> setStatusUnReceive(@PathVariable Long id){
         return orderService.setStatusUnReceive(id);
     }
 }

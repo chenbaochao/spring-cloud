@@ -33,7 +33,7 @@ public class PermissionInterceptor extends HandlerInterceptorAdapter{
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String message = null;
         //需要进行验证
-        PermissionCode permissionCode = ((HandlerMethod) handler).getMethod().getAnnotation(PermissionCode.class);
+        /*PermissionCode permissionCode = ((HandlerMethod) handler).getMethod().getAnnotation(PermissionCode.class);
         if(permissionCode != null){
             String menuCode = permissionCode.value();
             HttpSession session = request.getSession();
@@ -44,6 +44,8 @@ public class PermissionInterceptor extends HandlerInterceptorAdapter{
             }
             //为空只需要登陆验证,不为空进行权限验证
             if(!menuCode.isEmpty() && adminSessionData != null){
+                //刷新session有效期为60*60一小时
+                session.setMaxInactiveInterval(60*60);
                 if(!adminSessionData.hasPermission(menuCode)){
                     message = NO_PERMISSION_MESSAGE;
                 }
@@ -51,14 +53,14 @@ public class PermissionInterceptor extends HandlerInterceptorAdapter{
         }
         HandlerMethod handlerMethod = (HandlerMethod)handler;
         if(message != null){
-                /*
+                *//*
                  * 判断是@restController还是controller
                  * 如果是@restController则返回json格式的错误信息
                  * 如果是@controller则跳转到登陆页面/或者错误提示页面
-                 */
-                /*
+                 *//*
+                *//*
                  * 由于@restController和@controller是注解在类上的,所以要先获取bean然后再获取注解
-                 */
+                 *//*
             if(handlerMethod.getBeanType().getAnnotation(RestController.class) != null){
                 logger.info("RestController方法");
                 response.setCharacterEncoding("UTF-8");
@@ -68,13 +70,13 @@ public class PermissionInterceptor extends HandlerInterceptorAdapter{
                 logger.info("Controller方法");
                 //未登录重定向到登陆页面, 其它情况重定向到错误页面
                 if(message.equals(NOT_LOGIN_MESSAGE)){
-                    response.sendRedirect("/admin/login");
+                    response.sendRedirect("/login");
                 }else{
                     response.sendRedirect("/message?message="+ URLEncoder.encode("你没有权限进行此操作", "UTF-8"));
                 }
             }
             return false;
-        }
+        }*/
         return super.preHandle(request, response, handler);
 
        /* //登陆页面和获取验证码不做验证

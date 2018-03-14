@@ -1,6 +1,6 @@
 package com.play001.cloud.cms.service;
 
-import com.play001.cloud.cms.mapper.AdvertMapper;
+import com.play001.cloud.cms.mapper.advert.AdvertMapper;
 import com.play001.cloud.support.entity.Advert;
 import com.play001.cloud.support.entity.IException;
 import com.play001.cloud.support.entity.ResponseEntity;

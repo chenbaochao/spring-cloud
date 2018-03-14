@@ -1,11 +1,14 @@
 package com.play001.cloud.cms.service;
 
 import com.play001.cloud.cms.mapper.*;
+import com.play001.cloud.cms.mapper.product.*;
 import com.play001.cloud.support.entity.*;
 import com.play001.cloud.support.entity.Product.*;
-import com.play001.cloud.support.enums.RedisMessageEnum;
+import com.play001.cloud.support.entity.RabbitMessage.ProductRabbitMessage;
+import com.play001.cloud.support.enums.RabbitEnum;
 import com.play001.cloud.support.util.DateUtil;
 import com.play001.cloud.cms.util.storage.StorageFactory;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
@@ -38,6 +41,8 @@ public class ProductService {
     private StorageFactory storageFactory;
     @Autowired
     private RedisTemplate redisTemplate;
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
 
     /**
      * 修改商品
@@ -159,9 +164,12 @@ public class ProductService {
                     productSpecMapper.update(specification);
                 }
             }
-            //通知其它微服务
-            redisTemplate.convertAndSend(RedisMessage.CHANNEL, new RedisMessage(RedisMessageEnum.PRODUCT_CHANGE, newProduct.getId()));
             transactionManager.commit(status);
+            //通知其它微服务(product-api)更新缓存
+            ProductRabbitMessage productRabbitMessage = new ProductRabbitMessage(newProduct.getId(),
+                    ProductRabbitMessage.UPDATE,
+                    System.currentTimeMillis());
+            rabbitTemplate.convertAndSend("defaultExchange", RabbitEnum.PRODUCT_CHANGE.getRouteKey(), productRabbitMessage);
         }catch (Exception e){
             e.printStackTrace();
             transactionManager.rollback(status);

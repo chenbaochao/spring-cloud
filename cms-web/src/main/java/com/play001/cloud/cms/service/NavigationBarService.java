@@ -1,9 +1,12 @@
 package com.play001.cloud.cms.service;
 
-import com.play001.cloud.cms.mapper.NavigationBarMapper;
+import com.play001.cloud.cms.mapper.navigation.NavigationBarMapper;
 import com.play001.cloud.support.entity.NavigationBar;
+import com.play001.cloud.support.entity.RabbitMessage.NavigationRabbitMessage;
 import com.play001.cloud.support.entity.ResponseEntity;
+import com.play001.cloud.support.enums.RabbitEnum;
 import com.play001.cloud.support.util.DateUtil;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +21,9 @@ public class NavigationBarService {
 
     @Autowired
     private NavigationBarMapper navigationBarMapper;
+
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
 
     /**
      * 导航栏分页
@@ -35,12 +41,15 @@ public class NavigationBarService {
     /**
      * 设置显示或者隐藏
      */
-    public ResponseEntity<Integer> setStatus(Integer id, Boolean status){
+    public ResponseEntity<Integer> setStatus(Integer id, Byte status){
         ResponseEntity<Integer> responseEntity = new ResponseEntity<>();
         if(id == null || status == null){
             return responseEntity.setErrMsg("参数错误");
         }
         navigationBarMapper.setStatus(id, status);
+
+        NavigationRabbitMessage rabbitMessage = new NavigationRabbitMessage(System.currentTimeMillis());
+        rabbitTemplate.convertAndSend("defaultExchange", RabbitEnum.NAVIGATION_CHANGE.getRouteKey(), rabbitMessage);
         return responseEntity.setStatus(ResponseEntity.SUCCESS);
     }
 
@@ -62,6 +71,9 @@ public class NavigationBarService {
             return responseEntity.setErrMsg("缺少参数ID");
         }
         navigationBarMapper.update(navigationBar);
+
+        NavigationRabbitMessage rabbitMessage = new NavigationRabbitMessage(System.currentTimeMillis());
+        rabbitTemplate.convertAndSend("defaultExchange", RabbitEnum.NAVIGATION_CHANGE.getRouteKey(), rabbitMessage);
         return responseEntity.setStatus(ResponseEntity.SUCCESS);
     }
 
@@ -75,6 +87,9 @@ public class NavigationBarService {
             return responseEntity.setErrMsg("所属分类错误");
         }
         navigationBarMapper.add(navigationBar);
+
+        NavigationRabbitMessage rabbitMessage = new NavigationRabbitMessage(System.currentTimeMillis());
+        rabbitTemplate.convertAndSend("defaultExchange", RabbitEnum.NAVIGATION_CHANGE.getRouteKey(), rabbitMessage);
         return responseEntity.setStatus(ResponseEntity.SUCCESS);
     }
 
@@ -87,6 +102,9 @@ public class NavigationBarService {
             return responseEntity.setErrMsg("参数错误");
         }
         navigationBarMapper.delete(id);
+
+        NavigationRabbitMessage rabbitMessage = new NavigationRabbitMessage(System.currentTimeMillis());
+        rabbitTemplate.convertAndSend("defaultExchange", RabbitEnum.NAVIGATION_CHANGE.getRouteKey(), rabbitMessage);
         return responseEntity.setStatus(ResponseEntity.SUCCESS);
     }
 }

@@ -1,6 +1,6 @@
 package com.play001.cloud.cms.service;
 
-import com.play001.cloud.cms.mapper.AdvertCategoryMapper;
+import com.play001.cloud.cms.mapper.advert.AdvertCategoryMapper;
 import com.play001.cloud.support.entity.AdvertCategory;
 import com.play001.cloud.support.entity.IException;
 import org.springframework.beans.factory.annotation.Autowired;

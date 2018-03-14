@@ -10,6 +10,8 @@ import java.io.Serializable;
 
 public class Admin implements Serializable{
 
+    public static final Integer ROOT_ID = 1;
+
     private Integer id;
 
     @NotNull(message = "请选择用户组")

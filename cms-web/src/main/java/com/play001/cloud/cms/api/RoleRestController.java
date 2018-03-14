@@ -26,7 +26,7 @@ public class RoleRestController {
      * 创建
      */
     @PermissionCode("role_create")
-    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Integer> create(@RequestBody @Valid Role role, BindingResult bindingResult){
         if(bindingResult.hasErrors()){
             return new ResponseEntity<Integer>().setErrMsg("参数错误");
@@ -36,7 +36,7 @@ public class RoleRestController {
 
     //更新
     @PermissionCode("role_update")
-    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.PUT)
     public ResponseEntity<Integer> update(@RequestBody @Valid Role role, BindingResult bindingResult){
         if(bindingResult.hasErrors()){
             return new ResponseEntity<Integer>().setErrMsg("参数错误");
@@ -45,14 +45,14 @@ public class RoleRestController {
     }
     //列表
     @PermissionCode("role_view")
-    @RequestMapping(value = "/getList", method = RequestMethod.GET)
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
     public List<Role> getList(){
         return roleService.findAll();
     }
 
     //删除
     @PermissionCode("role_delete")
-    @RequestMapping(value = "/delete", method = RequestMethod.POST)
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Integer> delete(Integer id){
         return roleService.delete(id);
     }

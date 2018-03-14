@@ -11,7 +11,7 @@ public class OrderController {
 
 
     @PermissionCode("order_view")
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    @RequestMapping(value = "/list/view", method = RequestMethod.GET)
     public String list(){
         return "order/order_list";
     }
