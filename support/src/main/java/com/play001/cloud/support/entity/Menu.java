@@ -11,7 +11,7 @@ public class Menu  implements Serializable {
     private String icon;
     private List<Menu> childMenus;
     private String remarks;
-
+    private String code;
     public Integer getId() {
         return id;
     }
@@ -67,6 +67,14 @@ public class Menu  implements Serializable {
 
     public void setType(Integer type) {
         this.type = type;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 }
 
